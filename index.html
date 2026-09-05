@@ -132,7 +132,7 @@
   <!-- ========================================================== -->
   <!-- SCREEN 7 — MUSIC PLAYER MODULE                             -->
   <!-- ========================================================== -->
-  <section class="page-snap page page-custom" id="music-screen" data-page="7">
+  <section class="page page-custom" id="music-screen" data-page="7">
     <div class="custom-bg music-bg"></div>
     <div class="custom-inner music-inner">
 
@@ -222,7 +222,19 @@
   <!-- and birthday-room.css. Built as an overlay that takes over  -->
   <!-- the viewport, then cleans up and returns to normal scroll. -->
   <!-- ========================================================== -->
-  <section class="page-snap page page-custom" id="birthday-room-screen" data-page="7b">
+  <!-- Room entry warning -->
+<div class="room-entry-warning" id="roomEntryWarning" aria-live="polite" hidden>
+  <div class="room-entry-warning-inner">
+    <p class="rew-title">🎂 There's a surprise room in here</p>
+    <p class="rew-sub">If you want to celebrate, step inside — or just keep scrolling.</p>
+    <div class="rew-btns">
+      <button class="rew-btn rew-enter" id="rewEnter">Step Inside ✨</button>
+      <button class="rew-btn rew-skip" id="rewSkip">Keep Scrolling →</button>
+    </div>
+  </div>
+</div>
+
+<section class="page page-custom" id="birthday-room-screen" data-page="7b">
     <div class="custom-bg room-bg"></div>
     <div class="custom-inner">
       <p class="room-intro reveal">There's a little room here, just For You.<br>Wanna Step inside?</p>
@@ -239,7 +251,7 @@
   <!-- ========================================================== -->
   <!-- SCREEN 8 — THE SLIDING PUZZLE                              -->
   <!-- ========================================================== -->
-  <section class="page-snap page page-custom" id="puzzle-screen" data-page="8">
+  <section class="page page-custom" id="puzzle-screen" data-page="8">
     <div class="custom-bg puzzle-bg"></div>
     <div class="custom-inner">
 
@@ -271,7 +283,7 @@
   <!-- ========================================================== -->
   <!-- SCREEN 9 — FINAL LETTER + VIDEO REVEAL                     -->
   <!-- ========================================================== -->
-  <section class="page-snap page page-custom" id="final-screen" data-page="9">
+  <section class="page page-custom" id="final-screen" data-page="9">
     <div class="custom-bg final-bg"></div>
     <div class="custom-inner final-inner">
 

@@ -1489,3 +1489,86 @@ button {
   opacity: 0.85;
   font-size: clamp(14px, 2.5vw, 17px);
 }
+
+/* ---- Custom pages after PNG — normal scroll, not full-snap ---- */
+.page-custom {
+  min-height: 100vh;
+  scroll-snap-align: none;
+  height: auto;
+}
+
+/* ---- Room entry warning modal ---- */
+.room-entry-warning {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 8, 20, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+.room-entry-warning:not([hidden]) {
+  opacity: 1;
+  pointer-events: all;
+}
+.room-entry-warning[hidden] { display: none; }
+
+.room-entry-warning-inner {
+  background: rgba(255,255,255,0.96);
+  border-radius: 24px;
+  padding: 36px 32px 28px;
+  max-width: min(400px, 88vw);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  animation: rewPop 500ms cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes rewPop {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.rew-title {
+  font-family: var(--font-script);
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+.rew-sub {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  opacity: 0.65;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+.rew-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.rew-btn {
+  padding: 11px 22px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.rew-btn:hover { transform: translateY(-2px); }
+.rew-btn:active { transform: scale(0.96); }
+.rew-enter {
+  background: linear-gradient(135deg, var(--coral), var(--brick));
+  color: #fff;
+  box-shadow: 0 8px 20px -6px rgba(200,120,144,0.6);
+}
+.rew-skip {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid rgba(16,48,112,0.2);
+}

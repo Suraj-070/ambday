@@ -1276,15 +1276,61 @@ SkipBtn.addEventListener('click', () => {
 });
 
 /* ============================================================
-   15. Wire entry buttons
+   15. Wire entry buttons + room entry warning
    ============================================================ */
+
+/* Room entry warning — shown when she scrolls to the room section */
+const roomEntryWarning = $('#roomEntryWarning');
+const rewEnter = $('#rewEnter');
+const rewSkip  = $('#rewSkip');
+let roomWarningShown = false;
+
+function showRoomWarning() {
+  if (!roomEntryWarning || roomWarningShown) return;
+  roomWarningShown = true;
+  roomEntryWarning.hidden = false;
+  requestAnimationFrame(() => roomEntryWarning.style.opacity = '1');
+}
+function hideRoomWarning() {
+  if (!roomEntryWarning) return;
+  roomEntryWarning.style.opacity = '0';
+  setTimeout(() => { roomEntryWarning.hidden = true; }, 400);
+}
+
+// Watch for room section entering view
+const roomSectionEl = $('#birthday-room-screen');
+if (roomSectionEl) {
+  const roomObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !roomWarningShown) {
+      setTimeout(showRoomWarning, 600);
+    }
+  }, { threshold: 0.3 });
+  roomObs.observe(roomSectionEl);
+}
+
+// Enter button — hide warning then open room
+if (rewEnter) {
+  rewEnter.addEventListener('click', () => {
+    hideRoomWarning();
+    if (roomSectionEl) roomSectionEl.scrollIntoView({ behavior: PRM ? 'auto' : 'smooth', block: 'start' });
+    later(() => openRoom(), PRM ? 100 : 800);
+  });
+}
+
+// Skip button — hide warning and scroll past room to next section
+if (rewSkip) {
+  rewSkip.addEventListener('click', () => {
+    hideRoomWarning();
+    const puzzleSection = $('#puzzle-screen');
+    if (puzzleSection) puzzleSection.scrollIntoView({ behavior: PRM ? 'auto' : 'smooth', block: 'start' });
+  });
+}
+
 if (enterRoomBtn) {
   enterRoomBtn.addEventListener('click', () => {
-    // First, scroll to the room-intro section
     const roomSection = $('#birthday-room-screen');
     if (roomSection) {
       roomSection.scrollIntoView({ behavior: PRM ? 'auto' : 'smooth', block: 'start' });
-      // Then open the room after the scroll settles
       later(() => openRoom(), PRM ? 100 : 900);
     } else {
       openRoom();

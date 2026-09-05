@@ -310,13 +310,30 @@ function onStateChange(state) {
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
       stopParticles();
-      // Fade out birthday music and clear AudioManager.active so ambient can restart
+      // Fade birthday music out, then crossfade ambient bg back in
       if (AudioManager && birthdayAudio) {
-        AudioManager.fadeTo(birthdayAudio, 0, 1500, () => {
-          AudioManager.pause(birthdayAudio);  // pauses AND clears active
+        AudioManager.fadeTo(birthdayAudio, 0, 2000, () => {
+          AudioManager.pause(birthdayAudio);
+          // Fade ambient back in after bday music gone
+          const bg = $('#bgAudio');
+          if (bg) {
+            try {
+              bg.volume = 0;
+              bg.loop   = true;
+              AudioManager.play(bg);
+              AudioManager.fadeTo(bg, 0.4, 1800);
+            } catch(_) {}
+          }
         });
+      } else {
+        // No bday music active — just restart ambient
+        const bg = $('#bgAudio');
+        if (bg && AudioManager) {
+          try { bg.volume = 0; bg.loop = true; AudioManager.play(bg); AudioManager.fadeTo(bg, 0.4, 1800); } catch(_) {}
+        }
       }
-      later(() => closeRoom(), 1500);
+      // Let music transition settle before closing
+      later(() => closeRoom(), 2800);
       break;
 
     case ST.ROOM_CLOSING:
@@ -1298,7 +1315,7 @@ function closeRoomCleanup() {
   // Mark complete
   birthdayRoomState.roomClosed = true;
   setState(ST.ROOM_COMPLETE);
-  tryRestartAmbient();
+  // Ambient already restarted in LIGHTS_OFF_AGAIN — no need to restart again
 
   // Collapse the room section so no empty space before puzzle
   const roomSection = $('#birthday-room-screen');

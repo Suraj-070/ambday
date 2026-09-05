@@ -7,8 +7,8 @@
      - Single state machine: ROOM_ENTER → LIGHTS_OFF → LIGHTS_ON →
        DECORATING → DECORATION_COMPLETE → CAKE_AVAILABLE →
        CAKE_PLACED → CANDLE_AVAILABLE → CANDLE_LIT →
-       BIRTHDAY_MUSIC → CAKE_CUTTING → WISH →
-       CANDLE_EXTINGUISHED → LIGHTS_OFF → ROOM_CLOSING → ROOM_COMPLETE
+       BIRTHDAY_MUSIC → CANDLE_EXTINGUISHED (blow wish) →
+       CAKE_CUTTING → WISH (letter) → LIGHTS_OFF → ROOM_CLOSING → ROOM_COMPLETE
      - Built as a fixed overlay; cleans up on close so the rest
        of the scrapbook continues normally.
    ============================================================ */
@@ -263,7 +263,6 @@ function onStateChange(state) {
     case ST.BIRTHDAY_MUSIC:
       room.classList.remove('dim');
       room.classList.add('lit');
-      // Don't overwrite banner if decoration already placed it
       if (!banner.classList.contains('pre-visible')) {
         bannerText.textContent = 'happy birthday, cutipie 🎂♡';
       }
@@ -271,10 +270,10 @@ function onStateChange(state) {
       if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
       startParticles();
       startFallingConfetti();
+      // After music plays for a bit — prompt to blow candle (make wish BEFORE cutting)
       later(() => {
         stopFallingConfetti();
-        setCaption("okay cut the cake now 🎂 drag the knife");
-        revealKnife();
+        setCaption("okay make a wish and blow the candle, cutipie 🕯️");
       }, birthdayRoomConfig.timing.musicToKnife);
       break;
 
@@ -286,8 +285,7 @@ function onStateChange(state) {
       setCaption("");
       hideTray();
       if (brCakeShadow) brCakeShadow.hidden = true;
-      // Small breath before showing wish
-      later(() => showWish(), 600);
+      later(() => showWish(), 500);
       break;
 
     case ST.CANDLE_EXTINGUISHED:
@@ -298,14 +296,14 @@ function onStateChange(state) {
       smoke.className = 'br-candle-smoke rising';
       candleEl.appendChild(smoke);
       setTimeout(() => smoke.remove(), 2200);
-      // Hide wish overlay
-      wish.classList.remove('show');
-      later(() => { wish.hidden = true; }, 800);
-      // Caption sequence after blow — emotional, then closes
-      later(() => setCaption("i hope it comes true 🌟"), 1200);
-      later(() => setCaption("i love you, maichaa. so much."), 2800);
-      later(() => setCaption("okay... time to go 🚪"), 4600);
-      later(() => { setCaption(""); setState(ST.LIGHTS_OFF_AGAIN); }, 6000);
+      // Brief wish moment caption
+      later(() => setCaption("i hope it comes true 🌟"), 600);
+      later(() => setCaption("now... cut the cake! 🎂"), 2200);
+      // Reveal knife AFTER wish — correct order
+      later(() => {
+        setCaption("drag the knife across the cake 🎂");
+        revealKnife();
+      }, 3600);
       break;
 
     case ST.LIGHTS_OFF_AGAIN:
@@ -468,10 +466,12 @@ function stopDust() {
 function showTray() {
   tray.hidden = false;
   requestAnimationFrame(() => tray.classList.add('show'));
+  overlay.classList.add('tray-open');
   startIdleHint();
 }
 function hideTray() {
   tray.classList.remove('show');
+  overlay.classList.remove('tray-open');
   stopIdleHint();
   later(() => { tray.hidden = true; }, 500);
 }
@@ -1153,22 +1153,18 @@ function enableKnifeDrag() {
     setCaption("");
     // Music fades out slowly
     if (AudioManager && birthdayAudio) {
-      AudioManager.fadeTo(birthdayAudio, 0, 3000, () => {
+      AudioManager.fadeTo(birthdayAudio, 0, 2500, () => {
         AudioManager.pause(birthdayAudio);
       });
     }
-    // Particles calm down
-    later(() => stopParticles(), 800);
-    // Room goes soft/dim
+    later(() => stopParticles(), 600);
     later(() => {
       room.classList.remove('lit');
       room.classList.add('dim');
-    }, 1200);
-    // Caption sequence — personal, breathing, emotional
-    later(() => setCaption("you just turned another year older 🥹"), 1500);
-    later(() => setCaption("and i'm just so glad i get to be here for it"), 3200);
-    later(() => setCaption("i wrote you something, cutipie 🤍"), 5000);
-    later(() => { setCaption(""); setState(ST.WISH); }, 6800);
+    }, 1000);
+    // Short personal captions then show the letter
+    later(() => setCaption("there's one last thing i wrote for you 🤍"), 1200);
+    later(() => { setCaption(""); setState(ST.WISH); }, 3200);
   }
 
   // Pointer events (mouse + touch on modern browsers)
@@ -1252,8 +1248,22 @@ function showWish() {
   }
   later(typeNext, 600);
 
-  // Blow button handler
-  blowBtn.addEventListener('click', blowCandle, { once: true });
+  // Close button — just exits the room after reading
+  if (blowBtn) {
+    blowBtn.textContent = 'okay, close this 🚪';
+    blowBtn.style.animation = 'none';
+    blowBtn.style.boxShadow = 'none';
+    blowBtn.style.background = 'rgba(16,48,112,0.08)';
+    blowBtn.style.color = 'var(--ink)';
+    blowBtn.style.border = '1.5px solid rgba(16,48,112,0.2)';
+    blowBtn.addEventListener('click', () => {
+      wish.classList.remove('show');
+      later(() => { wish.hidden = true; }, 600);
+      later(() => setCaption("i love you, maichaa. so much. 🤍"), 700);
+      later(() => setCaption("okay... time to go 🚪"), 2400);
+      later(() => { setCaption(""); setState(ST.LIGHTS_OFF_AGAIN); }, 3800);
+    }, { once: true });
+  }
 }
 
 function blowCandle() {

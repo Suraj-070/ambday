@@ -640,7 +640,7 @@
 /* ---------- 14. Caption strip ---------- */
 .br-caption {
   position: absolute;
-  left: 50%; bottom: 90px;
+  left: 50%; bottom: 100px;
   transform: translateX(-50%);
   z-index: 200;
   max-width: min(540px, 90%);
@@ -1995,3 +1995,8 @@
 /* Door close slower — more emotional */
 .br-doors.closing .br-door-left  { animation: doorCloseL 2.4s cubic-bezier(.4,0,.2,1) forwards; }
 .br-doors.closing .br-door-right { animation: doorCloseR 2.4s cubic-bezier(.4,0,.2,1) forwards; }
+
+/* Caption pushed up when tray visible */
+.br-overlay.tray-open .br-caption {
+  bottom: 220px !important;
+}

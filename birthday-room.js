@@ -35,7 +35,7 @@ const birthdayRoomConfig = {
 
   /* Decorations the user must place to complete the room.
      Each key matches a data-zone attribute on a .br-dropzone element. */
-  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles', 'balloons2'],
+  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles'],
 
   /* Decoration tray items (in display order).
      `kind` matches a zone; `emoji` is the visual. */
@@ -50,7 +50,7 @@ const birthdayRoomConfig = {
     { kind: 'heartwall', emoji: '💝', label: 'Heart Wall' },
     { kind: 'polaroids', emoji: '📸', label: 'Polaroids' },
     { kind: 'candles',   emoji: '🕯️', label: 'Candles'   },
-    { kind: 'balloons2', emoji: '🎈', label: 'More Balloons' },
+
   ],
 
   /* Photo to show in the frame — replace with Amisha's Cloudinary URL */

@@ -1062,11 +1062,14 @@ button {
   position: relative;
   z-index: 1;
   width: min(720px, 100%);
+  max-height: 90vh;
   background: var(--paper);
   border-radius: var(--r-lg);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5);
   animation: modalIn 420ms cubic-bezier(.22,1,.36,1) both;
+  scrollbar-width: thin;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes modalIn {

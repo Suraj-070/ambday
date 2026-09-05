@@ -310,7 +310,6 @@
         <p>Every page you just scrolled through. Every song. Every little thing in that room. None of it comes close to you. You are the whole thing maichaa. The rest is just me trying to keep up with how much I feel.</p>
         <p>107 days with you. Every single one has been my favourite. Even the stupid ones where we were both being idiots 😂</p>
         <p>Happy birthday maichaa 🎂 I love you so much it actually scares me sometimes. ♡</p>
-        <p class="final-ps">P.S. Imagine me as that little fuchii 😁 And one day I will kiss you so much harder than that. I swear on everything 😝💞</p>
       </div>
 
       <button id="openVideoBtn" class="heart-btn reveal" aria-label="Open the video">
@@ -320,7 +319,7 @@
         <span>Open it ♡</span>
       </button>
 
-      <footer class="final-footer">Made with shaky hands for you maichaa 🤍</footer>
+      <footer class="final-footer">Forever yours babe 💗💕💞🧿</footer>
     </div>
   </section>
 
@@ -753,14 +752,41 @@
 <div id="videoModal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalCaption">
   <div class="modal-backdrop" data-close="1"></div>
   <div class="modal-card">
-      <p class="modal-caption">Please don't judge me for this 😭♡</p>
+    <p class="modal-caption">Please don't judge me for this 😭♡</p>
     <button class="modal-close" id="modalClose" aria-label="Close">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </button>
     <video id="revealVideo" class="modal-video" controls playsinline preload="metadata" loop>
       <source src="assets/video/kiss.mp4" type="video/mp4" />
     </video>
-    <p class="modal-caption" id="modalCaption">wanna do this for real soon 🤍</p>
+
+    <!-- PS — shows after video plays a bit -->
+    <div class="modal-ps" id="modalPs" hidden>
+      <p>P.S. Imagine me as that little fuchii 😁 And one day I will kiss you so much harder than that. I swear on everything 😝💞</p>
+    </div>
+
+    <!-- Kiss button — shows after PS -->
+    <div class="modal-kiss-section" id="modalKissSection" hidden>
+      <p class="modal-kiss-label">Kisses on the way to Australia 😝</p>
+      <button class="kiss-btn" id="kissBtn" aria-label="Send kisses">
+        <span class="kiss-btn-text">💋 Send Kisses</span>
+      </button>
+    </div>
+
+    <p class="modal-caption" id="modalCaption">Wanna do this for real soon 🤍</p>
+  </div>
+</div>
+
+<!-- Kiss animation overlay -->
+<div class="kiss-overlay" id="kissOverlay" hidden aria-hidden="true"></div>
+
+<!-- ENDING OVERLAY — very last thing she sees -->
+<div class="ending-overlay" id="endingOverlay" hidden aria-hidden="true">
+  <div class="ending-inner">
+    <div class="ending-hearts" aria-hidden="true"></div>
+    <p class="ending-line1">Enjoy your day</p>
+    <p class="ending-line2">My love 💞🧿</p>
+    <div class="ending-sub">from Australia with all my heart 🤍</div>
   </div>
 </div>
 

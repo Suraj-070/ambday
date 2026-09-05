@@ -1690,3 +1690,181 @@ button {
   --z-room-warning: 300;
   --z-drag-ghost: 9999;
 }
+
+/* ============================================================
+   KISS + ENDING SEQUENCE
+   ============================================================ */
+
+/* Modal PS reveal */
+.modal-ps {
+  margin: 16px 0 0;
+  padding: 14px 18px;
+  background: rgba(200,120,144,0.1);
+  border-left: 3px solid var(--coral);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-style: italic;
+  font-family: var(--font-body);
+  font-size: clamp(13px, 2.2vw, 16px);
+  color: var(--ink);
+  line-height: 1.6;
+  animation: psSlideIn 600ms cubic-bezier(.22,1,.36,1) both;
+}
+.modal-ps[hidden] { display: none; }
+@keyframes psSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Kiss section */
+.modal-kiss-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 0;
+  animation: psSlideIn 600ms cubic-bezier(.22,1,.36,1) both;
+}
+.modal-kiss-section[hidden] { display: none; }
+.modal-kiss-label {
+  font-family: var(--font-script);
+  font-size: clamp(16px, 3vw, 22px);
+  color: var(--ink);
+  opacity: 0.8;
+  margin: 0;
+  text-align: center;
+}
+
+.kiss-btn {
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff6b8a, #ff4060);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 28px -8px rgba(255,80,120,0.7);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  animation: kissButtonPulse 1.8s ease-in-out infinite;
+  letter-spacing: 0.5px;
+}
+.kiss-btn:hover { transform: scale(1.06); box-shadow: 0 12px 36px -8px rgba(255,80,120,0.85); }
+.kiss-btn:active { transform: scale(0.96); }
+@keyframes kissButtonPulse {
+  0%,100% { box-shadow: 0 8px 28px -8px rgba(255,80,120,0.6), 0 0 0 0 rgba(255,80,120,0.3); }
+  50%     { box-shadow: 0 8px 28px -8px rgba(255,80,120,0.8), 0 0 0 12px rgba(255,80,120,0); }
+}
+
+/* Kiss overlay — full screen flying kisses */
+.kiss-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+.kiss-overlay[hidden] { display: none; }
+
+.flying-kiss {
+  position: absolute;
+  font-size: clamp(20px, 4vw, 36px);
+  pointer-events: none;
+  animation: flyToAustralia linear forwards;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 2px 8px rgba(255,80,120,0.5));
+}
+@keyframes flyToAustralia {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+  30%  { opacity: 1; }
+  70%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(var(--rot)); }
+}
+
+/* Kiss trail text */
+.kiss-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-script);
+  font-size: clamp(22px, 5vw, 38px);
+  color: white;
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(255,80,120,0.8);
+  z-index: 10000;
+  pointer-events: none;
+  animation: kissTextIn 500ms cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes kissTextIn {
+  from { opacity: 0; transform: translate(-50%,-50%) scale(0.7); }
+  to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+}
+
+/* Ending overlay */
+.ending-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: linear-gradient(135deg, #1a0a20, #2a0a30, #1a1040);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 1200ms ease;
+}
+.ending-overlay:not([hidden]) { opacity: 1; }
+.ending-overlay[hidden] { display: none; }
+
+.ending-inner {
+  text-align: center;
+  position: relative;
+}
+.ending-hearts {
+  position: absolute;
+  inset: -100px;
+  pointer-events: none;
+}
+.ending-heart-piece {
+  position: absolute;
+  font-size: clamp(16px, 3vw, 28px);
+  animation: endingHeartFloat linear infinite;
+  opacity: 0;
+}
+@keyframes endingHeartFloat {
+  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-200px) scale(1.2) rotate(20deg); }
+}
+
+.ending-line1 {
+  font-family: var(--font-script);
+  font-size: clamp(36px, 8vw, 72px);
+  font-weight: 700;
+  color: white;
+  margin: 0 0 8px;
+  opacity: 0;
+  animation: endingWordIn 800ms cubic-bezier(.22,1,.36,1) 400ms forwards;
+  text-shadow: 0 0 40px rgba(255,150,180,0.6);
+}
+.ending-line2 {
+  font-family: var(--font-script);
+  font-size: clamp(42px, 10vw, 88px);
+  font-weight: 700;
+  color: #ff9eb5;
+  margin: 0 0 24px;
+  opacity: 0;
+  animation: endingWordIn 900ms cubic-bezier(.22,1,.36,1) 900ms forwards;
+  text-shadow: 0 0 60px rgba(255,100,150,0.7);
+}
+.ending-sub {
+  font-family: var(--font-body);
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: rgba(255,255,255,0.55);
+  opacity: 0;
+  animation: endingWordIn 700ms ease 1600ms forwards;
+  letter-spacing: 1px;
+}
+@keyframes endingWordIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

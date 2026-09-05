@@ -1063,6 +1063,101 @@ $$('[data-close]', videoModal).forEach(el => el.addEventListener('click', closeM
 // Stop propagation on the card so clicks inside don't close
 $('.modal-card', videoModal).addEventListener('click', (e) => e.stopPropagation());
 
+/* ---- PS + Kiss sequence ---- */
+const modalPs          = $('#modalPs');
+const modalKissSection = $('#modalKissSection');
+const kissBtn          = $('#kissBtn');
+const kissOverlay      = $('#kissOverlay');
+const endingOverlay    = $('#endingOverlay');
+let psShown = false;
+
+// Show PS after 4s of video playing
+revealVideo.addEventListener('timeupdate', () => {
+  if (!psShown && revealVideo.currentTime > 4) {
+    psShown = true;
+    if (modalPs) modalPs.hidden = false;
+    setTimeout(() => { if (modalKissSection) modalKissSection.hidden = false; }, 1500);
+  }
+});
+
+// Kiss button
+if (kissBtn) {
+  kissBtn.addEventListener('click', () => {
+    kissBtn.disabled = true;
+    kissBtn.style.opacity = '0.5';
+    launchKisses();
+  });
+}
+
+function launchKisses() {
+  if (!kissOverlay) return;
+  kissOverlay.hidden = false;
+
+  const txt = document.createElement('div');
+  txt.className = 'kiss-text';
+  txt.innerHTML = 'Kisses on the way to Australia 😝💋';
+  document.body.appendChild(txt);
+
+  const kisses = ['💋','💋','💕','💞','💗','💋','❤️','💋','💕','💋','💗','💋','💞','💋','💋','💋','💕','💗'];
+  kisses.forEach((k, i) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'flying-kiss';
+      el.textContent = k;
+      const startX = Math.random() * window.innerWidth * 0.6;
+      const startY = window.innerHeight * 0.3 + Math.random() * window.innerHeight * 0.4;
+      el.style.left = startX + 'px';
+      el.style.top  = startY + 'px';
+      const tx = (window.innerWidth  * 0.9 - startX) + Math.random() * 120;
+      const ty = -(startY + 150 + Math.random() * 400);
+      const dur = 1.6 + Math.random() * 1.4;
+      el.style.setProperty('--tx', tx + 'px');
+      el.style.setProperty('--ty', ty + 'px');
+      el.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
+      el.style.animationDuration = dur + 's';
+      el.style.animationDelay   = (Math.random() * 0.2) + 's';
+      kissOverlay.appendChild(el);
+      setTimeout(() => el.remove(), (dur + 0.5) * 1000);
+    }, i * 100);
+  });
+
+  setTimeout(() => {
+    txt.remove();
+    kissOverlay.hidden = true;
+    kissOverlay.innerHTML = '';
+    closeModal();
+    setTimeout(showEnding, 500);
+  }, 3800);
+}
+
+function showEnding() {
+  if (!endingOverlay) return;
+  endingOverlay.hidden = false;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    endingOverlay.style.opacity = '1';
+  }));
+  // Spawn floating hearts
+  const heartsEl = endingOverlay.querySelector('.ending-hearts');
+  if (heartsEl) {
+    ['💗','💕','💞','🧿','💋','💗','💞','💕','🤍','💗','💋','💕'].forEach((h, i) => {
+      const el = document.createElement('div');
+      el.className = 'ending-heart-piece';
+      el.textContent = h;
+      el.style.left   = (3 + Math.random() * 94) + '%';
+      el.style.bottom = (Math.random() * 15) + '%';
+      const dur = 3 + Math.random() * 4;
+      el.style.animationDuration = dur + 's';
+      el.style.animationDelay   = (i * 0.25) + 's';
+      heartsEl.appendChild(el);
+    });
+  }
+  // Tap to dismiss
+  endingOverlay.addEventListener('click', () => {
+    endingOverlay.style.opacity = '0';
+    setTimeout(() => { endingOverlay.hidden = true; }, 1200);
+  }, { once: true });
+}
+
 /* ============================================================
    9. Pause ambient audio when tab is hidden (battery friendly)
    ============================================================ */

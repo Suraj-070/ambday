@@ -87,46 +87,70 @@
 }
 /* Back wall (large, centered) */
 .br-wall-back {
-  width: 70%;
-  height: 70%;
-  left: 15%;
-  top: 8%;
-  transform: translateZ(-220px);
+  width: 72%;
+  height: 72%;
+  left: 14%;
+  top: 6%;
+  transform: translateZ(-200px);
   background:
-    radial-gradient(ellipse at 45% 35%, rgba(255,250,240,1) 0%, rgba(245,238,225,1) 45%, rgba(228,220,205,1) 100%);
-  box-shadow: inset 0 0 80px rgba(0,0,0,0.06), inset 0 -20px 40px rgba(0,0,0,0.05);
+    /* corner shadow AO */
+    radial-gradient(ellipse at 0% 0%, rgba(0,0,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(0,0,0,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.15) 0%, transparent 45%),
+    radial-gradient(ellipse at 100% 100%, rgba(0,0,0,0.12) 0%, transparent 45%),
+    /* warm centre — lamp glow */
+    radial-gradient(ellipse at 50% 20%, rgba(255,248,235,1) 0%, rgba(248,240,222,1) 35%, rgba(232,222,205,1) 70%, rgba(218,208,190,1) 100%);
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.08),
+    inset 0 -30px 60px rgba(0,0,0,0.06),
+    inset 30px 0 40px rgba(0,0,0,0.04),
+    inset -30px 0 40px rgba(0,0,0,0.04);
 }
 /* Side walls (slight perspective) */
 .br-wall-left {
   width: 32%;
-  height: 70%;
+  height: 72%;
   left: 0;
-  top: 8%;
+  top: 6%;
   transform-origin: left center;
-  transform: rotateY(70deg) translateZ(-100px);
-  background: linear-gradient(90deg, rgba(210,205,195,1), rgba(235,230,220,1));
-  opacity: 0.95;
+  transform: rotateY(68deg) translateZ(-80px);
+  background: linear-gradient(90deg,
+    rgba(185,178,165,1) 0%,
+    rgba(210,202,188,1) 30%,
+    rgba(228,220,205,1) 70%,
+    rgba(238,230,215,1) 100%);
+  box-shadow: inset -20px 0 40px rgba(0,0,0,0.12);
+  opacity: 1;
 }
 .br-wall-right {
   width: 32%;
-  height: 70%;
+  height: 72%;
   right: 0;
-  top: 8%;
+  top: 6%;
   transform-origin: right center;
-  transform: rotateY(-70deg) translateZ(-100px);
-  background: linear-gradient(270deg, rgba(210,205,195,1), rgba(235,230,220,1));
-  opacity: 0.95;
+  transform: rotateY(-68deg) translateZ(-80px);
+  background: linear-gradient(270deg,
+    rgba(185,178,165,1) 0%,
+    rgba(210,202,188,1) 30%,
+    rgba(228,220,205,1) 70%,
+    rgba(238,230,215,1) 100%);
+  box-shadow: inset 20px 0 40px rgba(0,0,0,0.12);
+  opacity: 1;
 }
 .br-ceiling {
   position: absolute;
-  width: 70%;
-  height: 32%;
-  left: 15%;
+  width: 72%;
+  height: 34%;
+  left: 14%;
   top: 0;
   transform-origin: center top;
-  transform: rotateX(60deg) translateZ(-30px);
-  background: linear-gradient(180deg, rgba(245,240,230,1) 0%, rgba(235,228,215,1) 100%);
-  opacity: 0.9;
+  transform: rotateX(62deg) translateZ(-20px);
+  background: linear-gradient(180deg,
+    rgba(252,248,240,1) 0%,
+    rgba(242,236,224,1) 50%,
+    rgba(228,220,208,1) 100%);
+  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.08);
+  opacity: 0.95;
 }
 .br-floor {
   position: absolute;
@@ -977,12 +1001,25 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  animation: brPlaceIn 500ms cubic-bezier(.22,1,.36,1) both;
+  animation: brPlaceIn 600ms cubic-bezier(.22,1,.36,1) both;
 }
 @keyframes brPlaceIn {
-  from { opacity: 0; transform: scale(0.6) translateY(-10px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  0%   { opacity:0; transform: scale(0.4) translateY(-30px) rotate(-4deg); filter: blur(4px); }
+  50%  { opacity:1; transform: scale(1.08) translateY(4px) rotate(1deg); filter: blur(0); }
+  70%  { transform: scale(0.96) translateY(-2px) rotate(-0.5deg); }
+  100% { opacity:1; transform: scale(1) translateY(0) rotate(0deg); }
 }
+/* Each placed decoration casts a soft shadow on the wall/floor */
+.br-placed.balloons  { filter: drop-shadow(8px 16px 12px rgba(0,0,0,0.35)); }
+.br-placed.flowers   { filter: drop-shadow(6px 12px 10px rgba(0,0,0,0.3)); }
+.br-placed.gift      { filter: drop-shadow(8px 14px 12px rgba(0,0,0,0.4)); }
+.br-placed.photo     { filter: drop-shadow(4px 10px 16px rgba(0,0,0,0.5)); }
+.br-placed.banner    { filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25)); }
+.br-placed.lights    { filter: drop-shadow(0 4px 12px rgba(255,200,80,0.4)); }
+.br-placed.heartwall { filter: drop-shadow(0 6px 14px rgba(200,100,120,0.35)); }
+.br-placed.polaroids { filter: drop-shadow(4px 10px 14px rgba(0,0,0,0.45)); }
+.br-placed.candles   { filter: drop-shadow(0 8px 16px rgba(255,180,80,0.4)); }
+.br-placed.confetti  { filter: drop-shadow(2px 6px 8px rgba(0,0,0,0.2)); }
 
 /* ---------- 16. Wish overlay ---------- */
 .br-wish {
@@ -1137,6 +1174,34 @@
 }
 
 /* ---------- 20. Reduced motion ---------- */
+
+/* ---- Room ambient occlusion — dark corners, warm centre ---- */
+.br-room::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background:
+    radial-gradient(ellipse at 50% 50%,
+      transparent 30%,
+      rgba(0,0,0,0.08) 60%,
+      rgba(0,0,0,0.22) 100%);
+  transition: opacity 1400ms ease;
+}
+.br-room.dark::after  { opacity: 0.4; }
+.br-room.dim::after   { opacity: 0.25; }
+.br-room.lit::after   { opacity: 1; }
+
+/* ---- Warm light pool on floor from lamp ---- */
+.br-floor::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 30%; right: 30%; height: 40%;
+  background: radial-gradient(ellipse, rgba(255,240,180,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .br-room { transition: none; filter: brightness(1); }
   .br-room.dark { filter: brightness(0.1); }
@@ -2093,4 +2158,101 @@
 @keyframes candleGlowPulse {
   0%,100% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 8px rgba(255,200,100,0.3)); }
   50%     { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 16px rgba(255,200,100,0.6)); }
+}
+
+/* ============================================================
+   BUTTERY UX UPGRADES
+   ============================================================ */
+
+/* Tray item hover — lift with shadow, satisfying press */
+.br-tray-item {
+  transition:
+    transform 250ms cubic-bezier(.22,1,.36,1),
+    background 200ms ease,
+    border-color 200ms ease,
+    box-shadow 250ms cubic-bezier(.22,1,.36,1);
+  will-change: transform;
+}
+.br-tray-item:hover:not(.used) {
+  transform: translateY(-6px) scale(1.06);
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.45);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.15);
+}
+.br-tray-item:active:not(.used) {
+  transform: scale(0.92) translateY(2px);
+  transition: transform 80ms ease;
+}
+
+/* Tray slide up entrance */
+.br-tray {
+  transition: opacity 450ms ease, transform 500ms cubic-bezier(.22,1,.36,1);
+  will-change: transform, opacity;
+}
+
+/* Zone flash on tap-to-place */
+.br-dropzone.tap-flash {
+  background: rgba(200,120,144,0.25) !important;
+  border-color: rgba(200,120,144,1) !important;
+  animation: tapFlash 350ms ease forwards !important;
+}
+@keyframes tapFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(200,120,144,0.8); }
+  50%  { box-shadow: 0 0 0 10px rgba(200,120,144,0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(200,120,144,0); }
+}
+
+/* Placed items have depth-correct scale based on zone position */
+/* Back wall items are smaller (further away) */
+.br-dropzone-photo .br-placed,
+.br-dropzone-heartwall .br-placed,
+.br-dropzone-banner .br-placed { transform-origin: center; }
+
+/* Side/floor items are larger (closer) */
+.br-dropzone-balloons .br-placed,
+.br-dropzone-flowers .br-placed,
+.br-dropzone-candles .br-placed,
+.br-dropzone-gift .br-placed { transform-origin: bottom center; }
+
+/* Room transition smoothness */
+.br-room {
+  will-change: filter;
+}
+.br-room.lit  { filter: brightness(1); }
+.br-room.dim  { filter: brightness(0.45); }
+.br-room.dark { filter: brightness(0.05); }
+
+/* Decoration entrance — staggered shadow build */
+.br-placed {
+  transition: filter 400ms ease;
+}
+
+/* Progress counter — pulse on increment */
+.br-tray-progress.updated {
+  animation: progressPop 400ms cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes progressPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.3); color: #fff; }
+  100% { transform: scale(1); }
+}
+
+/* Hint bar — better attention without being annoying */
+.br-tray-hint {
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin-top: 10px;
+  animation: hintGlow 2.5s ease-in-out infinite;
+}
+@keyframes hintGlow {
+  0%,100% { opacity: 0.5; background: rgba(255,255,255,0.04); }
+  50%     { opacity: 1;   background: rgba(255,255,255,0.1); }
+}
+
+/* Drag ghost — smooth follow */
+.br-drag-ghost {
+  transition: none;
+  will-change: transform, left, top;
+  pointer-events: none;
 }

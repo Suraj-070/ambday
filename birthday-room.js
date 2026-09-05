@@ -505,7 +505,12 @@ function hideTray() {
 /* Progress counter */
 function updateProgress() {
   const prog = $('#brTrayProgress');
-  if (prog) prog.textContent = placedDecorations.size + ' / ' + birthdayRoomConfig.requiredDecorations.length;
+  if (!prog) return;
+  prog.textContent = placedDecorations.size + ' / ' + birthdayRoomConfig.requiredDecorations.length;
+  prog.classList.remove('updated');
+  void prog.offsetWidth;
+  prog.classList.add('updated');
+  setTimeout(() => prog.classList.remove('updated'), 450);
 }
 
 /* Build tray items with emoji + label */
@@ -997,8 +1002,11 @@ trayItems.addEventListener('click', (e) => {
   const zone = document.querySelector('.br-dropzone[data-zone="' + kind + '"]');
   if (zone && !zone.classList.contains('filled')) {
     // Flash zone to show where it lands
-    zone.classList.add('active');
-    setTimeout(() => placeDecoration(kind, zone), 250);
+    zone.classList.add('active', 'tap-flash');
+    setTimeout(() => {
+      zone.classList.remove('tap-flash');
+      placeDecoration(kind, zone);
+    }, 280);
   }
 });
 

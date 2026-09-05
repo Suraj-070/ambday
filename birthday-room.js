@@ -345,10 +345,7 @@ function onStateChange(state) {
 
     case ST.ROOM_CLOSING:
       doors.classList.add('closing');
-      // Stop music and clear AudioManager.active
-      if (AudioManager && birthdayAudio) {
-        AudioManager.pause(birthdayAudio);
-      }
+      // Music already faded in LIGHTS_OFF_AGAIN
       later(() => {
         overlay.style.transition = 'opacity 800ms ease';
         overlay.style.opacity = '0';
@@ -1175,12 +1172,7 @@ function enableKnifeDrag() {
     knifeEl.style.transition = 'opacity 600ms ease';
     knifeEl.style.opacity = '0';
     setCaption("");
-    // Music fades out slowly
-    if (AudioManager && birthdayAudio) {
-      AudioManager.fadeTo(birthdayAudio, 0, 2500, () => {
-        AudioManager.pause(birthdayAudio);
-      });
-    }
+    // Music keeps playing — only fades when lights go off
     later(() => stopParticles(), 600);
     later(() => {
       room.classList.remove('lit');

@@ -368,6 +368,9 @@ const trackArtist     = $('#trackArtist');
 const trackNum        = $('#trackNum');
 const curTime         = $('#curTime');
 const durTime         = $('#durTime');
+const miniBar         = $('#miniBar');
+const miniTitle       = $('#miniTitle');
+const miniPlayBtn     = $('#miniPlayBtn');
 const scrubTrack      = $('#scrubTrack');
 const scrubFill       = $('#scrubFill');
 const scrubThumb      = $('#scrubThumb');
@@ -593,9 +596,6 @@ window.addEventListener('mousemove', (e) => { if (scrubbing) seekFromEvent(e); }
 window.addEventListener('mouseup',   () => { scrubbing = false; });
 
 /* ---- Mini floating bar ---- */
-const miniBar     = $('#miniBar');
-const miniTitle   = $('#miniTitle');
-const miniPlayBtn = $('#miniPlayBtn');
 
 function updateMiniBar() {
   if (!miniBar) return;

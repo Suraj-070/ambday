@@ -153,7 +153,34 @@
         <p class="player-note">playing this pauses the soft hum in the background — pick up where you left off when you're done ♡</p>
       </div>
 
+      <!-- Entry into the birthday room (replaces generic "keep scrolling" cue) -->
+      <button id="enterRoomBtn" class="enter-room-btn reveal" aria-label="Wait, there's one more thing">
+        <span class="enter-room-line">wait...</span>
+        <span class="enter-room-sub">there's one more thing</span>
+        <span class="enter-room-arrow" aria-hidden="true">↓</span>
+      </button>
+
       <div class="scroll-cue" aria-hidden="true">keep scrolling ↓</div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SCREEN 7.5 — INTERACTIVE BIRTHDAY ROOM                      -->
+  <!-- A self-contained cinematic experience. See birthday-room.js -->
+  <!-- and birthday-room.css. Built as an overlay that takes over  -->
+  <!-- the viewport, then cleans up and returns to normal scroll. -->
+  <!-- ========================================================== -->
+  <section class="page-snap page page-custom" id="birthday-room-screen" data-page="7b">
+    <div class="custom-bg room-bg"></div>
+    <div class="custom-inner">
+      <p class="room-intro reveal">there's a little room here, just for you.<br>wanna step inside?</p>
+      <button id="openRoomBtn" class="heart-btn reveal">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+          <path d="M12 21s-7-4.5-9.5-9C.8 8.7 2.5 5 6 5c2 0 3.4 1.2 4 2.5C10.6 6.2 12 5 14 5c3.5 0 5.2 3.7 3.5 7-2.5 4.5-9.5 9-9.5 9z"/>
+        </svg>
+        <span>step inside</span>
+      </button>
+      <p class="room-skip-hint reveal">or just keep scrolling — your call.</p>
     </div>
   </section>
 
@@ -213,6 +240,124 @@
 </main>
 
 <!-- ============================================================ -->
+<!-- INTERACTIVE BIRTHDAY ROOM — full-viewport overlay             -->
+<!-- Rendered as a fixed overlay so it can take over the screen    -->
+<!-- without disrupting scroll-snap. Cleans up on close.          -->
+<!-- ============================================================ -->
+<div id="birthdayRoom" class="br-overlay" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Birthday room">
+
+  <!-- Cinematic "wait..." transition veil -->
+  <div class="br-veil" id="brVeil" aria-hidden="true">
+    <p class="br-veil-text">wait... there's one more thing.</p>
+  </div>
+
+  <!-- The room itself -->
+  <div class="br-room" id="brRoom">
+
+    <!-- Walls + floor + ceiling -->
+    <div class="br-wall br-wall-back"></div>
+    <div class="br-wall br-wall-left"></div>
+    <div class="br-wall br-wall-right"></div>
+    <div class="br-ceiling"></div>
+    <div class="br-floor"></div>
+
+    <!-- Window with moonlight (visible even in the dark) -->
+    <div class="br-window" aria-hidden="true">
+      <div class="br-window-moon"></div>
+      <div class="br-window-frame"></div>
+      <div class="br-window-cross-h"></div>
+      <div class="br-window-cross-v"></div>
+    </div>
+
+    <!-- Light switch on the right wall -->
+    <button class="br-light-switch" id="brLightSwitch" aria-label="Turn on the lights" aria-pressed="false">
+      <span class="br-switch-plate"></span>
+      <span class="br-switch-toggle"></span>
+    </button>
+
+    <!-- Birthday banner (initially blank, fills in later) -->
+    <div class="br-banner" id="brBanner" aria-hidden="true">
+      <span class="br-banner-text"></span>
+    </div>
+
+    <!-- String/fairy lights along the top of the wall -->
+    <div class="br-string-lights" id="brStringLights" aria-hidden="true"></div>
+
+    <!-- Drop zones for decorations -->
+    <div class="br-dropzone br-dropzone-balloons" data-zone="balloons" aria-label="Balloon area"></div>
+    <div class="br-dropzone br-dropzone-flowers" data-zone="flowers" aria-label="Flower area"></div>
+    <div class="br-dropzone br-dropzone-photo"   data-zone="photo"   aria-label="Photo area"></div>
+    <div class="br-dropzone br-dropzone-gift"    data-zone="gift"    aria-label="Gift area"></div>
+    <!-- Banner drop zone (hovers over banner so banner decoration snaps the banner text in) -->
+    <div class="br-dropzone br-dropzone-banner" data-zone="banner" aria-label="Banner area"></div>
+
+    <!-- The table -->
+    <div class="br-table" id="brTable">
+      <div class="br-table-top"></div>
+      <div class="br-table-leg br-table-leg-l"></div>
+      <div class="br-table-leg br-table-leg-r"></div>
+    </div>
+
+    <!-- Cake — appears off-table, gets dragged on -->
+    <div class="br-cake" id="brCake" hidden aria-label="Birthday cake">
+      <div class="br-cake-plate"></div>
+      <div class="br-cake-layer br-cake-layer-bottom"></div>
+      <div class="br-cake-layer br-cake-layer-middle"></div>
+      <div class="br-cake-layer br-cake-layer-top"></div>
+      <div class="br-cake-frosting"></div>
+      <div class="br-cake-cherry"></div>
+      <div class="br-candle" id="brCandle" aria-label="Birthday candle">
+        <div class="br-candle-stick"></div>
+        <div class="br-candle-wick"></div>
+        <div class="br-candle-flame" id="brCandleFlame" aria-hidden="true"></div>
+        <div class="br-candle-glow" id="brCandleGlow" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Knife — appears when it's time to cut -->
+    <div class="br-knife" id="brKnife" hidden aria-label="Cake knife" role="button" tabindex="0">
+      <div class="br-knife-blade"></div>
+      <div class="br-knife-handle"></div>
+    </div>
+
+    <!-- Ambient floating particles (set during birthday music) -->
+    <div class="br-particles" id="brParticles" aria-hidden="true"></div>
+
+    <!-- Caption / instruction strip at the bottom -->
+    <div class="br-caption" id="brCaption" aria-live="polite">
+      <p class="br-caption-text">it's dark in here... maybe there's a light?</p>
+    </div>
+
+    <!-- Decoration tray (drag decorations from here into the room) -->
+    <div class="br-tray" id="brTray" hidden aria-hidden="false">
+      <div class="br-tray-label">drag these into the room</div>
+      <div class="br-tray-items" id="brTrayItems"></div>
+    </div>
+
+    <!-- The wish overlay (final birthday message) -->
+    <div class="br-wish" id="brWish" hidden aria-live="polite">
+      <div class="br-wish-inner">
+        <p class="br-wish-before">before we leave...</p>
+        <p class="br-wish-body" id="brWishBody"></p>
+        <p class="br-wish-sign">happy birthday ♡</p>
+        <p class="br-wish-cue" id="brWishCue">now close your eyes and make a wish...</p>
+        <button class="br-wish-blow" id="brBlowBtn">blow out the candle</button>
+      </div>
+    </div>
+
+    <!-- Closing doors -->
+    <div class="br-doors" id="brDoors" aria-hidden="true">
+      <div class="br-door br-door-left"></div>
+      <div class="br-door br-door-right"></div>
+      <p class="br-doors-msg" id="brDoorsMsg">see you in the next memory...</p>
+    </div>
+
+    <!-- Skip-room affordance (small, bottom-right) for accessibility -->
+    <button class="br-skip" id="brSkipBtn" aria-label="Skip the birthday room">skip</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
 <!-- VIDEO MODAL                                                   -->
 <!-- ============================================================ -->
 <div id="videoModal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalCaption">
@@ -222,18 +367,23 @@
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </button>
     <video id="revealVideo" class="modal-video" controls playsinline preload="metadata">
-      <source src="assets/video/kiss.mp4" type="video/mp4" />
+      <source src="assets/video/reveal.mp4" type="video/mp4" />
     </video>
     <p class="modal-caption" id="modalCaption">wanna do this for real soon 🤍</p>
   </div>
 </div>
 
-<!-- Hidden audio elements (ambient + playlist) -->
+<!-- Hidden audio elements (ambient + playlist + birthday song) -->
 <audio id="bgAudio" loop preload="none">
   <source src="assets/audio/ambient.mp3" type="audio/mpeg" />
 </audio>
 <audio id="trackAudio" preload="none"></audio>
+<audio id="birthdayAudio" loop preload="none">
+  <source src="assets/audio/birthday-song.mp3" type="audio/mpeg" />
+</audio>
 
+<link rel="stylesheet" href="birthday-room.css" />
 <script src="script.js"></script>
+<script src="birthday-room.js"></script>
 </body>
 </html>

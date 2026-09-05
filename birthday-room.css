@@ -1,0 +1,974 @@
+/* ============================================================
+   BIRTHDAY ROOM — styles
+   Extends the existing scrapbook aesthetic. Reuses tokens from
+   styles.css (:root variables, fonts, palette).
+   All classes are namespaced with .br-* to avoid collisions.
+   ============================================================ */
+
+/* ---------- 1. Overlay shell ---------- */
+.br-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;            /* above scrapbook (z:1), below video modal (z:200) */
+  background: #0a0d14;     /* dark base */
+  overflow: hidden;
+  touch-action: none;       /* prevent scroll while dragging in the room */
+}
+.br-overlay[hidden] { display: none; }
+
+/* ---------- 2. Cinematic "wait..." veil ---------- */
+.br-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #0a0d14 0%, #14182a 100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 800ms ease, visibility 800ms ease;
+}
+.br-veil.show {
+  opacity: 1;
+  visibility: visible;
+}
+.br-veil.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.br-veil-text {
+  font-family: var(--font-script);
+  font-size: clamp(26px, 5vw, 42px);
+  color: var(--paper);
+  text-align: center;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 800ms ease 200ms, transform 800ms cubic-bezier(.22,1,.36,1) 200ms;
+  padding: 0 24px;
+}
+.br-veil.show .br-veil-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 3. Room shell ---------- */
+.br-room {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  perspective: 900px;
+  perspective-origin: 50% 55%;
+  /* brightness modulated by .lit / .dim / .dark modifiers */
+  filter: brightness(0.06);
+  transition: filter 1400ms ease;
+}
+.br-room.lit   { filter: brightness(1); }
+.br-room.dim   { filter: brightness(0.55); }
+.br-room.dark  { filter: brightness(0.06); }
+
+/* ---------- 4. Walls, floor, ceiling ---------- */
+/* The room is a CSS 3D box opened toward the viewer. */
+.br-wall {
+  position: absolute;
+  /* warm cream wall colour when lit */
+  background:
+    linear-gradient(180deg, rgba(246, 242, 231, 1) 0%, rgba(232, 222, 198, 1) 100%);
+  box-shadow: inset 0 0 80px rgba(34, 64, 107, 0.15);
+}
+/* Back wall (large, centered) */
+.br-wall-back {
+  width: 70%;
+  height: 70%;
+  left: 15%;
+  top: 8%;
+  transform: translateZ(-220px);
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 245, 220, 1), rgba(232, 220, 198, 1) 70%, rgba(214, 200, 170, 1) 100%);
+}
+/* Side walls (slight perspective) */
+.br-wall-left {
+  width: 32%;
+  height: 70%;
+  left: 0;
+  top: 8%;
+  transform-origin: left center;
+  transform: rotateY(70deg) translateZ(-100px);
+  background: linear-gradient(90deg, rgba(214, 200, 170, 1), rgba(232, 222, 198, 1));
+  opacity: 0.92;
+}
+.br-wall-right {
+  width: 32%;
+  height: 70%;
+  right: 0;
+  top: 8%;
+  transform-origin: right center;
+  transform: rotateY(-70deg) translateZ(-100px);
+  background: linear-gradient(270deg, rgba(214, 200, 170, 1), rgba(232, 222, 198, 1));
+  opacity: 0.92;
+}
+.br-ceiling {
+  position: absolute;
+  width: 70%;
+  height: 32%;
+  left: 15%;
+  top: 0;
+  transform-origin: center top;
+  transform: rotateX(60deg) translateZ(-30px);
+  background: linear-gradient(180deg, rgba(232, 222, 198, 1), rgba(214, 200, 170, 1));
+  opacity: 0.8;
+}
+.br-floor {
+  position: absolute;
+  width: 100%;
+  height: 36%;
+  left: 0;
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotateX(-60deg) translateZ(0);
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(165, 120, 80, 0.85) 0 60px,
+      rgba(140, 100, 65, 0.85) 60px 62px,
+      rgba(180, 135, 95, 0.85) 62px 120px,
+      rgba(140, 100, 65, 0.85) 120px 122px);
+  box-shadow: inset 0 30px 50px -10px rgba(0,0,0,0.4);
+  opacity: 0.95;
+}
+
+/* ---------- 5. Window (with moonlight, visible in the dark) ---------- */
+.br-window {
+  position: absolute;
+  width: 22%;
+  height: 36%;
+  left: 22%;
+  top: 18%;
+  background: linear-gradient(180deg, #1a2540, #0a0d18);
+  border: 6px solid #6b4a2a;
+  border-radius: 6px 6px 0 0;
+  box-shadow:
+    0 0 0 2px rgba(0,0,0,0.4),
+    inset 0 0 30px rgba(20, 30, 60, 0.6);
+  overflow: hidden;
+}
+.br-window-moon {
+  position: absolute;
+  top: 16%; right: 18%;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #cdd6e8 60%, #8b9bb8 100%);
+  box-shadow: 0 0 30px 8px rgba(255, 250, 220, 0.5);
+  opacity: 0.85;
+}
+.br-window-frame,
+.br-window-cross-h,
+.br-window-cross-v {
+  position: absolute;
+  background: #6b4a2a;
+}
+.br-window-frame { inset: 0; border: 4px solid #6b4a2a; }
+.br-window-cross-h {
+  left: 0; right: 0; top: 50%;
+  height: 4px; transform: translateY(-50%);
+}
+.br-window-cross-v {
+  top: 0; bottom: 0; left: 50%;
+  width: 4px; transform: translateX(-50%);
+}
+/* Moonlight glow on the floor when room is dark */
+.br-room.dark .br-window {
+  box-shadow:
+    0 0 0 2px rgba(0,0,0,0.4),
+    inset 0 0 30px rgba(20, 30, 60, 0.6),
+    0 0 60px 10px rgba(255, 250, 220, 0.15);
+}
+
+/* ---------- 6. Light switch ---------- */
+.br-light-switch {
+  position: absolute;
+  right: 6%;
+  top: 28%;
+  z-index: 10;
+  width: 56px;
+  height: 88px;
+  display: block;
+  padding: 0;
+  background: transparent;
+}
+.br-switch-plate {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #f3ead5, #d8c9a8);
+  border: 2px solid #8a6d3b;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.15),
+    0 4px 10px -2px rgba(0,0,0,0.4);
+}
+.br-switch-toggle {
+  position: absolute;
+  left: 50%; top: 12px;
+  transform: translateX(-50%);
+  width: 30px; height: 40px;
+  background: linear-gradient(180deg, #fff8e8, #d8c9a8);
+  border: 1.5px solid #8a6d3b;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.6),
+    0 3px 6px -1px rgba(0,0,0,0.4);
+  transition: top 220ms cubic-bezier(.22,1,.36,1), transform 220ms ease;
+}
+.br-light-switch[aria-pressed="true"] .br-switch-toggle {
+  top: 36px;
+}
+.br-light-switch:hover .br-switch-plate {
+  background: linear-gradient(160deg, #fff5e0, #e0d0a8);
+}
+/* When room is dark, the switch plate is the brightest visible thing */
+.br-room.dark .br-switch-plate {
+  background: linear-gradient(160deg, #5a5246, #38322a);
+  border-color: #1a1612;
+  box-shadow: 0 0 16px 2px rgba(255, 240, 200, 0.18);
+}
+.br-room.dark .br-switch-toggle {
+  background: linear-gradient(180deg, #6a6256, #3a342a);
+  border-color: #1a1612;
+}
+
+/* ---------- 7. Birthday banner ---------- */
+.br-banner {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(60%, 540px);
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--coral), var(--brick));
+  border-radius: 8px;
+  box-shadow: 0 8px 22px -6px rgba(165, 51, 63, 0.5);
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-12px) scale(0.92);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(.22,1,.36,1);
+}
+.br-banner.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+.br-banner::before,
+.br-banner::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  width: 2px; height: 18px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.br-banner::before { left: 12px; }
+.br-banner::after  { right: 12px; }
+.br-banner-text {
+  display: block;
+  font-family: var(--font-script);
+  font-size: clamp(20px, 4vw, 32px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* ---------- 8. String/fairy lights ---------- */
+.br-string-lights {
+  position: absolute;
+  top: 12%;
+  left: 8%;
+  right: 8%;
+  height: 30px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1000ms ease;
+}
+.br-string-lights.on { opacity: 1; }
+.br-string-lights::before {
+  /* wire */
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 8px;
+  height: 1.5px;
+  background: rgba(60, 50, 40, 0.6);
+  border-radius: 1px;
+  transform: translateY(0);
+}
+.br-bulb {
+  position: absolute;
+  top: 8px;
+  width: 10px; height: 14px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: radial-gradient(circle at 50% 30%, #fff5b0, #f0c060 70%, #b07820);
+  box-shadow: 0 0 12px 4px rgba(255, 220, 120, 0.55);
+  transform: translate(-50%, 0);
+  animation: bulbTwinkle 3s ease-in-out infinite;
+}
+@keyframes bulbTwinkle {
+  0%, 100% { opacity: 0.9; box-shadow: 0 0 12px 4px rgba(255, 220, 120, 0.55); }
+  50%      { opacity: 0.6; box-shadow: 0 0 8px  2px rgba(255, 220, 120, 0.35); }
+}
+
+/* ---------- 9. Drop zones ---------- */
+.br-dropzone {
+  position: absolute;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+  transition: border-color 220ms ease, background 220ms ease;
+  z-index: 5;
+}
+.br-dropzone.active {
+  border-color: rgba(232, 131, 122, 0.7);
+  background: rgba(232, 131, 122, 0.08);
+}
+.br-dropzone.filled {
+  border-color: transparent;
+  background: transparent;
+}
+/* Zone positions (desktop) */
+.br-dropzone-balloons { left: 18%; top: 30%; width: 18%; height: 22%; }
+.br-dropzone-flowers  { right: 18%; top: 32%; width: 16%; height: 20%; }
+.br-dropzone-photo    { left: 40%; top: 20%; width: 16%; height: 22%; }
+.br-dropzone-gift     { left: 32%; top: 56%; width: 14%; height: 16%; }
+.br-dropzone-banner   { left: 20%; top: 12%; width: 60%; height: 16%; }
+
+/* ---------- 10. Table ---------- */
+.br-table {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  transform: translateX(-50%);
+  width: min(46%, 360px);
+  height: 90px;
+  z-index: 6;
+}
+.br-table-top {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 18px;
+  background: linear-gradient(180deg, #8a5a32, #6b4222);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    0 4px 10px -2px rgba(0,0,0,0.4);
+}
+.br-table-leg {
+  position: absolute;
+  top: 18px;
+  width: 10px;
+  height: 72px;
+  background: linear-gradient(180deg, #6b4222, #4a2c14);
+  border-radius: 2px;
+}
+.br-table-leg-l { left: 8%; }
+.br-table-leg-r { right: 8%; }
+
+/* Drop hint glow on table when cake is being dragged */
+.br-table.drop-target .br-table-top {
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    0 0 0 3px rgba(232, 131, 122, 0.6),
+    0 4px 10px -2px rgba(0,0,0,0.4);
+}
+
+/* ---------- 11. Cake ---------- */
+.br-cake {
+  position: absolute;
+  z-index: 12;
+  width: 110px;
+  height: 130px;
+  cursor: grab;
+  touch-action: none;
+  transition: transform 220ms cubic-bezier(.22,1,.36,1);
+}
+.br-cake.placed {
+  cursor: default;
+  transition: transform 600ms cubic-bezier(.22,1,.36,1);
+}
+.br-cake:active { cursor: grabbing; }
+.br-cake.snapping { transition: transform 600ms cubic-bezier(.22,1,.36,1); }
+
+.br-cake-plate {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 12px;
+  background: linear-gradient(180deg, #fff, #d8d8d8);
+  border-radius: 50%;
+  box-shadow: 0 4px 8px -2px rgba(0,0,0,0.4);
+}
+.br-cake-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: inset 0 -3px 6px rgba(0,0,0,0.15);
+}
+.br-cake-layer-bottom {
+  bottom: 10px;
+  width: 96px; height: 38px;
+  background: linear-gradient(180deg, #f6d8a8, #d8a868);
+}
+.br-cake-layer-middle {
+  bottom: 46px;
+  width: 78px; height: 30px;
+  background: linear-gradient(180deg, #f0c8b8, #d89888);
+}
+.br-cake-layer-top {
+  bottom: 74px;
+  width: 60px; height: 22px;
+  background: linear-gradient(180deg, #fff0e0, #f0c8b8);
+}
+.br-cake-frosting {
+  position: absolute;
+  left: 50%; bottom: 64px;
+  transform: translateX(-50%);
+  width: 78px; height: 12px;
+  background:
+    radial-gradient(circle at 20% 50%, #fff 6px, transparent 7px),
+    radial-gradient(circle at 50% 50%, #fff 6px, transparent 7px),
+    radial-gradient(circle at 80% 50%, #fff 6px, transparent 7px),
+    linear-gradient(180deg, #fff, #f0e0d0);
+  border-radius: 6px 6px 0 0;
+}
+.br-cake-cherry {
+  position: absolute;
+  left: 50%; bottom: 92px;
+  transform: translateX(-50%);
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8080, #c0333f);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+/* Candle */
+.br-candle {
+  position: absolute;
+  left: 50%; bottom: 96px;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 30px;
+  z-index: 2;
+}
+.br-candle-stick {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg,
+    #fff 0 4px, #f0c0c0 4px 8px);
+  border-radius: 2px;
+}
+.br-candle-wick {
+  position: absolute;
+  top: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px; height: 4px;
+  background: #2a2a2a;
+}
+.br-candle-flame {
+  position: absolute;
+  top: -22px; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 22px;
+  background: radial-gradient(ellipse at 50% 70%,
+    #fff 0%, #ffe080 30%, #ff9020 65%, #c04010 100%);
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transition: opacity 400ms ease;
+  filter: drop-shadow(0 0 8px rgba(255, 180, 80, 0.7));
+}
+.br-candle-flame.lit {
+  opacity: 1;
+  animation: candleFlicker 1.6s ease-in-out infinite;
+}
+@keyframes candleFlicker {
+  0%, 100% { transform: translateX(-50%) scale(1, 1) rotate(-1deg); }
+  25%      { transform: translateX(-50%) scale(0.95, 1.05) rotate(2deg); }
+  50%      { transform: translateX(-50%) scale(1.02, 0.96) rotate(-2deg); }
+  75%      { transform: translateX(-50%) scale(0.96, 1.03) rotate(1deg); }
+}
+.br-candle-glow {
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.35), transparent 70%);
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+}
+.br-candle-glow.lit { opacity: 1; }
+
+/* Smoke after candle is blown */
+.br-candle-smoke {
+  position: absolute;
+  top: -22px; left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 30px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(180, 180, 180, 0.5), transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.br-candle-smoke.rising {
+  animation: smokeRise 2200ms ease-out forwards;
+}
+@keyframes smokeRise {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+  20%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(-50%, -60px) scale(1.8); }
+}
+
+/* ---------- 12. Knife ---------- */
+.br-knife {
+  position: absolute;
+  z-index: 20;
+  width: 90px;
+  height: 24px;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 400ms ease;
+}
+.br-knife:active { cursor: grabbing; }
+.br-knife-blade {
+  position: absolute;
+  left: 0; top: 4px;
+  width: 60px; height: 14px;
+  background: linear-gradient(180deg, #f0f0f5, #b0b0c0);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.br-knife-handle {
+  position: absolute;
+  right: 0; top: 0;
+  width: 30px; height: 22px;
+  background: linear-gradient(180deg, #6b4222, #4a2c14);
+  border-radius: 4px;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.18);
+}
+
+/* Cake cut state — split visually */
+.br-cake.cut .br-cake-layer-bottom,
+.br-cake.cut .br-cake-layer-middle,
+.br-cake.cut .br-cake-layer-top {
+  background-image: linear-gradient(90deg, transparent 49%, rgba(0,0,0,0.35) 49% 51%, transparent 51%);
+}
+
+/* ---------- 13. Particles (during birthday music) ---------- */
+.br-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
+}
+.br-particle {
+  position: absolute;
+  width: 8px; height: 8px;
+  opacity: 0;
+  animation: brFloat 6s linear infinite;
+}
+@keyframes brFloat {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.9; }
+  90%  { opacity: 0.9; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Confetti burst (small, used when cake placed / candle lit).
+   Appended to .br-overlay (z-index 150). z-index 45 sits above the wish
+   overlay (40), caption (14), tray (15), knife (20) so confetti is visible
+   during celebration moments, but below the closing doors (50). */
+.br-confetti {
+  position: absolute;
+  width: 8px; height: 12px;
+  pointer-events: none;
+  z-index: 45;
+  animation: brConfetti 1400ms ease-out forwards;
+}
+@keyframes brConfetti {
+  0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate(var(--tx, 0), var(--ty, 100px)) rotate(540deg); }
+}
+
+/* ---------- 14. Caption strip ---------- */
+.br-caption {
+  position: absolute;
+  left: 50%; bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 14;
+  max-width: min(540px, 90%);
+  padding: 10px 18px;
+  background: rgba(20, 24, 38, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.br-caption.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.br-caption-text {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(16px, 2.4vw, 22px);
+  color: var(--paper);
+  letter-spacing: 0.3px;
+}
+
+/* ---------- 15. Decoration tray ---------- */
+.br-tray {
+  position: absolute;
+  left: 50%; bottom: 80px;
+  transform: translateX(-50%);
+  z-index: 15;
+  width: min(560px, 92%);
+  padding: 10px 14px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 14px 40px -10px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 500ms ease, transform 500ms cubic-bezier(.22,1,.36,1);
+}
+.br-tray.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.br-tray[hidden] { display: none; }
+.br-tray-label {
+  font-family: var(--font-script);
+  font-size: 14px;
+  color: var(--paper);
+  opacity: 0.75;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.br-tray-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.br-tray-item {
+  width: 50px; height: 50px;
+  display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  cursor: grab;
+  touch-action: none;
+  font-size: 26px;
+  user-select: none;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.br-tray-item:hover { transform: translateY(-2px); background: rgba(255,255,255,0.32); }
+.br-tray-item:active { cursor: grabbing; }
+.br-tray-item.used {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: grayscale(0.6);
+}
+.br-tray-item .br-emoji {
+  pointer-events: none;
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* Placed decoration ghost (lives in the room, not the tray) */
+.br-placed {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 7;
+  pointer-events: none;
+  user-select: none;
+  /* Centered on its zone; keyframes below scale around this origin */
+  transform: translate(-50%, -50%);
+  animation: brPlace 600ms cubic-bezier(.22,1,.36,1);
+}
+@keyframes brPlace {
+  0%   { transform: translate(-50%, -50%) scale(1.4) translateY(-10px); opacity: 0; }
+  60%  { transform: translate(-50%, -50%) scale(0.95) translateY(2px); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
+}
+.br-placed .br-emoji {
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1;
+}
+
+/* Floating balloon decoration */
+.br-placed.balloons .br-emoji { animation: brBob 3s ease-in-out infinite; }
+@keyframes brBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* ---------- 16. Wish overlay ---------- */
+.br-wish {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(ellipse at center, rgba(20, 16, 30, 0.85), rgba(8, 6, 12, 0.95));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1000ms ease, visibility 1000ms ease;
+}
+.br-wish.show { opacity: 1; visibility: visible; }
+.br-wish[hidden] { display: none; }
+.br-wish-inner {
+  width: min(560px, 100%);
+  text-align: center;
+  color: var(--paper);
+}
+.br-wish-before {
+  font-family: var(--font-script);
+  font-size: clamp(22px, 4vw, 30px);
+  color: var(--mustard);
+  margin: 0 0 18px;
+  opacity: 0;
+  animation: brFadeIn 800ms ease 200ms forwards;
+}
+.br-wish-body {
+  font-family: var(--font-script);
+  font-size: clamp(20px, 3.6vw, 26px);
+  line-height: 1.55;
+  color: var(--paper);
+  margin: 0 0 22px;
+  min-height: 4em;
+  white-space: pre-wrap;
+}
+.br-wish-body .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--coral);
+  vertical-align: text-bottom;
+  animation: brCursor 1s steps(2) infinite;
+}
+@keyframes brCursor { 50% { opacity: 0; } }
+.br-wish-sign {
+  font-family: var(--font-script);
+  font-size: clamp(26px, 5vw, 36px);
+  color: var(--coral);
+  margin: 0 0 28px;
+  opacity: 0;
+  animation: brFadeIn 800ms ease 400ms forwards;
+}
+@keyframes brFadeIn { to { opacity: 1; } }
+.br-wish-cue {
+  font-size: 14px;
+  color: var(--paper);
+  opacity: 0;
+  margin: 0 0 14px;
+  animation: brFadeIn 800ms ease 800ms forwards;
+}
+.br-wish-blow {
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--coral), var(--brick));
+  border-radius: 999px;
+  box-shadow: 0 10px 24px -8px rgba(232, 131, 122, 0.6);
+  opacity: 0;
+  animation: brFadeIn 800ms ease 1200ms forwards;
+  transition: transform 200ms ease;
+}
+.br-wish-blow:hover { transform: translateY(-2px); }
+.br-wish-blow[hidden] { display: none; }
+
+/* ---------- 17. Doors (room closing) ---------- */
+.br-doors {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.br-doors.closing { opacity: 1; }
+.br-door {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50.5%;
+  background:
+    linear-gradient(90deg, rgba(60, 40, 24, 1), rgba(40, 26, 14, 1)),
+    repeating-linear-gradient(0deg,
+      rgba(0,0,0,0.1) 0 4px,
+      transparent 4px 36px);
+  background-blend-mode: multiply;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
+  transition: transform 2400ms cubic-bezier(.6, 0, .4, 1);
+}
+.br-door-left  { left: -50.5%; }
+.br-door-right { right: -50.5%; }
+.br-doors.closing .br-door-left  { transform: translateX(50.5vw); }
+.br-doors.closing .br-door-right { transform: translateX(-50.5vw); }
+.br-doors-msg {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-script);
+  font-size: clamp(22px, 4vw, 32px);
+  color: var(--paper);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1000ms ease 800ms;
+}
+.br-doors.closing .br-doors-msg { opacity: 0.9; }
+
+/* ---------- 18. Skip button ---------- */
+.br-skip {
+  position: absolute;
+  right: 14px; bottom: 14px;
+  z-index: 60;
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  opacity: 0.5;
+  transition: opacity 200ms ease, background 200ms ease;
+}
+.br-skip:hover { opacity: 1; background: rgba(255,255,255,0.22); }
+
+/* ---------- 19. Dragging ghost (the floating copy being dragged) ---------- */
+.br-drag-ghost {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+}
+.br-drag-ghost .br-emoji {
+  font-size: 36px;
+  line-height: 1;
+}
+
+/* ---------- 20. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .br-room { transition: none; filter: brightness(1); }
+  .br-room.dark { filter: brightness(0.1); }
+  .br-candle-flame.lit { animation: none; }
+  .br-bulb { animation: none; }
+  .br-particle { animation: none; opacity: 0.5; }
+  .br-placed { animation: none; }
+  .br-string-lights { transition: none; }
+  .br-veil { transition: opacity 200ms ease; }
+  .br-doors .br-door { transition: transform 600ms ease; }
+  .br-wish-body .cursor { animation: none; }
+}
+
+/* ---------- 21. Responsive ---------- */
+/* Tablet */
+@media (max-width: 900px) {
+  .br-wall-back   { width: 80%; left: 10%; }
+  .br-wall-left,
+  .br-wall-right   { width: 22%; }
+  .br-light-switch { right: 4%; top: 24%; width: 48px; height: 76px; }
+  .br-switch-toggle { width: 26px; height: 34px; }
+  .br-dropzone-balloons { left: 10%; }
+  .br-dropzone-flowers  { right: 10%; }
+  .br-dropzone-gift     { left: 28%; }
+  .br-table { width: 60%; }
+}
+
+/* Phone */
+@media (max-width: 540px) {
+  .br-room { perspective: 600px; }
+  .br-wall-back   { width: 100%; left: 0; height: 80%; top: 5%; }
+  .br-wall-left,
+  .br-wall-right  { display: none; }
+  .br-ceiling     { width: 100%; left: 0; height: 18%; }
+  .br-floor       { height: 28%; }
+
+  .br-window {
+    width: 32%; height: 24%;
+    left: 8%; top: 14%;
+  }
+  .br-window-moon { width: 28px; height: 28px; }
+
+  .br-light-switch {
+    right: 10px; top: 18%;
+    width: 44px; height: 70px;
+  }
+  .br-switch-toggle { width: 22px; height: 28px; }
+
+  .br-banner { width: 84%; top: 6%; padding: 10px 14px; }
+
+  .br-string-lights { left: 4%; right: 4%; }
+
+  .br-dropzone-balloons { left: 6%;  top: 30%; width: 24%; height: 18%; }
+  .br-dropzone-flowers  { right: 6%; top: 32%; width: 22%; height: 18%; }
+  .br-dropzone-photo    { left: 38%; top: 14%; width: 24%; height: 16%; }
+  .br-dropzone-gift     { left: 38%; top: 60%; width: 24%; height: 14%; }
+  .br-dropzone-banner   { left: 8%; top: 4%;  width: 84%; height: 14%; }
+
+  .br-table {
+    width: 70%;
+    bottom: 18%;
+    height: 70px;
+  }
+  .br-table-top { height: 14px; }
+  .br-table-leg { height: 56px; }
+
+  .br-cake { width: 90px; height: 110px; }
+  .br-cake-plate { width: 90px; height: 10px; }
+  .br-cake-layer-bottom { width: 78px; height: 32px; bottom: 8px; }
+  .br-cake-layer-middle { width: 64px; height: 26px; bottom: 38px; }
+  .br-cake-layer-top    { width: 50px; height: 18px; bottom: 62px; }
+  .br-cake-frosting { width: 64px; bottom: 52px; }
+  .br-cake-cherry   { bottom: 78px; }
+  .br-candle        { bottom: 80px; height: 24px; }
+  .br-candle-flame  { top: -18px; width: 12px; height: 18px; }
+
+  .br-tray {
+    bottom: 12px;
+    width: 96%;
+    padding: 8px 10px 10px;
+  }
+  .br-tray-item { width: 42px; height: 42px; }
+  .br-tray-item .br-emoji,
+  .br-drag-ghost .br-emoji { font-size: 22px; }
+
+  .br-caption {
+    bottom: 80px;
+    max-width: 92%;
+    padding: 8px 14px;
+  }
+
+  .br-knife { width: 72px; height: 20px; }
+  .br-knife-blade { width: 48px; height: 12px; }
+  .br-knife-handle { width: 24px; height: 18px; }
+
+  .br-wish-inner { padding: 0 8px; }
+
+  .br-skip { right: 8px; bottom: 8px; }
+}
+
+/* Very small phones — make sure decorations are big enough to tap */
+@media (max-width: 380px) {
+  .br-tray-item { width: 38px; height: 38px; }
+  .br-tray-item .br-emoji { font-size: 20px; }
+  .br-caption-text { font-size: 16px; }
+}

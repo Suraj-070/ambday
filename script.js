@@ -9,6 +9,11 @@ const PRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $  = (s, ctx = document) => ctx.querySelector(s);
 const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
 
+/* Expose to other scripts (e.g. birthday-room.js) loaded after this one.
+   These remain private to this IIFE for backwards compatibility but are
+   also reachable via window.AMB for new modules that want to reuse them. */
+window.AMB = { AudioManager: null, PRM, $, $$, getScrapbook: () => $('#scrapbook') };
+
 /* ============================================================
    1. AudioManager — singleton so only one audio is ever audible
    ============================================================ */
@@ -16,6 +21,7 @@ const AudioManager = {
   active: null,
   muted: false,
   prevVolume: 1,
+  _fadeAnims: new Map(), // el -> animationFrameId, so we can cancel overlapping fades
 
   play(el) {
     if (this.active && this.active !== el) {
@@ -36,6 +42,59 @@ const AudioManager = {
     this.muted = !this.muted;
     if (this.active) this.active.muted = this.muted;
     return this.muted;
+  },
+
+  /* ---- New: fade helpers (used by the birthday room) ----
+     These gracefully fade volume while preserving the original volume target.
+     They don't break existing code because nothing else calls them. */
+  _cancelFade(el) {
+    if (this._fadeAnims.has(el)) {
+      cancelAnimationFrame(this._fadeAnims.get(el));
+      this._fadeAnims.delete(el);
+    }
+  },
+
+  /* Fade `el` to `targetVol` over `ms` milliseconds. Optionally call `onDone`. */
+  fadeTo(el, targetVol, ms = 600, onDone) {
+    if (!el) return;
+    if (PRM) {
+      // Reduced motion: instant
+      el.volume = targetVol;
+      if (onDone) onDone();
+      return;
+    }
+    this._cancelFade(el);
+    const startVol = el.volume;
+    const target = Math.max(0, Math.min(1, targetVol));
+    if (startVol === target) { if (onDone) onDone(); return; }
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / ms);
+      // easeInOutQuad
+      const e = t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t;
+      el.volume = startVol + (target - startVol) * e;
+      if (t < 1) {
+        this._fadeAnims.set(el, requestAnimationFrame(step));
+      } else {
+        this._fadeAnims.delete(el);
+        el.volume = target;
+        if (onDone) onDone();
+      }
+    };
+    this._fadeAnims.set(el, requestAnimationFrame(step));
+  },
+
+  /* Crossfade from `fromEl` to `toEl` over `ms`. Plays `toEl` then fades. */
+  crossfade(fromEl, toEl, ms = 800) {
+    if (!toEl) return;
+    if (fromEl && fromEl !== toEl) {
+      this.fadeTo(fromEl, 0, ms, () => {
+        try { fromEl.pause(); } catch(e) {}
+      });
+    }
+    toEl.volume = 0;
+    this.play(toEl);
+    this.fadeTo(toEl, this.muted ? 0 : 0.7, ms);
   }
 };
 
@@ -676,5 +735,9 @@ const customObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.01 });
 $$('.page-custom').forEach(s => customObserver.observe(s));
+
+/* Expose AudioManager so birthday-room.js (loaded after this file)
+   can reuse the same singleton — keeping "only one audio audible" rule. */
+window.AMB.AudioManager = AudioManager;
 
 })();

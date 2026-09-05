@@ -640,20 +640,22 @@
 /* ---------- 14. Caption strip ---------- */
 .br-caption {
   position: absolute;
-  left: 50%; bottom: 24px;
+  left: 50%; bottom: 80px;
   transform: translateX(-50%);
-  z-index: 14;
+  z-index: 160;
   max-width: min(540px, 90%);
-  padding: 10px 18px;
-  background: rgba(20, 24, 38, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 12px 22px;
+  background: rgba(10, 8, 20, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   text-align: center;
   opacity: 0;
   transform: translateX(-50%) translateY(8px);
   transition: opacity 600ms ease, transform 600ms ease;
+  /* Always full brightness — outside .br-room so not affected by dark filter */
+  box-shadow: 0 0 30px rgba(255,200,100,0.15), 0 4px 20px rgba(0,0,0,0.5);
 }
 .br-caption.show {
   opacity: 1;
@@ -663,8 +665,9 @@
   margin: 0;
   font-family: var(--font-script);
   font-size: clamp(16px, 2.4vw, 22px);
-  color: var(--paper);
+  color: #fff;
   letter-spacing: 0.3px;
+  text-shadow: 0 0 20px rgba(255,200,100,0.6), 0 2px 8px rgba(0,0,0,0.8);
 }
 
 /* ---------- 15. Decoration tray ---------- */

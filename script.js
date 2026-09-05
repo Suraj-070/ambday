@@ -217,9 +217,8 @@ lockInput.addEventListener('input', () => {
   }
 });
 
-/* PIN always required — session skip removed */ else {
-  focusLockInput();
-}
+/* PIN always required — session skip removed */
+focusLockInput();
 
 /* ============================================================
    3. Sound toggle (persistent)

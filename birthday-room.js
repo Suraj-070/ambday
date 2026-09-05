@@ -35,7 +35,7 @@ const birthdayRoomConfig = {
 
   /* Decorations the user must place to complete the room.
      Each key matches a data-zone attribute on a .br-dropzone element. */
-  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles'],
+  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles', 'balloons2'],
 
   /* Decoration tray items (in display order).
      `kind` matches a zone; `emoji` is the visual. */
@@ -50,6 +50,7 @@ const birthdayRoomConfig = {
     { kind: 'heartwall', emoji: '💝', label: 'Heart Wall' },
     { kind: 'polaroids', emoji: '📸', label: 'Polaroids' },
     { kind: 'candles',   emoji: '🕯️', label: 'Candles'   },
+    { kind: 'balloons2', emoji: '🎈', label: 'More Balloons' },
   ],
 
   /* Photo to show in the frame — replace with Amisha's Cloudinary URL */
@@ -915,6 +916,33 @@ function getDecorationHTML(kind) {
               <stop offset="40%" stop-color="rgba(255,255,255,0.15)"/>
               <stop offset="100%" stop-color="rgba(0,0,0,0.06)"/>
             </linearGradient>
+          </defs>
+        </svg>
+      </div>`;
+
+    case 'balloons2': return `
+      <div class="dec-balloons">
+        <svg viewBox="0 0 130 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <ellipse cx="38" cy="60" rx="30" ry="36" fill="#90B0F0"/>
+          <ellipse cx="38" cy="60" rx="30" ry="36" fill="url(#bl2L)" opacity="0.7"/>
+          <ellipse cx="26" cy="44" rx="10" ry="7" fill="rgba(255,255,255,0.4)" transform="rotate(-20,26,44)"/>
+          <path d="M38 96 Q35 108 32 114 Q38 110 44 114 Q41 108 38 96" fill="#90B0F0"/>
+          <path d="M38 115 Q50 145 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <ellipse cx="65" cy="50" rx="36" ry="42" fill="#7090D0"/>
+          <ellipse cx="65" cy="50" rx="36" ry="42" fill="url(#bl2M)" opacity="0.7"/>
+          <ellipse cx="50" cy="32" rx="12" ry="8" fill="rgba(255,255,255,0.4)" transform="rotate(-20,50,32)"/>
+          <path d="M65 92 Q62 106 59 114 Q65 110 71 114 Q68 106 65 92" fill="#7090D0"/>
+          <path d="M65 115 Q65 150 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <ellipse cx="96" cy="62" rx="28" ry="34" fill="#B0D0F0"/>
+          <ellipse cx="96" cy="62" rx="28" ry="34" fill="url(#bl2R)" opacity="0.7"/>
+          <ellipse cx="84" cy="47" rx="9" ry="6" fill="rgba(255,255,255,0.4)" transform="rotate(-20,84,47)"/>
+          <path d="M96 96 Q93 108 90 114 Q96 110 102 114 Q99 108 96 96" fill="#B0D0F0"/>
+          <path d="M96 115 Q85 148 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <circle cx="65" cy="193" r="4" fill="#999"/>
+          <defs>
+            <radialGradient id="bl2L" cx="35%" cy="35%"><stop offset="0%" stop-color="rgba(255,255,255,0.3)"/><stop offset="100%" stop-color="rgba(0,0,0,0.15)"/></radialGradient>
+            <radialGradient id="bl2M" cx="35%" cy="35%"><stop offset="0%" stop-color="rgba(255,255,255,0.3)"/><stop offset="100%" stop-color="rgba(0,0,0,0.15)"/></radialGradient>
+            <radialGradient id="bl2R" cx="35%" cy="35%"><stop offset="0%" stop-color="rgba(255,255,255,0.3)"/><stop offset="100%" stop-color="rgba(0,0,0,0.15)"/></radialGradient>
           </defs>
         </svg>
       </div>`;

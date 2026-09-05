@@ -1522,7 +1522,7 @@
 /* Rug */
 .br-rug {
   position: absolute;
-  bottom: 24%;
+  bottom: 22%;
   left: 50%;
   transform: translateX(-50%) perspective(200px) rotateX(25deg);
   width: 46%;
@@ -2293,8 +2293,8 @@
 
 /* Balloons — left side, floor to mid height */
 .br-dropzone-balloons {
-  left: 1%; top: 30%;
-  width: 16%; height: 52%;
+  left: 0%; top: 20%;
+  width: 14%; height: 60%;
 }
 
 /* Flowers — right side floor corner */
@@ -2311,14 +2311,14 @@
 
 /* Table candles — left of center on floor */
 .br-dropzone-candles {
-  left: 4%; top: 50%;
-  width: 16%; height: 30%;
+  left: 28%; top: 55%;
+  width: 16%; height: 28%;
 }
 
 /* Confetti — top right corner, ceiling area */
 .br-dropzone-confetti {
-  right: 2%; top: 8%;
-  width: 12%; height: 28%;
+  left: 1%; top: 6%;
+  width: 14%; height: 22%;
 }
 
 /* ── RESPONSIVE ADJUSTMENTS ── */
@@ -2481,3 +2481,17 @@
   0%,100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0.85; }
   50%     { transform: translateX(-50%) translateY(-10px) scale(1.15); opacity: 1; }
 }
+
+/* Right side balloons zone */
+.br-dropzone-balloons2 {
+  right: 0%; top: 20%;
+  width: 14%; height: 60%;
+}
+
+/* Table must be above rug and decorations on floor */
+.br-table { z-index: 10 !important; }
+.br-rug   { z-index: 3 !important; }
+
+/* Characters v3 — facing each other */
+.br-char-boy svg  { width: clamp(62px, 10vw, 90px); height: auto; }
+.br-char-girl svg { width: clamp(56px, 9vw, 80px);  height: auto; }

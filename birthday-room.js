@@ -1288,15 +1288,24 @@ function closeRoomCleanup() {
   // Mark complete
   birthdayRoomState.roomClosed = true;
   setState(ST.ROOM_COMPLETE);
-  // Restart ambient audio (now that birthday song is done and active is null)
   tryRestartAmbient();
-  // Scroll to the next section (the puzzle)
+
+  // Collapse the room section so no empty space before puzzle
   const roomSection = $('#birthday-room-screen');
   if (roomSection) {
-    let next = roomSection.nextElementSibling;
-    while (next && !next.classList.contains('page-snap')) next = next.nextElementSibling;
-    if (next) next.scrollIntoView({ behavior: PRM ? 'auto' : 'smooth', block: 'start' });
+    roomSection.style.transition = 'min-height 600ms ease, height 600ms ease, opacity 600ms ease';
+    roomSection.style.minHeight  = '0';
+    roomSection.style.height     = '0';
+    roomSection.style.overflow   = 'hidden';
+    roomSection.style.opacity    = '0';
+    roomSection.style.padding    = '0';
   }
+
+  // Scroll to puzzle after collapse
+  setTimeout(() => {
+    const puzzleSection = $('#puzzle-screen');
+    if (puzzleSection) puzzleSection.scrollIntoView({ behavior: PRM ? 'auto' : 'smooth', block: 'start' });
+  }, 700);
 }
 
 /* Skip button — immediately close the room */

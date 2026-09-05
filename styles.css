@@ -569,12 +569,22 @@ button {
 .ctrl-btn:active { transform: scale(0.95); }
 .ctrl-btn.ctrl-play {
   width: 64px; height: 64px;
+  min-width: 64px; min-height: 64px;
   opacity: 1;
   color: #fff;
   background: linear-gradient(135deg, var(--coral), var(--brick));
   box-shadow: 0 10px 28px -8px rgba(200,120,144,0.65);
   transition: transform 180ms ease, box-shadow 180ms ease;
+  position: relative;
+  overflow: hidden;
 }
+/* All icons inside play btn absolutely centered — prevents stacking */
+.ctrl-btn.ctrl-play svg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ctrl-btn.ctrl-play svg[hidden] { display: none; }
 .ctrl-btn.ctrl-play:hover { transform: scale(1.06); box-shadow: 0 14px 32px -8px rgba(200,120,144,0.8); }
 .ctrl-btn.ctrl-play:active { transform: scale(0.97); }
 .ctrl-btn.ctrl-play.loading { animation: spinnerPulse 1s ease-in-out infinite; }

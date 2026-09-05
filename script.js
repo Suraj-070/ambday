@@ -23,14 +23,14 @@ const AudioManager = {
   prevVolume: 1,
   _fadeAnims: new Map(), // el -> animationFrameId, so we can cancel overlapping fades
 
-  play(el) {
+  play(el, onError) {
     if (this.active && this.active !== el) {
       try { this.active.pause(); } catch(e) {}
     }
     this.active = el;
     el.muted = this.muted;
     const p = el.play();
-    if (p && p.catch) p.catch(() => {/* autoplay may still be blocked */});
+    if (p && p.catch) p.catch((err) => { if (onError) onError(err); });
   },
 
   pause(el) {
@@ -307,7 +307,7 @@ const playlist = [
   {
     title: "Ishq Wala Love",
     artist: "Neeti Mohan · Salim Merchant",
-    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597847/Ishq_Wala_Love_4K_Alia_Bhatt_Sidharth_Malhotra_Varun_Dhawan_Neeti_Mohan_Salim_Merchant_mjizs6.mp4",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597847/Ishq_Wala_Love_4K_Alia_Bhatt_Sidharth_Malhotra_Varun_Dhawan_Neeti_Mohan_Salim_Merchant_mjizs6.mp3",
     caption: "this is the kind of love i mean when i say i love you. not just the butterflies kind. the real kind. the one that stays quiet and warm and doesn't need to prove itself."
   },
   {
@@ -319,7 +319,7 @@ const playlist = [
   {
     title: "Treat You Better",
     artist: "Shawn Mendes",
-    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Shawn_Mendes_-_Treat_You_Better_Lyrics_mzeeff.mp4",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Shawn_Mendes_-_Treat_You_Better_Lyrics_mzeeff.mp3",
     caption: "i will always choose to treat you better. on the days i fall short — and i know i do — just know that's the one thing i'm always trying hardest at. you deserve every good thing."
   },
   {
@@ -331,13 +331,13 @@ const playlist = [
   {
     title: "Timi Sangai",
     artist: "Apurva Tamang",
-    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597839/Timi_Sangai_-_Apurva_Tamang_Official_MV_hoqlte.mp4",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597839/Timi_Sangai_-_Apurva_Tamang_Official_MV_hoqlte.mp3",
     caption: "timi sangai — with you. that's all i want. not grand adventures. just the ordinary days, the quiet evenings, the small laughs. all of it. with you."
   },
   {
     title: "Lover (Remix)",
     artist: "Taylor Swift ft. Shawn Mendes",
-    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597824/Taylor_Swift_-_Lover_Remix_Feat._Shawn_Mendes_Lyric_Video_tk2ich.mp4",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597824/Taylor_Swift_-_Lover_Remix_Feat._Shawn_Mendes_Lyric_Video_tk2ich.mp3",
     caption: "can i be your lover? your best friend? the one you call first? the one who stays? yes. that's the whole thing. i just want to be yours — completely, quietly, fully."
   },
   {
@@ -349,7 +349,7 @@ const playlist = [
   {
     title: "There's Nothing Holdin' Me Back",
     artist: "Shawn Mendes",
-    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597816/Shawn_Mendes_-_There_s_Nothing_Holdin_Me_Back_Official_Music_Video_mlh8ii.mp4",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597816/Shawn_Mendes_-_There_s_Nothing_Holdin_Me_Back_Official_Music_Video_mlh8ii.mp3",
     caption: "nothing holds me back when it comes to you. no fear, no distance, no bad day. i'd run through all of it just to get back to you. every single time."
   },
 ];
@@ -452,13 +452,13 @@ function setPlayingUI(isPlaying) {
   const iPause = playBtn && playBtn.querySelector('.icon-pause');
   const iLoad  = playBtn && playBtn.querySelector('.icon-loading');
   if (iPlay && iPause && iLoad) {
-    iPlay.hidden  = isPlaying || isLoading;
-    iPause.hidden = !isPlaying || isLoading;
+    iPlay.hidden  = isLoading || isPlaying;
+    iPause.hidden = isLoading || !isPlaying;
     iLoad.hidden  = !isLoading;
   }
   if (playBtn) playBtn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
   if (playBtn) playBtn.classList.toggle('loading', isLoading);
-  if (playerCard) playerCard.classList.toggle('playing', isPlaying);
+  if (playerCard) playerCard.classList.toggle('playing', isPlaying && !isLoading);
   updateMiniBar();
   checkMiniBar();
 }
@@ -468,18 +468,32 @@ function setLoadingUI(loading) {
   isLoading = loading;
   if (playerLoading) playerLoading.hidden = !loading;
   const playerScrub = $('#playerScrub');
-  if (playerScrub) playerScrub.style.opacity = loading ? '0.4' : '1';
-  setPlayingUI(!trackAudio.paused);
+  if (playerScrub) playerScrub.style.opacity = loading ? '0.5' : '1';
+  // show loading icon in play button, don't change playing state
+  const iPlay  = playBtn && playBtn.querySelector('.icon-play');
+  const iPause = playBtn && playBtn.querySelector('.icon-pause');
+  const iLoad  = playBtn && playBtn.querySelector('.icon-loading');
+  if (iPlay && iPause && iLoad) {
+    iPlay.hidden  = loading;
+    iPause.hidden = loading;
+    iLoad.hidden  = !loading;
+  }
+  if (playBtn) playBtn.classList.toggle('loading', loading);
 }
 
 /* ---- Play / Pause ---- */
 function playTrack() {
   if (!playlist.length) return;
   setLoadingUI(true);
-  AudioManager.play(trackAudio);
+  AudioManager.play(trackAudio, (err) => {
+    console.warn('Audio play error:', err);
+    setLoadingUI(false);
+    setPlayingUI(false);
+  });
 }
 function pauseTrack() {
   AudioManager.pause(trackAudio);
+  setLoadingUI(false);
   setPlayingUI(false);
   checkMiniBar();
 }

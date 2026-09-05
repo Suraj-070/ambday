@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#F6F2E7" />
+<title>for you ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SCREEN 0 — LOCK SCREEN                                        -->
+<!-- ============================================================ -->
+<section id="lock-screen" class="lock-screen" aria-label="Locked">
+  <div class="lock-card" id="lockCard">
+    <div class="lock-heart" id="lockHeart" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7-4.5-9.5-9C.8 8.7 2.5 5 6 5c2 0 3.4 1.2 4 2.5C10.6 6.2 12 5 14 5c3.5 0 5.2 3.7 3.5 7-2.5 4.5-9.5 9-9.5 9z"/>
+      </svg>
+    </div>
+    <h1 class="lock-title">for you</h1>
+    <p class="lock-sub">type in our number</p>
+    <input
+      type="password"
+      id="lockInput"
+      class="lock-input"
+      inputmode="numeric"
+      autocomplete="off"
+      pattern="[0-9]*"
+      maxlength="4"
+      aria-label="4-digit code"
+    />
+    <button id="unlockBtn" class="unlock-btn">unlock</button>
+    <p class="lock-hint">hint: the one we always laugh about</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PERSISTENT — SOUND TOGGLE + DAYS-SINCE WIDGET               -->
+<!-- ============================================================ -->
+<button id="soundToggle" class="sound-toggle" aria-label="Toggle sound" aria-pressed="true" hidden>
+  <svg class="icon-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+    <path d="M16 8a5 5 0 0 1 0 8"/>
+    <path d="M19 5a9 9 0 0 1 0 14"/>
+  </svg>
+  <svg class="icon-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+    <line x1="22" y1="9" x2="16" y2="15"/>
+    <line x1="16" y1="9" x2="22" y2="15"/>
+  </svg>
+</button>
+
+<div id="daysWidget" class="days-widget" hidden aria-live="polite">
+  <span class="days-num" id="daysNum">—</span>
+  <span class="days-label">days with you</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- MAIN SCROLL CONTAINER                                         -->
+<!-- ============================================================ -->
+<main id="scrapbook" class="scrapbook" aria-hidden="true">
+
+  <!-- ========================================================== -->
+  <!-- SCREENS 1–6 — SCRAPBOOK PAGES (render the actual PNGs)    -->
+  <!-- Each page: full-bleed <img> + blurred glassmorphism fill   -->
+  <!-- ========================================================== -->
+  <section class="page-snap page" data-page="1">
+    <div class="page-fill" style="background-image:url('assets/images/1.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/1.png" alt="scrapbook page 1" loading="eager" />
+  </section>
+
+  <section class="page-snap page" data-page="2">
+    <div class="page-fill" style="background-image:url('assets/images/2.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/2.png" alt="scrapbook page 2" loading="lazy" />
+  </section>
+
+  <section class="page-snap page" data-page="3">
+    <div class="page-fill" style="background-image:url('assets/images/3.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/3.png" alt="scrapbook page 3" loading="lazy" />
+  </section>
+
+  <section class="page-snap page" data-page="4">
+    <div class="page-fill" style="background-image:url('assets/images/4.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/4.png" alt="scrapbook page 4" loading="lazy" />
+  </section>
+
+  <section class="page-snap page" data-page="5">
+    <div class="page-fill" style="background-image:url('assets/images/5.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/5.png" alt="scrapbook page 5" loading="lazy" />
+  </section>
+
+  <section class="page-snap page" data-page="6">
+    <div class="page-fill" style="background-image:url('assets/images/6.png')"></div>
+    <div class="page-glass"></div>
+    <img class="page-img" src="assets/images/6.png" alt="scrapbook page 6" loading="lazy" />
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SCREEN 7 — MUSIC PLAYER MODULE                             -->
+  <!-- ========================================================== -->
+  <section class="page-snap page page-custom" id="music-screen" data-page="7">
+    <div class="custom-bg music-bg"></div>
+    <div class="custom-inner">
+
+      <div class="player-card reveal">
+        <div class="player-cover">
+          <svg viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#E3AC3D" stroke-width="1.5"/>
+            <circle cx="40" cy="40" r="6" fill="#E8837A"/>
+            <path d="M40 6 V14 M40 66 V74 M6 40 H14 M66 40 H74" stroke="#22406B" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="player-meta">
+          <div class="player-title" id="trackTitle">I Like Me Better</div>
+          <div class="player-artist" id="trackArtist">— for the late drives home</div>
+        </div>
+
+        <div class="player-scrub">
+          <span class="time" id="curTime">0:00</span>
+          <div class="scrub-track" id="scrubTrack" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="scrub-fill" id="scrubFill"></div>
+            <div class="scrub-thumb" id="scrubThumb"></div>
+          </div>
+          <span class="time" id="durTime">0:00</span>
+        </div>
+
+        <div class="player-controls">
+          <button class="ctrl-btn" id="prevBtn" aria-label="Previous track">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 5h2v14H6zM20 5L9 12l11 7z"/></svg>
+          </button>
+          <button class="ctrl-btn ctrl-play" id="playBtn" aria-label="Play">
+            <svg class="icon-play" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" hidden><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <button class="ctrl-btn" id="nextBtn" aria-label="Next track">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg>
+          </button>
+          <button class="ctrl-btn ctrl-repeat" id="repeatBtn" aria-label="Repeat" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
+        </div>
+
+        <p class="player-note">playing this pauses the soft hum in the background — pick up where you left off when you're done ♡</p>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true">keep scrolling ↓</div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SCREEN 8 — THE SLIDING PUZZLE                              -->
+  <!-- ========================================================== -->
+  <section class="page-snap page page-custom" id="puzzle-screen" data-page="8">
+    <div class="custom-bg puzzle-bg"></div>
+    <div class="custom-inner">
+
+      <h2 class="custom-heading reveal">a little puzzle<br>just for you</h2>
+      <p class="custom-sub reveal">tap a tile next to the gap — slide them all into place.</p>
+
+      <div class="puzzle-wrap reveal">
+        <div id="puzzleGrid" class="puzzle-grid" role="grid" aria-label="Sliding puzzle"></div>
+      </div>
+
+      <div class="puzzle-actions reveal">
+        <button id="shuffleBtn" class="ghost-btn">shuffle again</button>
+      </div>
+
+      <!-- Solve overlay -->
+      <div id="puzzleSolve" class="puzzle-solve" aria-live="polite" hidden>
+        <p class="solve-line">the way you just pieced that together —<br>that's exactly how you put me back together too.</p>
+        <button id="keepReadingBtn" class="solid-btn">keep reading →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SCREEN 9 — FINAL LETTER + VIDEO REVEAL                     -->
+  <!-- ========================================================== -->
+  <section class="page-snap page page-custom" id="final-screen" data-page="9">
+    <div class="custom-bg final-bg"></div>
+    <div class="custom-inner final-inner">
+
+      <h2 class="custom-heading reveal">one last thing<br>before you go...</h2>
+
+      <div class="final-letter reveal">
+        <p>i don't have the right words yet. i'm not sure i ever will.</p>
+        <p>but every page you just scrolled past, every photo, every stupid little drawing — none of it is the thing. you are the thing. the rest is just me trying to remember it all before it slips.</p>
+        <p>so. one more thing.</p>
+      </div>
+
+      <button id="openVideoBtn" class="heart-btn reveal" aria-label="Open the video">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+          <path d="M12 21s-7-4.5-9.5-9C.8 8.7 2.5 5 6 5c2 0 3.4 1.2 4 2.5C10.6 6.2 12 5 14 5c3.5 0 5.2 3.7 3.5 7-2.5 4.5-9.5 9-9.5 9z"/>
+        </svg>
+        <span>one more thing</span>
+      </button>
+
+      <footer class="final-footer">made with shaky hands, for you</footer>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================ -->
+<!-- VIDEO MODAL                                                   -->
+<!-- ============================================================ -->
+<div id="videoModal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalCaption">
+  <div class="modal-backdrop" data-close="1"></div>
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+    <video id="revealVideo" class="modal-video" controls playsinline preload="metadata">
+      <source src="assets/video/kiss.mp4" type="video/mp4" />
+    </video>
+    <p class="modal-caption" id="modalCaption">wanna do this for real soon 🤍</p>
+  </div>
+</div>
+
+<!-- Hidden audio elements (ambient + playlist) -->
+<audio id="bgAudio" loop preload="none">
+  <source src="assets/audio/ambient.mp3" type="audio/mpeg" />
+</audio>
+<audio id="trackAudio" preload="none"></audio>
+
+<script src="script.js"></script>
+</body>
+</html>

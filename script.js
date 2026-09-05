@@ -134,6 +134,7 @@ function focusLockInput() {
 function unlock() {
   if (unlocked) return;
   unlocked = true;
+  vibrate([60, 40, 60]); // unlock feel
   // sessionStorage removed — PIN required every visit
 
   // 1. Fade out lock screen
@@ -168,8 +169,10 @@ function unlock() {
       sr.classList.remove('show', 'fade-out');
       scrapbook.setAttribute('aria-hidden', 'false');
       soundToggle.hidden = false;
+      updateDaysWidget();
       daysWidget.hidden = false;
       observeReveals();
+      updatePageDots();
       focusFirstVisible();
       if (lockScreen.parentNode) lockScreen.parentNode.removeChild(lockScreen);
     }, 900);
@@ -207,6 +210,28 @@ function tryUnlock() {
 }
 
 unlockBtn.addEventListener('click', tryUnlock);
+
+/* Lock eye toggle — show/hide digits */
+const lockEye = $('#lockEye');
+if (lockEye) {
+  lockEye.addEventListener('click', () => {
+    const showing = lockInput.getAttribute('data-show') === '1';
+    lockInput.setAttribute('data-show', showing ? '0' : '1');
+    // Show digits as text, hide as dots via placeholder trick
+    if (!showing) {
+      lockInput.style.letterSpacing = '0.3em';
+      lockInput.setAttribute('placeholder', '');
+      // Show actual typed chars — type=tel already shows them
+    } else {
+      lockInput.setAttribute('placeholder', '••••');
+      lockInput.value = lockInput.value; // force re-render
+    }
+    const eyeShow = lockEye.querySelector('.eye-show');
+    const eyeHide = lockEye.querySelector('.eye-hide');
+    if (eyeShow) eyeShow.hidden = !showing;
+    if (eyeHide) eyeHide.hidden = showing;
+  });
+}
 lockInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') tryUnlock();
 });
@@ -251,6 +276,46 @@ setInterval(updateDaysWidget, 60_000);
    5. Reveal-on-scroll (IntersectionObserver)
    ============================================================ */
 let revealObserver = null;
+/* ---- Page dots ---- */
+const pageDots = $('#pageDots');
+const dotEls = pageDots ? $$('.page-dot', pageDots) : [];
+
+function updatePageDots() {
+  if (!pageDots || dotEls.length === 0) return;
+  const pages = $$('.page-snap[data-page]', scrapbook);
+  // Only show dots on PNG pages (1-6)
+  let activeDot = -1;
+  pages.forEach((page, i) => {
+    const pNum = parseInt(page.dataset.page);
+    if (pNum >= 1 && pNum <= 6) {
+      const rect = page.getBoundingClientRect();
+      if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+        activeDot = pNum - 1;
+      }
+    }
+  });
+  // Show dots only on PNG pages
+  const anyPngVisible = $$('.page-snap[data-page]', scrapbook).some(p => {
+    const n = parseInt(p.dataset.page);
+    if (n < 1 || n > 6) return false;
+    const r = p.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  });
+  pageDots.classList.toggle('visible', anyPngVisible);
+  dotEls.forEach((dot, i) => dot.classList.toggle('active', i === activeDot));
+}
+
+scrapbook.addEventListener('scroll', updatePageDots, { passive: true });
+
+// Dot click — scroll to that page
+dotEls.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    const pages = $$('.page-snap[data-page]', scrapbook);
+    const target = pages[i];
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
 function observeReveals() {
   if (revealObserver) return;
   if (!('IntersectionObserver' in window)) {
@@ -429,8 +494,19 @@ function loadTrack(i) {
 
   trackAudio.src = t.src;
   trackAudio.preload = 'auto';
-  if (trackTitle)  trackTitle.textContent  = t.title || '—';
-  if (trackArtist) trackArtist.textContent = t.artist || '';
+  // Slide out old title, slide in new
+  if (trackTitle) {
+    trackTitle.classList.add('title-out');
+    setTimeout(() => {
+      trackTitle.textContent = t.title || '—';
+      trackTitle.classList.remove('title-out');
+      trackTitle.classList.add('title-in');
+      setTimeout(() => trackTitle.classList.remove('title-in'), 350);
+    }, 150);
+  }
+  if (trackArtist) {
+    setTimeout(() => { trackArtist.textContent = t.artist || ''; }, 150);
+  }
   if (trackNum)    trackNum.textContent    = `${trackIndex + 1} / ${playlist.length}`;
   if (scrubFill)   scrubFill.style.width   = '0%';
   if (scrubThumb)  scrubThumb.style.left   = '0%';
@@ -498,7 +574,16 @@ function pauseTrack() {
   checkMiniBar();
 }
 
+trackAudio.addEventListener('error', () => {
+  setLoadingUI(false);
+  setPlayingUI(false);
+  const errEl = $('#playerError');
+  if (errEl) errEl.hidden = false;
+});
+
 trackAudio.addEventListener('playing', () => {
+  const errEl = $('#playerError');
+  if (errEl) errEl.hidden = true;
   setLoadingUI(false);
   setPlayingUI(true);
   // show caption once actually playing
@@ -793,8 +878,13 @@ shuffleBtn.addEventListener('click', () => {
   updateFocusability();
 });
 
+function vibrate(pattern) {
+  try { if (navigator.vibrate) navigator.vibrate(pattern); } catch(_) {}
+}
+
 function onSolved() {
   solved = true;
+  vibrate([40, 30, 40, 30, 100]); // celebration pattern
   if (puzzleWarning) puzzleWarning.classList.remove('show');
   // Replace each tile's text with the corresponding letter
   $$('.tile', puzzleGrid).forEach((tile, i) => {

@@ -714,6 +714,7 @@ function placeDecoration(kind, zone) {
   if (allPlaced && !birthdayRoomState.decorationsCompleted) {
     birthdayRoomState.decorationsCompleted = true;
     stopIdleHint();
+    try { if (navigator.vibrate) navigator.vibrate([40,20,40,20,100]); } catch(_) {}
     later(() => { burstConfetti(); setState(ST.DECORATION_COMPLETE); }, 600);
   }
 }

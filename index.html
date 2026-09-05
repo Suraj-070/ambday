@@ -31,16 +31,23 @@
     </div>
     <h1 class="lock-title">For You</h1>
     <p class="lock-sub">type in our number ♡</p>
-    <input
-      type="password"
-      id="lockInput"
-      class="lock-input"
-      inputmode="numeric"
-      autocomplete="off"
-      pattern="[0-9]*"
-      maxlength="4"
-      aria-label="4-digit code"
-    />
+    <div class="lock-input-wrap">
+      <input
+        type="tel"
+        id="lockInput"
+        class="lock-input"
+        inputmode="numeric"
+        autocomplete="off"
+        pattern="[0-9]*"
+        maxlength="4"
+        aria-label="4-digit code"
+        placeholder="••••"
+      />
+      <button class="lock-eye" id="lockEye" type="button" aria-label="Show/hide digits" tabindex="-1">
+        <svg class="eye-show" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="eye-hide" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" hidden><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+    </div>
     <button id="unlockBtn" class="unlock-btn">Unlock</button>
     <p class="lock-hint">Hint: the number only we know ♡</p>
   </div>
@@ -88,6 +95,15 @@
 <!-- MAIN SCROLL CONTAINER                                         -->
 <!-- ============================================================ -->
 <main id="scrapbook" class="scrapbook" aria-hidden="true">
+  <!-- Page dots indicator -->
+  <div class="page-dots" id="pageDots" aria-hidden="true">
+    <span class="page-dot active" data-dot="1"></span>
+    <span class="page-dot" data-dot="2"></span>
+    <span class="page-dot" data-dot="3"></span>
+    <span class="page-dot" data-dot="4"></span>
+    <span class="page-dot" data-dot="5"></span>
+    <span class="page-dot" data-dot="6"></span>
+  </div>
 
   <!-- ========================================================== -->
   <!-- SCREENS 1–6 — SCRAPBOOK PAGES (render the actual PNGs)    -->
@@ -505,6 +521,7 @@
 <div id="videoModal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalCaption">
   <div class="modal-backdrop" data-close="1"></div>
   <div class="modal-card">
+      <p class="modal-caption">something i wanted you to see ♡</p>
     <button class="modal-close" id="modalClose" aria-label="Close">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </button>

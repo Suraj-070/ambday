@@ -108,7 +108,7 @@ const PASSWORD = [54,57,54,57].map(c=>String.fromCharCode(c)).join('');
    ============================================================ */
 const CONFIG = {
   // The date you started together — shown in the "Days With You" counter
-  SINCE_DATE: new Date(2022, 5, 14),  // year, month (0-indexed), day
+  SINCE_DATE: new Date(2025, 4, 21),  // year, month (0-indexed), day
 };
 /* ============================================================ */
 

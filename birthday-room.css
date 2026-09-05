@@ -2252,15 +2252,17 @@
    ============================================================ */
 .br-characters {
   position: absolute;
-  bottom: 27%;
+  bottom: 26%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(90px, 18vw, 160px);
+  /* gap creates space for the cake between them */
+  gap: clamp(100px, 22vw, 200px);
   z-index: 8;
   pointer-events: none;
+  filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5));
 }
 .br-characters[hidden] { display: none; }
 
@@ -2281,14 +2283,22 @@
 }
 
 .br-char svg {
-  width: clamp(44px, 7vw, 70px);
+  width: clamp(56px, 9vw, 88px);
   height: auto;
-  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.5));
 }
 
 /* Gentle idle sway */
-.br-char-boy  { animation: charEntrance 700ms cubic-bezier(.22,1,.36,1) both, charSwayBoy  4s ease-in-out 800ms infinite; }
-.br-char-girl { animation: charEntrance 700ms cubic-bezier(.22,1,.36,1) 120ms both, charSwayGirl 4s ease-in-out 1000ms infinite; }
+.br-char-boy  {
+  animation: charEntrance 700ms cubic-bezier(.22,1,.36,1) both, charSwayBoy 4s ease-in-out 800ms infinite;
+  /* Boy is on LEFT, faces RIGHT toward girl — SVG drawn facing right, no flip needed */
+}
+.br-char-girl {
+  animation: charEntrance 700ms cubic-bezier(.22,1,.36,1) 120ms both, charSwayGirl 4s ease-in-out 1000ms infinite;
+  /* Girl is on RIGHT, faces LEFT toward boy — flip her horizontally */
+  transform: scaleX(-1);
+}
+/* Keep sway working after flip */
+.br-char-girl .br-char-label { transform: scaleX(-1); display: block; }
 
 @keyframes charSwayBoy {
   0%,100% { transform: rotate(-1deg) translateY(0); }

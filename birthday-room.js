@@ -355,61 +355,117 @@ function setCaption(text) {
 })();
 
 /* ============================================================
-   8. Decoration tray + drag-and-drop
+   8. Decoration tray — tap to place + drag on desktop + idle hint
    ============================================================ */
 function showTray() {
   tray.hidden = false;
-  // Defer to next frame so transition can fire
   requestAnimationFrame(() => tray.classList.add('show'));
+  startIdleHint();
 }
 function hideTray() {
   tray.classList.remove('show');
+  stopIdleHint();
   later(() => { tray.hidden = true; }, 500);
 }
 
+/* Progress counter */
+function updateProgress() {
+  const prog = $('#brTrayProgress');
+  if (prog) prog.textContent = placedDecorations.size + ' / ' + birthdayRoomConfig.requiredDecorations.length;
+}
+
+/* Build tray items with emoji + label */
 function buildTrayItems() {
   trayItems.innerHTML = '';
   birthdayRoomConfig.decorations.forEach(d => {
-    const item = document.createElement('div');
+    const item = document.createElement('button');
     item.className = 'br-tray-item';
-    item.setAttribute('role', 'button');
-    item.setAttribute('aria-label', `Place ${d.kind}`);
-    item.setAttribute('tabindex', '0');
+    item.type = 'button';
+    item.setAttribute('aria-label', 'Place ' + d.kind);
     item.dataset.kind = d.kind;
-    item.innerHTML = `<span class="br-emoji">${d.emoji}</span>`;
+    item.innerHTML =
+      '<span class="br-emoji">' + d.emoji + '</span>' +
+      '<span class="br-item-label">' + d.kind + '</span>';
     trayItems.appendChild(item);
   });
 }
 buildTrayItems();
 
-/* Drag-and-drop implementation that works for both mouse and touch.
-   We use pointer events when available; fall back to mouse+touch listeners. */
+/* Idle hint — shows after 5s of no placement */
+let hintTimer = null;
+const hintEl = $('#brTrayHint');
+function startIdleHint() {
+  stopIdleHint();
+  hintTimer = setTimeout(() => {
+    if (hintEl) hintEl.hidden = false;
+  }, 5000);
+}
+function stopIdleHint() {
+  if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+  if (hintEl) hintEl.hidden = true;
+}
 
-let dragging = null;     // { kind, ghostEl, offsetX, offsetY, originEl, startX, startY, moved }
-const DRAG_THRESHOLD = 6; // px — movement beyond this counts as a drag, not a tap
-let suppressNextClick = false; // set true after a real drag, to suppress the synthesized click
+/* Place a decoration into its zone */
+function placeDecoration(kind, zone) {
+  if (dragging && dragging.ghostEl) dragging.ghostEl.remove();
+  stopIdleHint();
 
-function startDrag(kind, clientX, clientY, originEl) {
-  // Don't allow dragging if already used
+  // Mark tray item used
+  const trayItem = trayItems.querySelector('.br-tray-item[data-kind="' + kind + '"]');
+  if (trayItem) trayItem.classList.add('used');
+
+  // Mark zone filled
+  zone.classList.add('filled');
+  zone.classList.remove('active');
+
+  // Place visual
+  const deco = birthdayRoomConfig.decorations.find(d => d.kind === kind);
+  const placed = document.createElement('div');
+  placed.className = 'br-placed ' + kind;
+  placed.innerHTML = '<span class="br-emoji">' + (deco ? deco.emoji : '🎀') + '</span>';
+  zone.appendChild(placed);
+
+  placedDecorations.add(kind);
+  updateProgress();
+
+  // Restart idle hint if not all placed yet
+  const remaining = birthdayRoomConfig.requiredDecorations.filter(k => !placedDecorations.has(k));
+  if (remaining.length > 0) {
+    startIdleHint();
+    // Update hint to mention what's left
+    if (hintEl) hintEl.querySelector && (hintEl.innerHTML =
+      '<span>👆</span> ' + remaining.length + ' more to go — tap ' + remaining[0] + ' next!');
+  }
+
+  // Check completion
+  const allPlaced = birthdayRoomConfig.requiredDecorations.every(k => placedDecorations.has(k));
+  if (allPlaced && !birthdayRoomState.decorationsCompleted) {
+    birthdayRoomState.decorationsCompleted = true;
+    stopIdleHint();
+    later(() => {
+      burstConfetti();
+      setState(ST.DECORATION_COMPLETE);
+    }, 600);
+  }
+}
+
+/* ---- Drag (desktop) ---- */
+let dragging = null;
+let suppressNextClick = false;
+const DRAG_THRESHOLD = 8;
+
+function startDrag(kind, clientX, clientY) {
   if (placedDecorations.has(kind)) return;
-  // Build a floating ghost
+  const deco = birthdayRoomConfig.decorations.find(d => d.kind === kind);
   const ghost = document.createElement('div');
   ghost.className = 'br-drag-ghost';
-  const deco = birthdayRoomConfig.decorations.find(d => d.kind === kind);
-  ghost.innerHTML = `<span class="br-emoji">${deco ? deco.emoji : '🎀'}</span>`;
+  ghost.innerHTML = '<span class="br-emoji">' + (deco ? deco.emoji : '🎀') + '</span>';
   ghost.style.left = clientX + 'px';
   ghost.style.top  = clientY + 'px';
   document.body.appendChild(ghost);
-  dragging = {
-    kind, ghostEl: ghost, originEl,
-    startX: clientX, startY: clientY,
-    moved: false
-  };
-  // Highlight valid drop zones
+  dragging = { kind, ghostEl: ghost, startX: clientX, startY: clientY, moved: false };
   $$('.br-dropzone').forEach(z => {
-    if (z.dataset.zone === kind && !z.classList.contains('filled')) {
-      z.classList.add('active');
-    }
+    if (z.dataset.zone === kind && !z.classList.contains('filled')) z.classList.add('active');
   });
 }
 
@@ -418,9 +474,7 @@ function moveDrag(clientX, clientY) {
   if (!dragging.moved) {
     const dx = Math.abs(clientX - dragging.startX);
     const dy = Math.abs(clientY - dragging.startY);
-    if (dx > DRAG_THRESHOLD || dy > DRAG_THRESHOLD) {
-      dragging.moved = true;
-    }
+    if (dx > DRAG_THRESHOLD || dy > DRAG_THRESHOLD) dragging.moved = true;
   }
   dragging.ghostEl.style.left = clientX + 'px';
   dragging.ghostEl.style.top  = clientY + 'px';
@@ -429,147 +483,62 @@ function moveDrag(clientX, clientY) {
 function endDrag(clientX, clientY) {
   if (!dragging) return;
   const { kind, ghostEl, moved } = dragging;
-  // If a real drag happened, suppress the synthesized click event
   if (moved) suppressNextClick = true;
-  // If it was a tap (no significant movement), don't place — let the click
-  // handler handle the tap-to-place fallback. Just clean up the ghost.
   if (!moved) {
     ghostEl.remove();
     $$('.br-dropzone').forEach(z => z.classList.remove('active'));
     dragging = null;
     return;
   }
-  // Real drag — find drop zone under pointer
-  ghostEl.style.display = 'none'; // hide so elementFromPoint sees underneath
+  ghostEl.style.display = 'none';
   const target = document.elementFromPoint(clientX, clientY);
   ghostEl.style.display = '';
-  let zone = null;
-  if (target) {
-    zone = target.closest('.br-dropzone');
-  }
+  let zone = target ? target.closest('.br-dropzone') : null;
   if (zone && zone.dataset.zone === kind && !zone.classList.contains('filled')) {
     placeDecoration(kind, zone);
   } else {
-    // Snap back (just remove the ghost, item stays in tray)
     ghostEl.remove();
   }
   $$('.br-dropzone').forEach(z => z.classList.remove('active'));
   dragging = null;
 }
 
-function placeDecoration(kind, zone) {
-  // Remove ghost
-  if (dragging && dragging.ghostEl) dragging.ghostEl.remove();
-  // Mark tray item used
-  const trayItem = trayItems.querySelector(`.br-tray-item[data-kind="${kind}"]`);
-  if (trayItem) trayItem.classList.add('used');
-  // Mark zone filled
-  zone.classList.add('filled');
-  // Add a visual placed decoration centered in the zone
-  const deco = birthdayRoomConfig.decorations.find(d => d.kind === kind);
-  const placed = document.createElement('div');
-  placed.className = 'br-placed ' + kind;
-  placed.innerHTML = `<span class="br-emoji">${deco ? deco.emoji : '🎀'}</span>`;
-  zone.appendChild(placed);
-  // CSS handles positioning (left:50%; top:50%; transform: translate(-50%,-50%))
-
-  // Track it
-  placedDecorations.add(kind);
-
-  // Check completion
-  const allPlaced = birthdayRoomConfig.requiredDecorations.every(k => placedDecorations.has(k));
-  if (allPlaced && !birthdayRoomState.decorationsCompleted) {
-    birthdayRoomState.decorationsCompleted = true;
-    later(() => {
-      // Small celebration
-      burstConfetti();
-      setState(ST.DECORATION_COMPLETE);
-    }, 600);
-  }
-}
-
-/* Mouse + touch listeners on tray items */
 trayItems.addEventListener('pointerdown', (e) => {
   const item = e.target.closest('.br-tray-item');
   if (!item || item.classList.contains('used')) return;
   e.preventDefault();
-  startDrag(item.dataset.kind, e.clientX, e.clientY, item);
+  startDrag(item.dataset.kind, e.clientX, e.clientY);
 });
-document.addEventListener('pointermove', (e) => {
-  if (dragging) moveDrag(e.clientX, e.clientY);
-}, { passive: true });
-document.addEventListener('pointerup', (e) => {
-  if (dragging) endDrag(e.clientX, e.clientY);
-});
+document.addEventListener('pointermove', (e) => { if (dragging) moveDrag(e.clientX, e.clientY); }, { passive: true });
+document.addEventListener('pointerup',   (e) => { if (dragging) endDrag(e.clientX, e.clientY); });
 document.addEventListener('pointercancel', () => {
-  if (dragging) {
-    dragging.ghostEl.remove();
-    $$('.br-dropzone').forEach(z => z.classList.remove('active'));
-    dragging = null;
-  }
+  if (dragging) { dragging.ghostEl.remove(); $$('.br-dropzone').forEach(z => z.classList.remove('active')); dragging = null; }
 });
 
-/* Fallback for browsers without Pointer Events: mouse + touch */
-if (!('PointerEvent' in window)) {
-  trayItems.addEventListener('mousedown', (e) => {
-    const item = e.target.closest('.br-tray-item');
-    if (!item || item.classList.contains('used')) return;
-    e.preventDefault();
-    startDrag(item.dataset.kind, e.clientX, e.clientY, item);
-    const onMove = (ev) => moveDrag(ev.clientX, ev.clientY);
-    const onUp = (ev) => {
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-      endDrag(ev.clientX, ev.clientY);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  });
-  trayItems.addEventListener('touchstart', (e) => {
-    const item = e.target.closest('.br-tray-item');
-    if (!item || item.classList.contains('used')) return;
-    const t = e.touches[0];
-    startDrag(item.dataset.kind, t.clientX, t.clientY, item);
-  }, { passive: true });
-  document.addEventListener('touchmove', (e) => {
-    if (dragging && e.touches[0]) {
-      moveDrag(e.touches[0].clientX, e.touches[0].clientY);
-      e.preventDefault();
-    }
-  }, { passive: false });
-  document.addEventListener('touchend', (e) => {
-    if (dragging && e.changedTouches[0]) {
-      endDrag(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-    }
-  });
-}
-
-/* Tap-to-place fallback: clicking a tray item places it in its zone automatically.
-   Suppresses the click if a real drag just happened (the suppress flag is set
-   inside endDrag when dragging.moved === true). */
+/* ---- Tap to place (primary mobile UX) ---- */
 trayItems.addEventListener('click', (e) => {
   if (suppressNextClick) { suppressNextClick = false; return; }
   const item = e.target.closest('.br-tray-item');
   if (!item || item.classList.contains('used')) return;
   const kind = item.dataset.kind;
   if (placedDecorations.has(kind)) return;
-  const zone = $(`.br-dropzone[data-zone="${kind}"]`);
+  const zone = document.querySelector('.br-dropzone[data-zone="' + kind + '"]');
   if (zone && !zone.classList.contains('filled')) {
-    placeDecoration(kind, zone);
+    // Flash zone to show where it lands
+    zone.classList.add('active');
+    setTimeout(() => placeDecoration(kind, zone), 250);
   }
 });
 
-/* Keyboard: tray items focusable; Enter places into matching zone */
+/* Keyboard */
 trayItems.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   const item = e.target.closest('.br-tray-item');
   if (!item || item.classList.contains('used')) return;
   e.preventDefault();
   const kind = item.dataset.kind;
-  const zone = $(`.br-dropzone[data-zone="${kind}"]`);
-  if (zone && !zone.classList.contains('filled')) {
-    placeDecoration(kind, zone);
-  }
+  const zone = document.querySelector('.br-dropzone[data-zone="' + kind + '"]');
+  if (zone && !zone.classList.contains('filled')) placeDecoration(kind, zone);
 });
 
 /* ============================================================

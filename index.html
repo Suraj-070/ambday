@@ -395,10 +395,16 @@
       <p class="br-caption-text">it's dark in here... maybe there's a light?</p>
     </div>
 
-    <!-- Decoration tray (drag decorations from here into the room) -->
-    <div class="br-tray" id="brTray" hidden aria-hidden="false">
-      <div class="br-tray-label">drag these into the room</div>
+    <!-- Decoration panel — tap to place or drag on desktop -->
+    <div class="br-tray" id="brTray" hidden aria-label="Decoration panel">
+      <div class="br-tray-header">
+        <span class="br-tray-title">✨ decorate the room</span>
+        <span class="br-tray-progress" id="brTrayProgress">0 / 5</span>
+      </div>
       <div class="br-tray-items" id="brTrayItems"></div>
+      <div class="br-tray-hint" id="brTrayHint" hidden>
+        <span>👆</span> tap any item to place it, or drag it into the room
+      </div>
     </div>
 
     <!-- The wish overlay (final birthday message) -->

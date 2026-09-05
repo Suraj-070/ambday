@@ -360,16 +360,45 @@ function setCaption(text) {
 (function startClock() {
   const hourHand   = $('#brClockHour');
   const minuteHand = $('#brClockMinute');
-  if (!hourHand || !minuteHand) return;
+  const face       = $('#brClockFace');
+  if (!hourHand || !minuteHand || !face) return;
+
+  // Add hour markers
+  [12,3,6,9].forEach((n, i) => {
+    const num = document.createElement('span');
+    num.className = 'br-clock-num';
+    num.textContent = n;
+    const ang = (i * 90 - 90) * Math.PI / 180;
+    num.style.position = 'absolute';
+    num.style.left = (50 + Math.cos(ang) * 36) + '%';
+    num.style.top  = (50 + Math.sin(ang) * 36) + '%';
+    num.style.transform = 'translate(-50%,-50%)';
+    num.style.fontSize  = 'clamp(6px,1vw,11px)';
+    num.style.fontWeight = '700';
+    num.style.color = '#5c3a1e';
+    num.style.fontFamily = 'serif';
+    face.insertBefore(num, face.firstChild);
+  });
+
+  // Add tick marks
+  for (let i = 0; i < 12; i++) {
+    const tick = document.createElement('div');
+    tick.style.cssText = `
+      position:absolute; width:${i%3===0?'3':'2'}px; height:${i%3===0?'14':'8'}%
+      ; background:#8b6914; border-radius:2px;
+      left:50%; bottom:50%; transform-origin:bottom center;
+      transform:translateX(-50%) rotate(${i*30}deg) translateY(${i%3===0?'130':'145'}%);
+      opacity:${i%3===0?'0.8':'0.4'};`;
+    face.insertBefore(tick, face.firstChild);
+  }
+
   function tickClock() {
     const now = new Date();
     const h = now.getHours() % 12;
     const m = now.getMinutes();
     const s = now.getSeconds();
-    const hourDeg   = h * 30 + m * 0.5;
-    const minuteDeg = m * 6 + s * 0.1;
-    hourHand.style.transform   = `rotate(${hourDeg}deg)`;
-    minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+    hourHand.style.transform   = `rotate(${h * 30 + m * 0.5}deg)`;
+    minuteHand.style.transform = `rotate(${m * 6 + s * 0.1}deg)`;
   }
   tickClock();
   setInterval(tickClock, 10000);
@@ -456,24 +485,43 @@ function getDecorationHTML(kind) {
   switch (kind) {
     case 'balloons': return `
       <div class="dec-balloons">
-        <svg viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-          <!-- Left balloon -->
-          <ellipse cx="28" cy="44" rx="22" ry="26" fill="#E8837A" opacity="0.92"/>
-          <ellipse cx="20" cy="34" rx="7" ry="5" fill="rgba(255,255,255,0.35)" transform="rotate(-20,20,34)"/>
-          <path d="M28 70 Q26 80 24 88 Q30 84 32 88 Q30 80 28 70" fill="#E8837A"/>
-          <line x1="28" y1="88" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
-          <!-- Middle balloon (tallest) -->
-          <ellipse cx="55" cy="36" rx="26" ry="30" fill="#C87890" opacity="0.95"/>
-          <ellipse cx="44" cy="24" rx="8" ry="6" fill="rgba(255,255,255,0.35)" transform="rotate(-20,44,24)"/>
-          <path d="M55 66 Q53 78 51 86 Q57 82 59 86 Q57 78 55 66" fill="#C87890"/>
-          <line x1="55" y1="86" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
-          <!-- Right balloon -->
-          <ellipse cx="82" cy="46" rx="22" ry="25" fill="#7090D0" opacity="0.92"/>
-          <ellipse cx="74" cy="36" rx="7" ry="5" fill="rgba(255,255,255,0.35)" transform="rotate(-20,74,36)"/>
-          <path d="M82 71 Q80 81 78 89 Q84 85 86 89 Q84 81 82 71" fill="#7090D0"/>
-          <line x1="82" y1="89" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
-          <!-- Knot -->
-          <circle cx="54" cy="155" r="3" fill="#888"/>
+        <svg viewBox="0 0 130 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Left balloon - pink -->
+          <ellipse cx="38" cy="60" rx="30" ry="36" fill="#F4A0B0"/>
+          <ellipse cx="38" cy="60" rx="30" ry="36" fill="url(#blL)" opacity="0.7"/>
+          <ellipse cx="26" cy="44" rx="10" ry="7" fill="rgba(255,255,255,0.4)" transform="rotate(-20,26,44)"/>
+          <path d="M38 96 Q35 108 32 114 Q38 110 44 114 Q41 108 38 96" fill="#F4A0B0"/>
+          <path d="M38 115 Q50 145 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <!-- Middle balloon - coral (biggest, front) -->
+          <ellipse cx="65" cy="50" rx="36" ry="42" fill="#E8837A"/>
+          <ellipse cx="65" cy="50" rx="36" ry="42" fill="url(#blM)" opacity="0.7"/>
+          <ellipse cx="50" cy="32" rx="12" ry="8" fill="rgba(255,255,255,0.4)" transform="rotate(-20,50,32)"/>
+          <path d="M65 92 Q62 106 59 114 Q65 110 71 114 Q68 106 65 92" fill="#E8837A"/>
+          <path d="M65 115 Q65 150 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <!-- Right balloon - blue -->
+          <ellipse cx="96" cy="62" rx="28" ry="34" fill="#90B0F0"/>
+          <ellipse cx="96" cy="62" rx="28" ry="34" fill="url(#blR)" opacity="0.7"/>
+          <ellipse cx="84" cy="47" rx="9" ry="6" fill="rgba(255,255,255,0.4)" transform="rotate(-20,84,47)"/>
+          <path d="M96 96 Q93 108 90 114 Q96 110 102 114 Q99 108 96 96" fill="#90B0F0"/>
+          <path d="M96 115 Q85 148 65 192" stroke="#bbb" stroke-width="1.2" fill="none"/>
+          <!-- String bundle knot -->
+          <circle cx="65" cy="193" r="4" fill="#999"/>
+          <!-- Vertical string to floor -->
+          <line x1="65" y1="197" x2="65" y2="200" stroke="#bbb" stroke-width="1.5"/>
+          <defs>
+            <radialGradient id="blL" cx="35%" cy="35%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.15)"/>
+            </radialGradient>
+            <radialGradient id="blM" cx="35%" cy="35%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.15)"/>
+            </radialGradient>
+            <radialGradient id="blR" cx="35%" cy="35%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.15)"/>
+            </radialGradient>
+          </defs>
         </svg>
       </div>`;
 

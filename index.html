@@ -471,7 +471,211 @@
     <div class="br-cake-shadow" id="brCakeShadow" hidden></div>
 
     <!-- Boy & girl characters — appear when cake placed -->
-    <!-- Characters removed -->
+    <!-- Characters — boy (left) and girl (right) near cake -->
+    <div class="br-characters" id="brCharacters" hidden aria-hidden="true">
+
+      <!-- BOY — frizzy longish hair, fair skin, slightly taller -->
+      <div class="br-char br-char-boy">
+        <svg viewBox="0 0 90 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="skinB" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#f5e6d3"/>
+              <stop offset="100%" stop-color="#e8d0b8"/>
+            </radialGradient>
+            <linearGradient id="jeansB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a4a6a"/>
+              <stop offset="100%" stop-color="#2a3550"/>
+            </linearGradient>
+            <linearGradient id="topB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5a6a8a"/>
+              <stop offset="100%" stop-color="#3a4a6a"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Ground shadow -->
+          <ellipse cx="45" cy="197" rx="26" ry="4" fill="rgba(0,0,0,0.2)"/>
+
+          <!-- Legs -->
+          <rect x="28" y="122" width="14" height="68" rx="7" fill="url(#jeansB)"/>
+          <rect x="48" y="122" width="14" height="68" rx="7" fill="url(#jeansB)"/>
+          <!-- Jean highlight -->
+          <rect x="30" y="125" width="4" height="60" rx="2" fill="rgba(255,255,255,0.07)"/>
+          <rect x="50" y="125" width="4" height="60" rx="2" fill="rgba(255,255,255,0.07)"/>
+          <!-- Shoes -->
+          <path d="M22 188 Q22 196 35 196 Q48 196 48 190 Q46 185 42 186Z" fill="#222"/>
+          <path d="M42 188 Q42 196 55 196 Q68 196 68 190 Q66 185 62 186Z" fill="#222"/>
+
+          <!-- Body — casual tee -->
+          <path d="M20 78 Q16 100 16 122 L74 122 Q74 100 70 78 Q58 70 45 70 Q32 70 20 78Z" fill="url(#topB)"/>
+          <!-- Collar -->
+          <path d="M36 72 Q45 68 54 72" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
+          <!-- Tee shadow sides -->
+          <path d="M20 78 Q18 95 17 118" stroke="rgba(0,0,0,0.1)" stroke-width="3" fill="none"/>
+          <path d="M70 78 Q72 95 73 118" stroke="rgba(0,0,0,0.1)" stroke-width="3" fill="none"/>
+
+          <!-- Left arm — natural hang, slightly toward girl -->
+          <path d="M20 80 Q8 95 10 112 Q12 120 18 118 Q22 110 22 96 Q24 86 20 80Z" fill="url(#topB)"/>
+          <ellipse cx="13" cy="118" rx="7" ry="5" fill="url(#skinB)" transform="rotate(-10,13,118)"/>
+
+          <!-- Right arm -->
+          <path d="M70 80 Q82 95 80 112 Q78 120 72 118 Q68 110 68 96 Q66 86 70 80Z" fill="url(#topB)"/>
+          <ellipse cx="77" cy="118" rx="7" ry="5" fill="url(#skinB)" transform="rotate(10,77,118)"/>
+
+          <!-- Neck -->
+          <rect x="39" y="60" width="12" height="14" rx="6" fill="url(#skinB)"/>
+
+          <!-- Head -->
+          <ellipse cx="45" cy="40" rx="24" ry="26" fill="url(#skinB)"/>
+
+          <!-- FRIZZY LONG-ISH HAIR -->
+          <!-- Base hair mass -->
+          <ellipse cx="45" cy="28" rx="28" ry="20" fill="#2a1a0a"/>
+          <!-- Top frizz clumps -->
+          <ellipse cx="30" cy="18" rx="10" ry="8" fill="#241408" transform="rotate(-20,30,18)"/>
+          <ellipse cx="45" cy="12" rx="12" ry="9" fill="#2a1a0a"/>
+          <ellipse cx="60" cy="18" rx="10" ry="8" fill="#241408" transform="rotate(20,60,18)"/>
+          <!-- Longer sides — falls past ears -->
+          <path d="M20 30 Q14 45 16 62 Q18 68 22 66 Q24 55 22 44Z" fill="#2a1a0a"/>
+          <path d="M70 30 Q76 45 74 62 Q72 68 68 66 Q66 55 68 44Z" fill="#2a1a0a"/>
+          <!-- Frizz texture strands -->
+          <path d="M24 22 Q20 14 26 10" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M34 14 Q32 6 38 8" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M56 14 Q58 6 54 8" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M66 22 Q70 14 65 10" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M45 10 Q43 2 47 4" stroke="#1a1008" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Fly-aways -->
+          <path d="M18 28 Q10 22 14 16" stroke="#2a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M72 28 Q80 22 76 16" stroke="#2a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- Face — minimal, clean -->
+          <!-- Eyes -->
+          <ellipse cx="36" cy="40" rx="4" ry="3.5" fill="white"/>
+          <ellipse cx="54" cy="40" rx="4" ry="3.5" fill="white"/>
+          <ellipse cx="37" cy="40" rx="2.5" ry="2.8" fill="#2a1a0a"/>
+          <ellipse cx="55" cy="40" rx="2.5" ry="2.8" fill="#2a1a0a"/>
+          <circle cx="37.8" cy="39" r="1" fill="white"/>
+          <circle cx="55.8" cy="39" r="1" fill="white"/>
+          <!-- Eyebrows -->
+          <path d="M32 35 Q36 33 40 35" stroke="#2a1a0a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M50 35 Q54 33 58 35" stroke="#2a1a0a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Nose — just a soft line -->
+          <path d="M43 46 Q45 50 47 46" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Smile -->
+          <path d="M38 54 Q45 60 52 54" stroke="#c09070" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="30" cy="46" rx="6" ry="3.5" fill="rgba(220,130,110,0.2)"/>
+          <ellipse cx="60" cy="46" rx="6" ry="3.5" fill="rgba(220,130,110,0.2)"/>
+          <!-- Ears -->
+          <ellipse cx="21" cy="40" rx="4" ry="5" fill="#e8d0b8"/>
+          <ellipse cx="69" cy="40" rx="4" ry="5" fill="#e8d0b8"/>
+        </svg>
+      </div>
+
+      <!-- Floating heart -->
+      <div class="br-char-heart" aria-hidden="true">♡</div>
+
+      <!-- GIRL — glasses, long straight hair, slightly shorter -->
+      <div class="br-char br-char-girl">
+        <svg viewBox="0 0 90 188" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="skinG" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#f5e6d3"/>
+              <stop offset="100%" stop-color="#e8d0b8"/>
+            </radialGradient>
+            <linearGradient id="dressG2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e87890"/>
+              <stop offset="100%" stop-color="#c05870"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Ground shadow -->
+          <ellipse cx="45" cy="185" rx="24" ry="4" fill="rgba(0,0,0,0.2)"/>
+
+          <!-- Skirt -->
+          <path d="M26 102 Q18 135 14 175 L76 175 Q72 135 64 102Z" fill="url(#dressG2)"/>
+          <!-- Skirt folds -->
+          <path d="M36 105 Q30 140 28 172" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none"/>
+          <path d="M54 105 Q60 140 62 172" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none"/>
+          <!-- Skirt highlight -->
+          <path d="M38 107 Q34 142 34 170" stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none"/>
+          <!-- Shoes -->
+          <path d="M10 173 Q10 180 22 181 Q34 181 34 176 Q32 172 28 172Z" fill="#7a4060"/>
+          <path d="M56 173 Q56 180 68 181 Q80 181 80 176 Q78 172 74 172Z" fill="#7a4060"/>
+
+          <!-- Bodice -->
+          <path d="M26 68 Q22 82 22 102 L68 102 Q68 82 64 68 Q54 62 45 62 Q36 62 26 68Z" fill="url(#dressG2)"/>
+          <!-- Bodice highlight -->
+          <path d="M34 70 Q30 82 30 100" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
+          <!-- Neckline -->
+          <path d="M34 68 Q45 64 56 68" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none"/>
+
+          <!-- Left arm -->
+          <path d="M26 70 Q14 82 14 96 Q14 104 20 102 Q24 94 24 82 Q26 74 26 70Z" fill="url(#dressG2)"/>
+          <ellipse cx="15" cy="103" rx="6.5" ry="5" fill="url(#skinG)" transform="rotate(-10,15,103)"/>
+
+          <!-- Right arm — slightly toward boy -->
+          <path d="M64 70 Q76 82 76 96 Q76 104 70 102 Q66 94 66 82 Q64 74 64 70Z" fill="url(#dressG2)"/>
+          <ellipse cx="75" cy="103" rx="6.5" ry="5" fill="url(#skinG)" transform="rotate(10,75,103)"/>
+
+          <!-- Neck -->
+          <rect x="39" y="52" width="12" height="14" rx="6" fill="url(#skinG)"/>
+
+          <!-- Head -->
+          <ellipse cx="45" cy="33" rx="24" ry="26" fill="url(#skinG)"/>
+
+          <!-- LONG STRAIGHT HAIR -->
+          <!-- Back layer — goes down past shoulders -->
+          <path d="M20 28 Q14 55 16 90 Q18 100 24 104" stroke="#1a1010" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M70 28 Q76 55 74 90 Q72 100 66 104" stroke="#1a1010" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <!-- Top hair mass -->
+          <path d="M20 28 Q20 8 45 8 Q70 8 70 28 Q66 16 45 16 Q24 16 20 28Z" fill="#1a1010"/>
+          <!-- Hair shine -->
+          <path d="M32 12 Q40 8 50 11" stroke="#2e1e18" stroke-width="2" fill="none" opacity="0.6"/>
+          <!-- Front strands -->
+          <path d="M22 26 Q20 36 22 46" stroke="#150e0e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M68 26 Q70 36 68 46" stroke="#150e0e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+          <!-- Face — minimal -->
+          <!-- Eyes (behind glasses) -->
+          <ellipse cx="35" cy="33" rx="4" ry="3.5" fill="white"/>
+          <ellipse cx="55" cy="33" rx="4" ry="3.5" fill="white"/>
+          <ellipse cx="35.5" cy="33" rx="2.5" ry="2.8" fill="#1a1010"/>
+          <ellipse cx="55.5" cy="33" rx="2.5" ry="2.8" fill="#1a1010"/>
+          <circle cx="36.3" cy="32" r="1" fill="white"/>
+          <circle cx="56.3" cy="32" r="1" fill="white"/>
+          <!-- Eyebrows -->
+          <path d="M31 28 Q35 26 39 28" stroke="#1a1010" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M51 28 Q55 26 59 28" stroke="#1a1010" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <!-- GLASSES — round frames -->
+          <circle cx="35" cy="33" r="7" fill="none" stroke="#2a2a2a" stroke-width="1.8"/>
+          <circle cx="55" cy="33" r="7" fill="none" stroke="#2a2a2a" stroke-width="1.8"/>
+          <!-- Bridge -->
+          <path d="M42 33 L48 33" stroke="#2a2a2a" stroke-width="1.6" fill="none"/>
+          <!-- Temples -->
+          <path d="M28 33 Q22 32 20 36" stroke="#2a2a2a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M62 33 Q68 32 70 36" stroke="#2a2a2a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- Glass lens tint -->
+          <circle cx="35" cy="33" r="6.5" fill="rgba(180,220,255,0.08)"/>
+          <circle cx="55" cy="33" r="6.5" fill="rgba(180,220,255,0.08)"/>
+          <!-- Lens shine -->
+          <path d="M30 29 Q32 28 34 29" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
+          <path d="M50 29 Q52 28 54 29" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
+
+          <!-- Nose -->
+          <path d="M43 40 Q45 44 47 40" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Smile -->
+          <path d="M38 48 Q45 54 52 48" stroke="#c09070" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="29" cy="40" rx="6" ry="3.5" fill="rgba(220,110,120,0.25)"/>
+          <ellipse cx="61" cy="40" rx="6" ry="3.5" fill="rgba(220,110,120,0.25)"/>
+          <!-- Ears -->
+          <ellipse cx="21" cy="34" rx="4" ry="5" fill="#e8d0b8"/>
+          <ellipse cx="69" cy="34" rx="4" ry="5" fill="#e8d0b8"/>
+        </svg>
+      </div>
+
+    </div>
 
         <!-- Falling confetti (separate from floating particles) -->
     <div class="br-confetti-fall" id="brConFall" aria-hidden="true"></div>

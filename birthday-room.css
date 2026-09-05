@@ -2421,3 +2421,63 @@
   background: linear-gradient(180deg, #c8b898, #b8a880);
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
+
+/* ============================================================
+   CHARACTERS v2 — clean, simple, side by side near cake
+   ============================================================ */
+.br-characters {
+  position: absolute;
+  bottom: 27%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(80px, 16vw, 140px);
+  z-index: 8;
+  pointer-events: none;
+}
+.br-characters[hidden] { display: none; }
+
+.br-char {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: charIn 700ms cubic-bezier(.22,1,.36,1) both;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,0.45));
+}
+.br-char-boy  { animation-delay: 0ms; }
+.br-char-girl { animation-delay: 100ms; }
+
+@keyframes charIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.8); }
+  60%  { transform: translateY(-4px) scale(1.02); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.br-char-boy svg  { width: clamp(58px, 9vw, 82px); height: auto; }
+.br-char-girl svg { width: clamp(52px, 8vw, 74px); height: auto; }
+
+/* Gentle idle breathe */
+.br-char-boy  { animation: charIn 700ms cubic-bezier(.22,1,.36,1) both, breathe 5s ease-in-out 900ms infinite; }
+.br-char-girl { animation: charIn 700ms cubic-bezier(.22,1,.36,1) 100ms both, breathe 5s ease-in-out 1200ms infinite; }
+@keyframes breathe {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-4px); }
+}
+
+/* Floating heart */
+.br-char-heart {
+  position: absolute;
+  bottom: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(16px, 2.8vw, 24px);
+  color: #E8837A;
+  animation: heartBob 2.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(232,131,122,0.5));
+}
+@keyframes heartBob {
+  0%,100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0.85; }
+  50%     { transform: translateX(-50%) translateY(-10px) scale(1.15); opacity: 1; }
+}

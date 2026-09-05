@@ -255,6 +255,7 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       if (brCakeShadow) brCakeShadow.hidden = false;
       cakeEl.classList.add('placed');
+      later(() => { const c = $('#brCharacters'); if(c) c.hidden = false; }, 500);
 
       setCaption("Now for the candle 🕯️");
       later(() => revealCandle(), 800);
@@ -1524,6 +1525,7 @@ function closeRoomCleanup() {
   stopParticles();
   stopDust();
   stopFallingConfetti();
+  const ch = $('#brCharacters'); if(ch) ch.hidden = true;
 
   // Mark complete
   birthdayRoomState.roomClosed = true;

@@ -795,9 +795,6 @@ shuffleBtn.addEventListener('click', () => {
 
 function onSolved() {
   solved = true;
-  // Unlock scroll
-  scrapbook.style.overflowY = '';
-  scrapbook.style.scrollSnapType = '';
   if (puzzleWarning) puzzleWarning.classList.remove('show');
   // Replace each tile's text with the corresponding letter
   $$('.tile', puzzleGrid).forEach((tile, i) => {
@@ -861,20 +858,33 @@ updateFocusability();
 function lockScrollAtPuzzle() {
   const puzzleScreen = $('#puzzle-screen');
   if (!puzzleScreen) return;
-  // Watch when puzzle screen enters view — lock scroll
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !solved) {
-        scrapbook.style.overflowY = 'hidden';
-        scrapbook.style.scrollSnapType = 'none';
-        showPuzzleWarning();
-      } else if (!entry.isIntersecting || solved) {
-        scrapbook.style.overflowY = '';
-        scrapbook.style.scrollSnapType = '';
-      }
-    });
-  }, { threshold: 0.5 });
-  obs.observe(puzzleScreen);
+
+  scrapbook.addEventListener('wheel', (e) => {
+    if (solved) return;
+    const rect = puzzleScreen.getBoundingClientRect();
+    const fullyVisible = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
+    // Only block if puzzle is the current snapped page AND scrolling forward (down)
+    if (fullyVisible && e.deltaY > 0) {
+      e.preventDefault();
+      showPuzzleWarning();
+    }
+  }, { passive: false });
+
+  scrapbook.addEventListener('touchstart', (e) => {
+    if (solved) return;
+    scrapbook._touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  scrapbook.addEventListener('touchmove', (e) => {
+    if (solved) return;
+    const rect = puzzleScreen.getBoundingClientRect();
+    const fullyVisible = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
+    const swipingDown = scrapbook._touchStartY > e.touches[0].clientY;
+    if (fullyVisible && swipingDown) {
+      e.preventDefault();
+      showPuzzleWarning();
+    }
+  }, { passive: false });
 }
 lockScrollAtPuzzle();
 
@@ -884,29 +894,8 @@ function showPuzzleWarning() {
   if (!puzzleWarning || solved) return;
   puzzleWarning.classList.add('show');
   clearTimeout(warningTimeout);
-  warningTimeout = setTimeout(() => puzzleWarning.classList.remove('show'), 3000);
+  warningTimeout = setTimeout(() => puzzleWarning.classList.remove('show'), 2500);
 }
-
-// Intercept scroll attempts on puzzle screen
-scrapbook.addEventListener('wheel', (e) => {
-  const puzzleScreen = $('#puzzle-screen');
-  if (!puzzleScreen || solved) return;
-  const rect = puzzleScreen.getBoundingClientRect();
-  if (rect.top < window.innerHeight && rect.bottom > 0 && !solved) {
-    e.preventDefault();
-    showPuzzleWarning();
-  }
-}, { passive: false });
-
-scrapbook.addEventListener('touchmove', (e) => {
-  const puzzleScreen = $('#puzzle-screen');
-  if (!puzzleScreen || solved) return;
-  const rect = puzzleScreen.getBoundingClientRect();
-  if (rect.top < window.innerHeight && rect.bottom > 0 && !solved) {
-    e.preventDefault();
-    showPuzzleWarning();
-  }
-}, { passive: false });
 
 /* ============================================================
    8. Video modal — focus trap + Escape close

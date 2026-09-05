@@ -298,8 +298,60 @@ function focusFirstVisible() {
    6. Music player module
    ============================================================ */
 const playlist = [
-  { title: 'I Like Me Better', artist: '— for the late drives home', src: 'assets/audio/track1.mp3' },
-  // add more songs here
+  {
+    title: "Can't Stop Thinking About You",
+    artist: "Yabesh Thapa, Bizen, Vek Dong",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Yabesh_Thapa_Bizen_Vek_Dong_-_Can_t_Stop_Thinking_About_You_ClassX_Connects_6uRXg5EDv00_p6kwpi.mp3",
+    caption: "this one plays in my head on loop. not because it's a good song — because it's true. i can't stop thinking about you. not for a single hour. you're just always there."
+  },
+  {
+    title: "Ishq Wala Love",
+    artist: "Neeti Mohan · Salim Merchant",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597847/Ishq_Wala_Love_4K_Alia_Bhatt_Sidharth_Malhotra_Varun_Dhawan_Neeti_Mohan_Salim_Merchant_mjizs6.mp4",
+    caption: "this is the kind of love i mean when i say i love you. not just the butterflies kind. the real kind. the one that stays quiet and warm and doesn't need to prove itself."
+  },
+  {
+    title: "Laakhau Hajarau",
+    artist: "Yabesh Thapa",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597848/Yabesh_Thapa_-_Laakhau_Hajarau_EQJxzSZM_mI_jfycfi.mp3",
+    caption: "laakhau hajarau — a lakh, a thousand. that's how many times i've thought about you without meaning to. that's how many little moments have your name written on them."
+  },
+  {
+    title: "Treat You Better",
+    artist: "Shawn Mendes",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Shawn_Mendes_-_Treat_You_Better_Lyrics_mzeeff.mp4",
+    caption: "i will always choose to treat you better. on the days i fall short — and i know i do — just know that's the one thing i'm always trying hardest at. you deserve every good thing."
+  },
+  {
+    title: "You Belong With Me",
+    artist: "Taylor Swift",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597840/Taylor_Swift_-_You_Belong_With_Me_mu4qen.mp3",
+    caption: "you belong with me. i know that sounds simple. but sometimes the simplest things are the ones you feel deepest. i felt it the first time. i still feel it now."
+  },
+  {
+    title: "Timi Sangai",
+    artist: "Apurva Tamang",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597839/Timi_Sangai_-_Apurva_Tamang_Official_MV_hoqlte.mp4",
+    caption: "timi sangai — with you. that's all i want. not grand adventures. just the ordinary days, the quiet evenings, the small laughs. all of it. with you."
+  },
+  {
+    title: "Lover (Remix)",
+    artist: "Taylor Swift ft. Shawn Mendes",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597824/Taylor_Swift_-_Lover_Remix_Feat._Shawn_Mendes_Lyric_Video_tk2ich.mp4",
+    caption: "can i be your lover? your best friend? the one you call first? the one who stays? yes. that's the whole thing. i just want to be yours — completely, quietly, fully."
+  },
+  {
+    title: "Thamana Haat",
+    artist: "Samir Shrestha",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597820/Samir_Shrestha_-_Thamana_Haat_Official_Music_Video___Prod._Foeseal_qyRrUEInzAs_tdngru.mp3",
+    caption: "thamana haat — hold my hand. that's it. that's the whole request. just don't let go. even when it's hard. especially when it's hard."
+  },
+  {
+    title: "There's Nothing Holdin' Me Back",
+    artist: "Shawn Mendes",
+    src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597816/Shawn_Mendes_-_There_s_Nothing_Holdin_Me_Back_Official_Music_Video_mlh8ii.mp4",
+    caption: "nothing holds me back when it comes to you. no fear, no distance, no bad day. i'd run through all of it just to get back to you. every single time."
+  },
 ];
 
 const trackAudio   = $('#trackAudio');
@@ -339,6 +391,16 @@ function loadTrack(i) {
   scrubThumb.style.left = '0%';
   curTime.textContent = '0:00';
   durTime.textContent = '0:00';
+  // update caption
+  const caption = $('#trackCaption');
+  if (caption) {
+    caption.textContent = t.caption || '';
+    caption.classList.remove('caption-pop');
+    void caption.offsetWidth; // reflow to restart animation
+    caption.classList.add('caption-pop');
+  }
+  // update mini bar
+  updateMiniBar();
 }
 loadTrack(0);
 
@@ -354,18 +416,61 @@ function setPlayingUI(isPlaying) {
     playBtn.setAttribute('aria-label', 'Play');
     playerCard.classList.remove('playing');
   }
+  updateMiniBar();
+}
+
+/* ---- Mini floating bar ---- */
+const miniBar = $('#miniBar');
+const miniTitle = $('#miniTitle');
+const miniPlayBtn = $('#miniPlayBtn');
+
+function updateMiniBar() {
+  if (!miniBar) return;
+  const t = playlist[trackIndex];
+  if (miniTitle) miniTitle.textContent = t ? t.title : '';
+  // sync play/pause icon
+  const mp = miniBar.querySelector('.mini-icon-play');
+  const mpa = miniBar.querySelector('.mini-icon-pause');
+  if (mp && mpa) {
+    mp.hidden = !trackAudio.paused;
+    mpa.hidden = trackAudio.paused;
+  }
+}
+
+function checkMiniBar() {
+  if (!miniBar) return;
+  const musicScreen = $('#music-screen');
+  if (!musicScreen) return;
+  const rect = musicScreen.getBoundingClientRect();
+  const musicVisible = rect.top < window.innerHeight && rect.bottom > 0;
+  // show mini bar only if playing AND music screen not visible
+  if (!trackAudio.paused && !musicVisible) {
+    miniBar.classList.add('mini-visible');
+  } else {
+    miniBar.classList.remove('mini-visible');
+  }
+}
+
+scrapbook.addEventListener('scroll', checkMiniBar, { passive: true });
+
+if (miniPlayBtn) {
+  miniPlayBtn.addEventListener('click', () => {
+    if (trackAudio.paused) playTrack();
+    else pauseTrack();
+  });
 }
 
 function playTrack() {
   if (!playlist.length) return;
-  // Spec: pressing play here pauses the background ambient track.
   AudioManager.play(trackAudio);
   setPlayingUI(true);
+  setTimeout(checkMiniBar, 100);
 }
 
 function pauseTrack() {
   AudioManager.pause(trackAudio);
   setPlayingUI(false);
+  setTimeout(checkMiniBar, 100);
 }
 
 playBtn.addEventListener('click', () => {

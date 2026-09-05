@@ -138,9 +138,9 @@
       <div class="player-card reveal">
         <div class="player-cover">
           <svg viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">
-            <circle cx="40" cy="40" r="34" fill="none" stroke="#E3AC3D" stroke-width="1.5"/>
-            <circle cx="40" cy="40" r="6" fill="#E8837A"/>
-            <path d="M40 6 V14 M40 66 V74 M6 40 H14 M66 40 H74" stroke="#22406B" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#7090D0" stroke-width="1.5"/>
+            <circle cx="40" cy="40" r="6" fill="#C87890"/>
+            <path d="M40 6 V14 M40 66 V74 M6 40 H14 M66 40 H74" stroke="#103070" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="player-meta">
@@ -174,6 +174,9 @@
         </div>
 
         <p class="player-note">playing this pauses the soft hum in the background — pick up where you left off when you're done ♡</p>
+
+        <!-- Emotional caption per song -->
+        <p class="track-caption caption-pop" id="trackCaption"></p>
       </div>
 
       <!-- Entry into the birthday room (replaces generic "keep scrolling" cue) -->
@@ -259,6 +262,22 @@
       <footer class="final-footer">made with shaky hands, for you</footer>
     </div>
   </section>
+
+<!-- ============================================================ -->
+<!-- MINI FLOATING MUSIC BAR — appears when scrolled away        -->
+<!-- ============================================================ -->
+<div id="miniBar" class="mini-bar" aria-label="Now playing" role="region">
+  <div class="mini-waveform" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="mini-info">
+    <span class="mini-title" id="miniTitle">—</span>
+  </div>
+  <button class="mini-play-btn" id="miniPlayBtn" aria-label="Play/Pause">
+    <svg class="mini-icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>
+    <svg class="mini-icon-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" hidden><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+  </button>
+</div>
 
 </main>
 

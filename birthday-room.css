@@ -1027,13 +1027,18 @@
   position: absolute;
   inset: 0;
   z-index: 40;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   padding: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: radial-gradient(ellipse at center, rgba(20, 16, 30, 0.85), rgba(8, 6, 12, 0.95));
   opacity: 0;
   visibility: hidden;
   transition: opacity 1000ms ease, visibility 1000ms ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
 .br-wish.show { opacity: 1; visibility: visible; }
 .br-wish[hidden] { display: none; }
@@ -1041,23 +1046,26 @@
   width: min(560px, 100%);
   text-align: center;
   color: var(--paper);
+  padding: 16px 0 32px;
+  margin: auto;
 }
 .br-wish-before {
   font-family: var(--font-script);
-  font-size: clamp(22px, 4vw, 30px);
+  font-size: clamp(18px, 3vw, 24px);
   color: var(--mustard);
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   opacity: 0;
   animation: brFadeIn 800ms ease 200ms forwards;
 }
 .br-wish-body {
   font-family: var(--font-script);
-  font-size: clamp(20px, 3.6vw, 26px);
-  line-height: 1.55;
+  font-size: clamp(15px, 2.4vw, 19px);
+  line-height: 1.65;
   color: var(--paper);
-  margin: 0 0 22px;
+  margin: 0 0 18px;
   min-height: 4em;
   white-space: pre-wrap;
+  text-align: left;
 }
 .br-wish-body .cursor {
   display: inline-block;

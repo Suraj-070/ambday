@@ -663,10 +663,11 @@
 }
 .br-caption-text {
   margin: 0;
-  font-family: var(--font-script);
-  font-size: clamp(16px, 2.4vw, 22px);
+  font-family: var(--font-body);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 600;
   color: #fff;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
   text-shadow: 0 0 20px rgba(255,200,100,0.6), 0 2px 8px rgba(0,0,0,0.8);
 }
 

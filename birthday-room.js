@@ -173,7 +173,7 @@ function openRoom() {
 
   // Set state
   setState(ST.ROOM_ENTER);
-  setCaption("it's dark in here... maybe there's a light?");
+  setCaption("It's dark in here... maybe there's a light?");
 
   // The HTML already provides a <source> child for #birthdayAudio, so we
   // don't need to append one here. The src is wired at parse time.
@@ -203,10 +203,10 @@ function onStateChange(state) {
     case ST.LIGHTS_OFF:
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
-      setCaption("it's dark in here... maybe there's a light?");
+      setCaption("It's dark in here... maybe there's a light?");
       // Hint sequence — point to the switch
       later(() => {
-        setCaption("psst — there's a light switch on the right wall 💡");
+        setCaption("Psst — there's a light switch on the right wall 💡");
         if (lightSwitch) {
           lightSwitch.classList.add('pulse-hint');
           later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
@@ -221,30 +221,30 @@ function onStateChange(state) {
       tryRestartAmbient();
       startDust();
       later(() => {
-        setCaption("let's get this place ready for your birthday...");
+        setCaption("Let's get this place ready for your birthday...");
         showTray();
         setState(ST.DECORATING);
       }, birthdayRoomConfig.timing.captionHold);
       break;
 
     case ST.DECORATION_COMPLETE:
-      setCaption("perfect... but something's missing.");
+      setCaption("Perfect... but something's missing.");
       later(() => {
-        setCaption("one last thing...");
+        setCaption("One last thing...");
         revealCake();
       }, birthdayRoomConfig.timing.captionHold);
       break;
 
     case ST.CAKE_PLACED:
-      setCaption("now for the candle...");
+      setCaption("Now for the candle...");
       later(() => revealCandle(), 800);
-      later(() => setCaption("tap the candle to light it 🕯️"), 2000);
+      later(() => setCaption("Tap the candle to light it 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
       room.classList.remove('lit');
       room.classList.add('dim');
-      setCaption("...happy birthday.");
+      setCaption("...Happy Birthday ♡");
       // Start music immediately when candle is lit — plays until blow
       later(() => startBirthdayMusic(), 800);
       break;
@@ -260,7 +260,7 @@ function onStateChange(state) {
       break;
 
     case ST.CAKE_CUTTING:
-      setCaption("drag the knife across the cake...");
+      setCaption("Drag the knife across the cake...");
       break;
 
     case ST.WISH:
@@ -819,7 +819,7 @@ function revealCake() {
   cakeEl.style.left = (roomRect.width * 0.08) + 'px';
   cakeEl.style.top  = (roomRect.height * 0.62) + 'px';
   setState(ST.CAKE_AVAILABLE);
-  setCaption("drag the cake onto the table...");
+  setCaption("Drag the cake onto the table...");
 }
 
 function enableCakeDrag() {
@@ -928,7 +928,7 @@ enableCakeDrag();
    ============================================================ */
 function revealCandle() {
   setState(ST.CANDLE_AVAILABLE);
-  setCaption("light the candle...");
+  setCaption("Light the candle...");
 
   // Make candle clickable
   candleEl.style.cursor = 'pointer';
@@ -1122,7 +1122,7 @@ function enableKnifeDrag() {
     cakeEl.classList.add('cut');
     knifeEl.style.transition = 'opacity 600ms ease';
     knifeEl.style.opacity = '0';
-    setCaption("make a wish...");
+    setCaption("Make a wish...");
     // Music fades out and clears AudioManager.active so ambient can return later
     if (AudioManager && birthdayAudio) {
       AudioManager.fadeTo(birthdayAudio, 0, 2500, () => {

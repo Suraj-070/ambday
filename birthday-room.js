@@ -23,11 +23,11 @@ const birthdayRoomConfig = {
      Use \n for line breaks. */
   birthdayWish:
     "maichaa.\n\n" +
-    "I don't really know how to start this. I kept trying to write something perfect and kept deleting it. so I'm just going to say it how I feel it.\n\n" +
-    "you came into my life and everything just shifted. not in a big dramatic way. just quietly. like suddenly things made more sense.\n\n" +
-    "I think about you more than you know. the random moments. the stupid things I want to tell you first. the way I reach for my phone and you're already the thought before I even unlock it.\n\n" +
-    "" + (() => { const d = Math.max(0, Math.floor((new Date() - new Date(2025,4,21)) / 86400000)); return d + " days. every single one has been my favourite. even the hard ones. even the ones where we didn't talk much. because you were still there."; })() + "\n\n" +
-    "I can't be there with you today and that hurts a little. but I made you this. this whole thing. because you deserve to feel special even from far away.\n\n" +
+    "I don't really know how to start this. I kept trying to write something perfect and kept deleting it, so I'm just going to say it how I feel it.\n\n" +
+    "you came into my life and everything just shifted. not in a big dramatic way, just quietly, like suddenly things made more sense.\n\n" +
+    "I think about you more than you know — the random moments, the stupid things I want to tell you first, the way I reach for my phone and you're already the thought before I even unlock it.\n\n" +
+    "" + (() => { const d = Math.max(0, Math.floor((new Date() - new Date(2025,4,21)) / 86400000)); return d + " days. every single one has been my favourite — even the hard ones, even the ones where we didn't talk much, because you were still there."; })() + "\n\n" +
+    "I can't be there with you today and that hurts a little, but I made you this. this whole thing. because you deserve to feel special even from far away.\n\n" +
     "happy birthday maichaa. I love you. more than I know how to say. ♡",
 
   /* Birthday song. Place the file at this path. */

@@ -364,55 +364,55 @@ const playlist = [
     title: "Can't Stop Thinking About You",
     artist: "Yabesh Thapa, Bizen, Vek Dong",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Yabesh_Thapa_Bizen_Vek_Dong_-_Can_t_Stop_Thinking_About_You_ClassX_Connects_6uRXg5EDv00_p6kwpi.mp3",
-    caption: "yo song sunda timi yaad aunchau. 24/7. raat ma pani din ma pani. timi everywhere xu maichaa. switch off nai hudaina."
+    caption: "this song lives in my head rent free. i'm not even joking. you're just always there maichaa. all day every day and i don't even want it to stop."
   },
   {
     title: "Ishq Wala Love",
     artist: "Neeti Mohan · Salim Merchant",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597847/Ishq_Wala_Love_4K_Alia_Bhatt_Sidharth_Malhotra_Varun_Dhawan_Neeti_Mohan_Salim_Merchant_mjizs6.mp3",
-    caption: "yo ho mero maaya. chillayera dekhaunuparcha vannu hudaina. basirahane wala maaya. gaaro bela pani najodne wala maaya. tyahi ho."
+    caption: "this is exactly the kind of love i mean when i say i love you. not the loud kind. the quiet kind that just stays. even when it's hard. especially when it's hard."
   },
   {
     title: "Laakhau Hajarau",
     artist: "Yabesh Thapa",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597848/Yabesh_Thapa_-_Laakhau_Hajarau_EQJxzSZM_mI_jfycfi.mp3",
-    caption: "laakhau hajarau palta timi ko naam aauxa mero mann ma. yo ramro lagi vaneko hoina. timi ko fault ho yo 😌"
+    caption: "laakhau hajarau. that's how many times you cross my mind in a day without warning. it's actually your fault maichaa 😌"
   },
   {
     title: "Treat You Better",
     artist: "Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Shawn_Mendes_-_Treat_You_Better_Lyrics_mzeeff.mp3",
-    caption: "sachi vanau ma hamesha sahi hurdina. tara timi ko lagi try gariraxu hamesha. timi deserve garxau sabai ramro kura. yo sachai vaneko xu babe."
+    caption: "i'm gonna be honest i don't always get it right. but i'm always trying. you deserve every good thing and i mean that every time i say it."
   },
   {
     title: "You Belong With Me",
     artist: "Taylor Swift",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597840/Taylor_Swift_-_You_Belong_With_Me_mu4qen.mp3",
-    caption: "okay yo vannu lajayos lagxu tara. timi mero saath nai hunuparne ho. pehile dekhis nai feel bha. abhai pani tyo feeling jadaina. yati nai ho."
+    caption: "okay this one's embarrassing to admit. but you just belong with me. i felt it pretty early and that feeling hasn't gone anywhere. that's just it."
   },
   {
     title: "Timi Sangai",
     artist: "Apurva Tamang",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597839/Timi_Sangai_-_Apurva_Tamang_Official_MV_hoqlte.mp3",
-    caption: "timi sangai. yati nai chahiyo mero. boring bela pani. ramro bela pani. sabai kura timi sangai hunos vanxu maichaa."
+    caption: "timi sangai. with you. that's genuinely all i want. the boring days the random evenings the small stupid moments. all of it with you maichaa."
   },
   {
     title: "Lover (Remix)",
     artist: "Taylor Swift ft. Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597824/Taylor_Swift_-_Lover_Remix_Feat._Shawn_Mendes_Lyric_Video_tk2ich.mp3",
-    caption: "timi ko banu sakxu? pura? bas yati nai magxu cutipie. timi ko rahun. timi lai sataaun. 2am ma call garun. timi ko."
+    caption: "can i just be yours? fully? that's the whole thing cutipie. yours to keep. yours to bother. yours to call at 2am. just yours."
   },
   {
     title: "Thamana Haat",
     artist: "Samir Shrestha",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597820/Samir_Shrestha_-_Thamana_Haat_Official_Music_Video___Prod._Foeseal_qyRrUEInzAs_tdngru.mp3",
-    caption: "haath tham maichaa. yati nai maagxu. najod hatna. gaaro bela ma pani. specially gaaro bela ma."
+    caption: "thamana haat. hold my hand maichaa. that's genuinely all i'm asking. just don't let go. especially when it gets hard."
   },
   {
     title: "There's Nothing Holdin' Me Back",
     artist: "Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597816/Shawn_Mendes_-_There_s_Nothing_Holdin_Me_Back_Official_Music_Video_mlh8ii.mp3",
-    caption: "kehi le pani rokna sakdaina mero timi bata. distance le pani hoina. kuchhai le hoina. sabai huncha timi ko lagi. hamesha babe."
+    caption: "nothing could hold me back from you. no distance no bad day nothing. i'd go through all of it just to get back to you. every single time."
   },
 ];
 

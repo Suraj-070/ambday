@@ -22,12 +22,13 @@ const birthdayRoomConfig = {
   /* Personal birthday wish. Replace the body text with your real message.
      Use \n for line breaks. */
   birthdayWish:
-    "maichaa.\n" +
-    "aaja timi ko birthday xa ani ma yaha xu timi lai kei likhna khosdai. sahi words aaudaina. tara timi lai feel garauna chahanchhu ki ma kitna lucky xu timi jasto manchhe paayera.\n" +
-    "timi le akasma hera ani tyo jun dekh. ma pani tyahi heriraxa hola kahi na kahi bata. distance xa hami bhitra tara feeling chai ekdam najik xa.\n" +
-    "yo 107 din haru ma timi le mero sab kuch badlera diyau. timi nabhako din sochna sakdina ni hahaha. \n" +
-    "timi khusi raha. timi healthy raha. timi jati maaya paune ho utikै maaya pau. ani ek din hami dherei najik hunxau maichaa. pakka.\n" +
-    "maaya garxu timi lai. happy birthday. ♡",
+    "maichaa.\n\n" +
+    "i don't really know how to start this. i kept trying to write something perfect and kept deleting it. so i'm just going to say it how i feel it.\n\n" +
+    "you came into my life and everything just shifted. not in a big dramatic way. just quietly. like suddenly things made more sense.\n\n" +
+    "i think about you more than you know. the random moments. the stupid things i want to tell you first. the way i reach for my phone and you're already the thought before i even unlock it.\n\n" +
+    "107 days. every single one has been my favourite. even the hard ones. even the ones where we didn't talk much. because you were still there.\n\n" +
+    "i can't be there with you today and that hurts a little. but i made you this. this whole thing. because you deserve to feel special even from far away.\n\n" +
+    "happy birthday maichaa. i love you. more than i know how to say. ♡",
 
   /* Birthday song. Place the file at this path. */
   birthdaySong: 'assets/audio/birthday-song.mp3',
@@ -181,7 +182,7 @@ function openRoom() {
 
   // Set state
   setState(ST.ROOM_ENTER);
-  setCaption("andhero xa yaha 😅 kahitei switch xa");
+  setCaption("it's dark in here 😅 there's a switch somewhere");
 
   // The HTML already provides a <source> child for #birthdayAudio, so we
   // don't need to append one here. The src is wired at parse time.
@@ -211,10 +212,10 @@ function onStateChange(state) {
     case ST.LIGHTS_OFF:
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
-      setCaption("andhero xa yaha 😅 kahitei switch xa");
+      setCaption("it's dark in here 😅 there's a switch somewhere");
       // Hint sequence — point to the switch
       later(() => {
-        setCaption("psst right wall ma switch xa 💡 gar");
+        setCaption("psst the switch is on the right wall 💡 go on");
         if (lightSwitch) {
           lightSwitch.classList.add('pulse-hint');
           later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
@@ -232,7 +233,7 @@ function onStateChange(state) {
       if (brLightFlash) { brLightFlash.classList.add('flash'); setTimeout(() => brLightFlash.classList.remove('flash'), 700); }
       // Moonbeam fades out naturally via CSS
       later(() => {
-        setCaption("aau milera sajau yo kotha timi ko lagi 🎈");
+        setCaption("let's decorate this place for you 🎈");
         showTray();
         setState(ST.DECORATING);
       }, birthdayRoomConfig.timing.captionHold);
@@ -242,10 +243,10 @@ function onStateChange(state) {
       setCaption("WAIT you actually did it?? 🥹✨");
       startFallingConfetti();
       later(() => {
-        setCaption("lagbhag bho... kei baki xa abhai");
+        setCaption("almost there... something's still missing");
       }, 1800);
       later(() => {
-        setCaption("ek matra baki xa vakar vanxu");
+        setCaption("one last thing i promise");
         stopFallingConfetti();
         revealCake();
       }, birthdayRoomConfig.timing.captionHold + 1800);
@@ -258,9 +259,9 @@ function onStateChange(state) {
         const chars = $('#brCharacters');
         if (chars) chars.hidden = false;
       }, 500);
-      setCaption("ab batti baal 🕯️");
+      setCaption("now for the candle 🕯️");
       later(() => revealCandle(), 800);
-      later(() => setCaption("batti ma tap gar maichaa 🕯️"), 2000);
+      later(() => setCaption("tap the candle maichaa 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
@@ -284,7 +285,7 @@ function onStateChange(state) {
       // After music plays — prompt blow
       later(() => {
         stopFallingConfetti();
-        setCaption("aankhaa banda gar aaru manasai gar ani batti nifaar cutipie 🕯️");
+        setCaption("close your eyes make a wish and blow the candle cutipie 🕯️");
         // Wire candle tap to blow it
         const blowIt = () => {
           candleEl.removeEventListener('click', blowIt);
@@ -296,7 +297,7 @@ function onStateChange(state) {
       break;
 
     case ST.CAKE_CUTTING:
-      setCaption("ab cake kaat 🎂 chaaku tar");
+      setCaption("now cut the cake 🎂 drag the knife");
       break;
 
     case ST.WISH:
@@ -315,11 +316,11 @@ function onStateChange(state) {
       candleEl.appendChild(smoke);
       setTimeout(() => smoke.remove(), 2200);
       // Brief wish moment caption
-      later(() => setCaption("pura hos tero manasai 🌟"), 600);
-      later(() => setCaption("ab cake kaat 🎂"), 2200);
+      later(() => setCaption("i hope it comes true 🌟"), 600);
+      later(() => setCaption("now cut the cake 🎂"), 2200);
       // Reveal knife AFTER wish — correct order
       later(() => {
-        setCaption("cake ma chaaku tar deu 🎂");
+        setCaption("drag the knife across the cake 🎂");
         revealKnife();
       }, 3600);
       break;
@@ -1082,7 +1083,7 @@ function revealCake() {
   cakeEl.style.left = (roomRect.width * 0.08) + 'px';
   cakeEl.style.top  = (roomRect.height * 0.62) + 'px';
   setState(ST.CAKE_AVAILABLE);
-  setCaption("cake lai table ma rakhdeu maichaa 🎂");
+  setCaption("drag the cake onto the table maichaa 🎂");
 }
 
 function enableCakeDrag() {
@@ -1191,7 +1192,7 @@ enableCakeDrag();
    ============================================================ */
 function revealCandle() {
   setState(ST.CANDLE_AVAILABLE);
-  setCaption("batti baalaau ab ✨");
+  setCaption("light the candle now ✨");
 
   // Make candle clickable
   candleEl.style.cursor = 'pointer';
@@ -1393,7 +1394,7 @@ function enableKnifeDrag() {
       room.classList.add('dim');
     }, 1000);
     // Short personal captions then show the letter
-    later(() => setCaption("ek aakhiri kura lekheko xu timi lai 🤍"), 1200);
+    later(() => setCaption("i wrote you one last thing 🤍"), 1200);
     later(() => { setCaption(""); setState(ST.WISH); }, 3200);
   }
 
@@ -1489,8 +1490,8 @@ function showWish() {
     blowBtn.addEventListener('click', () => {
       wish.classList.remove('show');
       later(() => { wish.hidden = true; }, 600);
-      later(() => setCaption("maaya garxu maichaa. ekdum badi. 🤍"), 700);
-      later(() => setCaption("okay ab jaau 🚪"), 2400);
+      later(() => setCaption("i love you maichaa. so much it's crazy. 🤍"), 700);
+      later(() => setCaption("okay time to go 🚪"), 2400);
       later(() => { setCaption(""); setState(ST.LIGHTS_OFF_AGAIN); }, 3800);
     }, { once: true });
   }

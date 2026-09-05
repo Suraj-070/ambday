@@ -134,7 +134,7 @@ function focusLockInput() {
 function unlock() {
   if (unlocked) return;
   unlocked = true;
-  sessionStorage.setItem(SESSION_KEY, '1');
+  // sessionStorage removed — PIN required every visit
 
   // 1. Fade out lock screen
   lockScreen.classList.add('unlocked');
@@ -175,10 +175,20 @@ function unlock() {
     }, 900);
   }
 
+  // Show a warm loading hint in the reveal while audio buffers
+  const loadHint = document.createElement('p');
+  loadHint.className = 'sr-load-hint';
+  loadHint.textContent = '♫ Getting the music ready...';
+  const srInner = sr.querySelector('.sr-inner');
+  if (srInner) srInner.appendChild(loadHint);
+
   // Fire when enough audio is buffered
-  bgAudio.addEventListener('canplaythrough', doReveal, { once: true });
-  // Hard timeout fallback — don't keep her waiting forever
-  setTimeout(doReveal, 3800);
+  bgAudio.addEventListener('canplaythrough', () => {
+    if (loadHint.parentNode) loadHint.remove();
+    doReveal();
+  }, { once: true });
+  // Hard timeout fallback — 5s max wait
+  setTimeout(doReveal, 5000);
 }
 
 function failUnlock() {
@@ -207,19 +217,7 @@ lockInput.addEventListener('input', () => {
   }
 });
 
-/* If already unlocked in this session, skip the lock */
-if (sessionStorage.getItem(SESSION_KEY) === '1') {
-  // unlock immediately without animation
-  unlocked = true;
-  lockScreen.style.transition = 'none';
-  lockScreen.style.opacity = '0';
-  lockScreen.style.visibility = 'hidden';
-  scrapbook.setAttribute('aria-hidden', 'false');
-  soundToggle.hidden = false;
-  daysWidget.hidden = false;
-  if (lockScreen.parentNode) lockScreen.parentNode.removeChild(lockScreen);
-  // Note: we don't autoplay audio here — needs user gesture. Will start on first toggle/click.
-} else {
+/* PIN always required — session skip removed */ else {
   focusLockInput();
 }
 
@@ -798,6 +796,10 @@ shuffleBtn.addEventListener('click', () => {
 
 function onSolved() {
   solved = true;
+  // Unlock scroll
+  scrapbook.style.overflowY = '';
+  scrapbook.style.scrollSnapType = '';
+  if (puzzleWarning) puzzleWarning.classList.remove('show');
   // Replace each tile's text with the corresponding letter
   $$('.tile', puzzleGrid).forEach((tile, i) => {
     tile.textContent = LETTERS[i];
@@ -855,6 +857,57 @@ keepReadingBtn.addEventListener('click', () => {
 solvableShuffle(80);
 renderTiles();
 updateFocusability();
+
+/* ---- Scroll lock until puzzle solved ---- */
+function lockScrollAtPuzzle() {
+  const puzzleScreen = $('#puzzle-screen');
+  if (!puzzleScreen) return;
+  // Watch when puzzle screen enters view — lock scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !solved) {
+        scrapbook.style.overflowY = 'hidden';
+        scrapbook.style.scrollSnapType = 'none';
+        showPuzzleWarning();
+      } else if (!entry.isIntersecting || solved) {
+        scrapbook.style.overflowY = '';
+        scrapbook.style.scrollSnapType = '';
+      }
+    });
+  }, { threshold: 0.5 });
+  obs.observe(puzzleScreen);
+}
+lockScrollAtPuzzle();
+
+const puzzleWarning = $('#puzzleWarning');
+let warningTimeout = null;
+function showPuzzleWarning() {
+  if (!puzzleWarning || solved) return;
+  puzzleWarning.classList.add('show');
+  clearTimeout(warningTimeout);
+  warningTimeout = setTimeout(() => puzzleWarning.classList.remove('show'), 3000);
+}
+
+// Intercept scroll attempts on puzzle screen
+scrapbook.addEventListener('wheel', (e) => {
+  const puzzleScreen = $('#puzzle-screen');
+  if (!puzzleScreen || solved) return;
+  const rect = puzzleScreen.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0 && !solved) {
+    e.preventDefault();
+    showPuzzleWarning();
+  }
+}, { passive: false });
+
+scrapbook.addEventListener('touchmove', (e) => {
+  const puzzleScreen = $('#puzzle-screen');
+  if (!puzzleScreen || solved) return;
+  const rect = puzzleScreen.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0 && !solved) {
+    e.preventDefault();
+    showPuzzleWarning();
+  }
+}, { passive: false });
 
 /* ============================================================
    8. Video modal — focus trap + Escape close

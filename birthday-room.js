@@ -36,12 +36,15 @@ const birthdayRoomConfig = {
   /* Decoration tray items (in display order).
      `kind` matches a zone; `emoji` is the visual. */
   decorations: [
-    { kind: 'balloons', emoji: '🎈' },
-    { kind: 'banner',   emoji: '🎉' },
-    { kind: 'photo',    emoji: '🖼️' },
-    { kind: 'flowers',  emoji: '🌸' },
-    { kind: 'gift',     emoji: '🎁' },
+    { kind: 'balloons', emoji: '🎈', label: 'Balloons' },
+    { kind: 'banner',   emoji: '🎉', label: 'Banner'   },
+    { kind: 'photo',    emoji: '🖼️', label: 'Photo'    },
+    { kind: 'flowers',  emoji: '🌸', label: 'Flowers'  },
+    { kind: 'gift',     emoji: '🎁', label: 'Gift'     },
   ],
+
+  /* Photo to show in the frame — replace with Amisha's Cloudinary URL */
+  photoUrl: 'PHOTO_URL_HERE',
 
   /* Cake element size hint (used by drag snap math) */
   cakeWidth: 110,
@@ -405,6 +408,157 @@ function stopIdleHint() {
   if (hintEl) hintEl.hidden = true;
 }
 
+/* ---- SVG art for each decoration ---- */
+function getDecorationHTML(kind) {
+  switch (kind) {
+    case 'balloons': return `
+      <div class="dec-balloons">
+        <svg width="110" height="160" viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left balloon -->
+          <ellipse cx="28" cy="44" rx="22" ry="26" fill="#E8837A" opacity="0.92"/>
+          <ellipse cx="20" cy="34" rx="7" ry="5" fill="rgba(255,255,255,0.35)" transform="rotate(-20,20,34)"/>
+          <path d="M28 70 Q26 80 24 88 Q30 84 32 88 Q30 80 28 70" fill="#E8837A"/>
+          <line x1="28" y1="88" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- Middle balloon (tallest) -->
+          <ellipse cx="55" cy="36" rx="26" ry="30" fill="#C87890" opacity="0.95"/>
+          <ellipse cx="44" cy="24" rx="8" ry="6" fill="rgba(255,255,255,0.35)" transform="rotate(-20,44,24)"/>
+          <path d="M55 66 Q53 78 51 86 Q57 82 59 86 Q57 78 55 66" fill="#C87890"/>
+          <line x1="55" y1="86" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- Right balloon -->
+          <ellipse cx="82" cy="46" rx="22" ry="25" fill="#7090D0" opacity="0.92"/>
+          <ellipse cx="74" cy="36" rx="7" ry="5" fill="rgba(255,255,255,0.35)" transform="rotate(-20,74,36)"/>
+          <path d="M82 71 Q80 81 78 89 Q84 85 86 89 Q84 81 82 71" fill="#7090D0"/>
+          <line x1="82" y1="89" x2="54" y2="155" stroke="#aaa" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- Knot -->
+          <circle cx="54" cy="155" r="3" fill="#888"/>
+        </svg>
+      </div>`;
+
+    case 'banner': return `
+      <div class="dec-banner-full">
+        <svg width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Strings from wall corners -->
+          <path d="M0 0 Q150 60 300 40 Q450 20 600 0" fill="none" stroke="#b8860b" stroke-width="2"/>
+          <!-- Flag triangles -->
+          ${[0,1,2,3,4,5,6,7,8,9].map(i => {
+            const colors = ['#E8837A','#C87890','#7090D0','#B0D0F0','#E3AC3D','#90B0F0','#C87890','#E8837A','#7090D0','#B0D0F0'];
+            const x = 30 + i * 58;
+            const yTop = i < 5 ? (i * 4) + 8 : ((9-i) * 4) + 8;
+            return '<polygon points="' + x + ',' + yTop + ' ' + (x+22) + ',' + yTop + ' ' + (x+11) + ',' + (yTop+28) + '" fill="' + colors[i] + '" opacity="0.95"/>';
+          }).join('')}
+        </svg>
+        <div class="dec-banner-text">🎂 Happy Birthday Amisha 🎂</div>
+      </div>`;
+
+    case 'photo': {
+      const url = birthdayRoomConfig.photoUrl;
+      const hasPhoto = url && url !== 'PHOTO_URL_HERE';
+      return `
+        <div class="dec-photo-frame">
+          <div class="dec-photo-outer">
+            <div class="dec-photo-mat">
+              ${hasPhoto
+                ? '<img src="' + url + '" class="dec-photo-img" alt="our photo" />'
+                : '<div class="dec-photo-placeholder"><svg viewBox="0 0 80 80" width="56" height="56" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="30" r="14" fill="#C87890" opacity="0.6"/><path d="M10 70 Q40 45 70 70" fill="#C87890" opacity="0.4"/><path d="M0 80 L80 80 L80 60 Q40 35 0 60 Z" fill="#C87890" opacity="0.25"/></svg><span>us ♡</span></div>'
+              }
+            </div>
+            <div class="dec-photo-corner dec-photo-corner-tl"></div>
+            <div class="dec-photo-corner dec-photo-corner-tr"></div>
+            <div class="dec-photo-corner dec-photo-corner-bl"></div>
+            <div class="dec-photo-corner dec-photo-corner-br"></div>
+          </div>
+          <div class="dec-photo-caption">us ♡</div>
+        </div>`;
+    }
+
+    case 'flowers': return `
+      <div class="dec-flowers">
+        <svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stems -->
+          <path d="M40 115 Q38 90 35 70" stroke="#4a7c59" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M60 118 Q60 95 60 75" stroke="#4a7c59" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M80 115 Q82 90 85 70" stroke="#4a7c59" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M50 110 Q45 95 42 82" stroke="#4a7c59" stroke-width="2" fill="none"/>
+          <path d="M70 112 Q75 95 78 84" stroke="#4a7c59" stroke-width="2" fill="none"/>
+          <!-- Leaves -->
+          <ellipse cx="32" cy="88" rx="9" ry="5" fill="#5a9c69" transform="rotate(-40,32,88)"/>
+          <ellipse cx="88" cy="88" rx="9" ry="5" fill="#5a9c69" transform="rotate(40,88,88)"/>
+          <!-- Rose left -->
+          <circle cx="35" cy="58" r="14" fill="#E8837A" opacity="0.9"/>
+          <circle cx="35" cy="58" r="10" fill="#d0606a" opacity="0.7"/>
+          <circle cx="35" cy="58" r="6"  fill="#C84050" opacity="0.8"/>
+          <ellipse cx="29" cy="52" rx="7" ry="5" fill="#E8837A" opacity="0.6" transform="rotate(-30,29,52)"/>
+          <ellipse cx="41" cy="52" rx="7" ry="5" fill="#E8837A" opacity="0.6" transform="rotate(30,41,52)"/>
+          <!-- Cherry blossom center -->
+          <circle cx="60" cy="62" r="13" fill="#F4A7B9" opacity="0.9"/>
+          ${[0,72,144,216,288].map(a => {
+            const rad = a * Math.PI / 180;
+            const px = 60 + Math.cos(rad) * 10;
+            const py = 62 + Math.sin(rad) * 10;
+            return '<ellipse cx="' + px + '" cy="' + py + '" rx="6" ry="4" fill="#F4A7B9" opacity="0.85" transform="rotate(' + a + ',' + px + ',' + py + ')"/>';
+          }).join('')}
+          <circle cx="60" cy="62" r="4" fill="#FFE066"/>
+          <!-- Blue flower right -->
+          <circle cx="85" cy="58" r="13" fill="#90B0F0" opacity="0.9"/>
+          ${[0,60,120,180,240,300].map(a => {
+            const rad = a * Math.PI / 180;
+            const px = 85 + Math.cos(rad) * 10;
+            const py = 58 + Math.sin(rad) * 10;
+            return '<ellipse cx="' + px + '" cy="' + py + '" rx="6" ry="3.5" fill="#7090D0" opacity="0.8" transform="rotate(' + a + ',' + px + ',' + py + ')"/>';
+          }).join('')}
+          <circle cx="85" cy="58" r="4" fill="#FFE066"/>
+          <!-- Small buds -->
+          <circle cx="48" cy="70" r="7" fill="#F4A7B9" opacity="0.8"/>
+          <circle cx="73" cy="72" r="6" fill="#E8837A" opacity="0.75"/>
+          <!-- Vase -->
+          <path d="M30 130 Q30 118 40 115 L80 115 Q90 118 90 130 Q88 138 60 138 Q32 138 30 130Z" fill="#D0C4F0" stroke="#B0A0E0" stroke-width="1.5"/>
+          <ellipse cx="60" cy="115" rx="20" ry="5" fill="#E0D8F8"/>
+          <path d="M35 122 Q60 126 85 122" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        </svg>
+      </div>`;
+
+    case 'gift': return `
+      <div class="dec-gift">
+        <svg width="110" height="130" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shadow -->
+          <ellipse cx="55" cy="126" rx="38" ry="5" fill="rgba(0,0,0,0.15)"/>
+          <!-- Box body -->
+          <rect x="12" y="58" width="86" height="62" rx="4" fill="#E8837A"/>
+          <rect x="12" y="58" width="86" height="62" rx="4" fill="url(#giftGrad)"/>
+          <!-- Lid -->
+          <rect x="8"  y="44" width="94" height="20" rx="4" fill="#C84060"/>
+          <!-- Vertical ribbon on lid -->
+          <rect x="48" y="44" width="14" height="20" fill="#FFE066" opacity="0.9"/>
+          <!-- Vertical ribbon on body -->
+          <rect x="48" y="64" width="14" height="56" fill="#FFE066" opacity="0.9"/>
+          <!-- Horizontal ribbon on body -->
+          <rect x="12" y="82" width="86" height="12" fill="#FFE066" opacity="0.9"/>
+          <!-- Bow left loop -->
+          <ellipse cx="38" cy="38" rx="18" ry="11" fill="#FFD700" transform="rotate(-25,38,38)" opacity="0.95"/>
+          <ellipse cx="38" cy="38" rx="13" ry="7" fill="#E6C200" transform="rotate(-25,38,38)" opacity="0.7"/>
+          <!-- Bow right loop -->
+          <ellipse cx="72" cy="38" rx="18" ry="11" fill="#FFD700" transform="rotate(25,72,38)" opacity="0.95"/>
+          <ellipse cx="72" cy="38" rx="13" ry="7" fill="#E6C200" transform="rotate(25,72,38)" opacity="0.7"/>
+          <!-- Bow center knot -->
+          <ellipse cx="55" cy="40" rx="9" ry="7" fill="#FFC200"/>
+          <!-- Shine on lid -->
+          <ellipse cx="32" cy="50" rx="8" ry="3" fill="rgba(255,255,255,0.25)" transform="rotate(-15,32,50)"/>
+          <!-- Small stars -->
+          <text x="20" y="98" font-size="14" opacity="0.6">★</text>
+          <text x="78" y="88" font-size="10" opacity="0.5">★</text>
+          <defs>
+            <linearGradient id="giftGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>`;
+
+    default: return '<span style="font-size:40px">🎀</span>';
+  }
+}
+
 /* Place a decoration into its zone */
 function placeDecoration(kind, zone) {
   if (dragging && dragging.ghostEl) dragging.ghostEl.remove();
@@ -418,12 +572,17 @@ function placeDecoration(kind, zone) {
   zone.classList.add('filled');
   zone.classList.remove('active');
 
-  // Place visual
-  const deco = birthdayRoomConfig.decorations.find(d => d.kind === kind);
+  // Inject realistic SVG art
   const placed = document.createElement('div');
   placed.className = 'br-placed ' + kind;
-  placed.innerHTML = '<span class="br-emoji">' + (deco ? deco.emoji : '🎀') + '</span>';
+  placed.innerHTML = getDecorationHTML(kind);
   zone.appendChild(placed);
+
+  // Banner: also update the real banner element in the room
+  if (kind === 'banner') {
+    const bannerEl = $('#brBanner');
+    if (bannerEl) bannerEl.classList.add('pre-visible');
+  }
 
   placedDecorations.add(kind);
   updateProgress();
@@ -432,9 +591,7 @@ function placeDecoration(kind, zone) {
   const remaining = birthdayRoomConfig.requiredDecorations.filter(k => !placedDecorations.has(k));
   if (remaining.length > 0) {
     startIdleHint();
-    // Update hint to mention what's left
-    if (hintEl) hintEl.querySelector && (hintEl.innerHTML =
-      '<span>👆</span> ' + remaining.length + ' more to go — tap ' + remaining[0] + ' next!');
+    if (hintEl) hintEl.innerHTML = '<span>👆</span> ' + remaining.length + ' more — tap <b>' + remaining[0] + '</b> next!';
   }
 
   // Check completion
@@ -442,10 +599,7 @@ function placeDecoration(kind, zone) {
   if (allPlaced && !birthdayRoomState.decorationsCompleted) {
     birthdayRoomState.decorationsCompleted = true;
     stopIdleHint();
-    later(() => {
-      burstConfetti();
-      setState(ST.DECORATION_COMPLETE);
-    }, 600);
+    later(() => { burstConfetti(); setState(ST.DECORATION_COMPLETE); }, 600);
   }
 }
 

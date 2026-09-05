@@ -329,11 +329,11 @@
   background: transparent;
 }
 /* Zone positions (desktop) */
-.br-dropzone-balloons { left: 18%; top: 30%; width: 18%; height: 22%; }
-.br-dropzone-flowers  { right: 18%; top: 32%; width: 16%; height: 20%; }
-.br-dropzone-photo    { left: 40%; top: 20%; width: 16%; height: 22%; }
-.br-dropzone-gift     { left: 32%; top: 56%; width: 14%; height: 16%; }
-.br-dropzone-banner   { left: 20%; top: 12%; width: 60%; height: 16%; }
+.br-dropzone-balloons { left: 4%;  top: 25%; width: 18%; height: 45%; }
+.br-dropzone-flowers  { right: 4%; top: 25%; width: 18%; height: 45%; }
+.br-dropzone-photo    { left: 38%; top: 18%; width: 24%; height: 35%; }
+.br-dropzone-gift     { left: 42%; top: 58%; width: 16%; height: 22%; }
+.br-dropzone-banner   { left: 10%; top:  8%; width: 80%; height: 18%; }
 
 /* ---------- 10. Table ---------- */
 .br-table {
@@ -759,33 +759,7 @@
 }
 .br-dropzone.filled { border-color: transparent; background: transparent; }
 
-/* Placed decoration */
-.br-placed {
-  position: absolute;
-  left: 50%; top: 50%;
-  z-index: 7;
-  pointer-events: none;
-  user-select: none;
-  transform: translate(-50%, -50%);
-  animation: brPlace 500ms cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes brPlace {
-  0%   { transform: translate(-50%,-65%) scale(0.5); opacity: 0; }
-  70%  { transform: translate(-50%,-47%) scale(1.1); opacity: 1; }
-  100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
-}
-.br-placed .br-emoji {
-  font-size: clamp(30px, 5vw, 46px);
-  line-height: 1;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-}
-.br-placed.balloons .br-emoji { animation: brBob 3s ease-in-out infinite; }
-.br-placed.flowers .br-emoji  { animation: brBob 4s ease-in-out 0.5s infinite; }
-.br-placed.photo .br-emoji    { animation: brBob 5s ease-in-out 1s infinite; }
-@keyframes brBob {
-  0%,100% { transform: translateY(0) rotate(-3deg); }
-  50%     { transform: translateY(-8px) rotate(3deg); }
-}
+/* br-placed styles moved to decoration art section below */
 
 /* Drag ghost */
 .br-drag-ghost {
@@ -795,6 +769,151 @@
   transform: translate(-50%,-50%) scale(1.3);
   font-size: 38px;
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+}
+/* ============================================================
+   Realistic decoration art
+   ============================================================ */
+
+/* Balloons */
+.dec-balloons {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  animation: decBob 4s ease-in-out infinite;
+}
+.dec-balloons svg { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)); }
+
+/* Banner */
+.dec-banner-full {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.dec-banner-full svg { width: 100%; display: block; }
+.dec-banner-text {
+  font-family: var(--font-script);
+  font-size: clamp(14px, 2.5vw, 22px);
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(200,120,144,0.6);
+  letter-spacing: 2px;
+  text-align: center;
+  animation: bannerGlow 2s ease-in-out infinite alternate;
+  white-space: nowrap;
+}
+@keyframes bannerGlow {
+  from { text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 10px rgba(200,120,144,0.4); }
+  to   { text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 30px rgba(200,120,144,0.9); }
+}
+
+/* Photo frame */
+.dec-photo-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: decBob 5s ease-in-out 1s infinite;
+}
+.dec-photo-outer {
+  position: relative;
+  padding: 10px;
+  background: linear-gradient(145deg, #d4af5a, #8b6914, #d4af5a, #b8860b);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.dec-photo-mat {
+  width: clamp(80px, 12vw, 130px);
+  height: clamp(80px, 12vw, 130px);
+  background: #f5f0e8;
+  overflow: hidden;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dec-photo-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dec-photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+}
+.dec-photo-placeholder span {
+  font-family: var(--font-script);
+  font-size: 13px;
+  color: #C87890;
+}
+/* Corner mounts */
+.dec-photo-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  background: #2c1810;
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.dec-photo-corner-tl { top: 4px; left: 4px; }
+.dec-photo-corner-tr { top: 4px; right: 4px; }
+.dec-photo-corner-bl { bottom: 4px; left: 4px; }
+.dec-photo-corner-br { bottom: 4px; right: 4px; }
+.dec-photo-caption {
+  font-family: var(--font-script);
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+/* Flowers */
+.dec-flowers {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+}
+.dec-flowers svg { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+
+/* Gift */
+.dec-gift {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  animation: giftWiggle 3s ease-in-out infinite;
+}
+.dec-gift svg { filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4)); }
+@keyframes giftWiggle {
+  0%,100% { transform: rotate(0deg); }
+  20%     { transform: rotate(-2deg); }
+  40%     { transform: rotate(2deg); }
+  60%     { transform: rotate(-1deg); }
+  80%     { transform: rotate(1deg); }
+}
+
+@keyframes decBob {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+
+/* Placed wrapper — fill the zone */
+.br-placed {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: brPlaceIn 500ms cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes brPlaceIn {
+  from { opacity: 0; transform: scale(0.6) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* ---------- 16. Wish overlay ---------- */
@@ -970,9 +1089,9 @@
   .br-wall-right   { width: 22%; }
   .br-light-switch { right: 4%; top: 24%; width: 48px; height: 76px; }
   .br-switch-toggle { width: 26px; height: 34px; }
-  .br-dropzone-balloons { left: 10%; }
-  .br-dropzone-flowers  { right: 10%; }
-  .br-dropzone-gift     { left: 28%; }
+  .br-dropzone-balloons { left: 2%; top: 22%; width: 20%; height: 48%; }
+  .br-dropzone-flowers  { right: 2%; top: 22%; width: 20%; height: 48%; }
+  .br-dropzone-gift     { left: 40%; top: 56%; width: 20%; height: 24%; }
   .br-table { width: 60%; }
 }
 
@@ -1001,11 +1120,11 @@
 
   .br-string-lights { left: 4%; right: 4%; }
 
-  .br-dropzone-balloons { left: 6%;  top: 30%; width: 24%; height: 18%; }
-  .br-dropzone-flowers  { right: 6%; top: 32%; width: 22%; height: 18%; }
-  .br-dropzone-photo    { left: 38%; top: 14%; width: 24%; height: 16%; }
-  .br-dropzone-gift     { left: 38%; top: 60%; width: 24%; height: 14%; }
-  .br-dropzone-banner   { left: 8%; top: 4%;  width: 84%; height: 14%; }
+  .br-dropzone-balloons { left: 2%;  top: 22%; width: 22%; height: 50%; }
+  .br-dropzone-flowers  { right: 2%; top: 22%; width: 22%; height: 50%; }
+  .br-dropzone-photo    { left: 36%; top: 16%; width: 28%; height: 36%; }
+  .br-dropzone-gift     { left: 40%; top: 58%; width: 20%; height: 22%; }
+  .br-dropzone-banner   { left: 5%;  top: 5%;  width: 90%; height: 18%; }
 
   .br-table {
     width: 70%;

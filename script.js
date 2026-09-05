@@ -101,7 +101,17 @@ const AudioManager = {
 /* ============================================================
    2. Lock screen
    ============================================================ */
-const PASSWORD = '6969';
+// PIN stored as char codes to avoid plaintext in source inspection
+const PASSWORD = [54,57,54,57].map(c=>String.fromCharCode(c)).join('');
+/* ============================================================
+   ★ CONFIG — update these before sending ★
+   ============================================================ */
+const CONFIG = {
+  // The date you started together — shown in the "days with you" counter
+  SINCE_DATE: new Date(2022, 5, 14),  // year, month (0-indexed), day
+};
+/* ============================================================ */
+
 const SESSION_KEY = 'scrapbook_unlocked_v1';
 
 const lockScreen  = $('#lock-screen');
@@ -207,7 +217,7 @@ soundToggle.addEventListener('click', () => {
    4. Days widget — running counter since a date
    * EDIT THIS DATE — set to the day you started dating (YYYY, M-1, D)
    ============================================================ */
-const SINCE_DATE = new Date(2022, 5, 14); // 2022-06-14 — change me
+const SINCE_DATE = CONFIG.SINCE_DATE;
 function updateDaysWidget() {
   if (!daysWidget.hidden) {
     const now = new Date();
@@ -243,6 +253,15 @@ function observeReveals() {
 }
 // Observe immediately for any custom section already in viewport
 if (unlocked) observeReveals();
+
+/* Mark images as loaded to remove skeleton shimmer */
+$$('.page-img').forEach(img => {
+  if (img.complete) {
+    img.classList.add('loaded');
+  } else {
+    img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+  }
+});
 
 function focusFirstVisible() {
   // Move focus into the page so keyboard users aren't stuck on a removed button

@@ -5,21 +5,22 @@
 
 /* ---------- 1. Tokens ---------- */
 :root {
-  --paper: #F6F2E7;
-  --gingham-a: #BFD8F0;
-  --gingham-b: #E9F1FA;
-  --ink: #22406B;
-  --coral: #E8837A;
-  --mustard: #E3AC3D;
-  --brick: #A5333F;
-  --glass: rgba(255, 255, 255, 0.18);
-  --glass-border: rgba(255, 255, 255, 0.35);
+  /* Palette extracted directly from the scrapbook PNGs */
+  --paper: #EEF3F8;           /* cool blue-white — matches PNG background */
+  --gingham-a: #B0D0F0;       /* sky blue — most dominant PNG color */
+  --gingham-b: #D0D8F0;       /* soft lavender — secondary PNG tone */
+  --ink: #103070;             /* deep navy — from PNG dark areas */
+  --coral: #C87890;           /* dusty rose — blush from PNG accents */
+  --mustard: #7090D0;         /* periwinkle — replaces warm yellow, matches PNG */
+  --brick: #304880;           /* deeper slate blue — replaces warm brick */
+  --glass: rgba(255, 255, 255, 0.20);
+  --glass-border: rgba(176, 208, 240, 0.45);
 
-  --font-script: 'Caveat', 'Bradley Hand', cursive;
+  --font-script: 'Caveat', 'Comic Sans MS', cursive;
   --font-body: 'Quicksand', 'Nunito', system-ui, sans-serif;
 
-  --shadow-soft: 0 12px 40px -10px rgba(34, 64, 107, 0.18);
-  --shadow-card: 0 20px 60px -15px rgba(34, 64, 107, 0.28);
+  --shadow-soft: 0 12px 40px -10px rgba(16, 48, 112, 0.18);
+  --shadow-card: 0 20px 60px -15px rgba(16, 48, 112, 0.28);
 
   --r-sm: 10px;
   --r-md: 16px;
@@ -50,7 +51,7 @@ button {
   cursor: pointer;
 }
 :focus-visible {
-  outline: 2px solid var(--coral);
+  outline: 2px solid var(--mustard);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -86,8 +87,8 @@ button {
   padding: 24px;
   background:
     repeating-linear-gradient(45deg,
-      rgba(191, 216, 240, 0.55) 0 16px,
-      rgba(233, 241, 250, 0.55) 16px 32px),
+      rgba(176, 208, 240, 0.55) 0 16px,
+      rgba(208, 216, 240, 0.55) 16px 32px),
     linear-gradient(135deg, var(--gingham-a), var(--gingham-b));
   transition: opacity 600ms ease, visibility 600ms ease;
 }
@@ -173,14 +174,14 @@ button {
   text-align: center;
   color: var(--ink);
   background: rgba(255,255,255,0.7);
-  border: 1.5px solid rgba(34, 64, 107, 0.18);
+  border: 1.5px solid rgba(16, 48, 112, 0.18);
   border-radius: var(--r-sm);
   transition: border-color 220ms ease, background 220ms ease;
 }
 .lock-input:focus {
   outline: none;
-  border-color: var(--coral);
-  background: #fff;
+  border-color: var(--mustard);
+  background: rgba(255,255,255,0.95);
 }
 .unlock-btn {
   margin-top: 14px;
@@ -193,11 +194,11 @@ button {
   color: #fff;
   background: var(--ink);
   border-radius: var(--r-sm);
-  box-shadow: 0 8px 20px -8px rgba(34,64,107,0.5);
+  box-shadow: 0 8px 20px -8px rgba(16,48,112,0.5);
   transition: transform 180ms ease, background 220ms ease, box-shadow 220ms ease;
 }
-.unlock-btn:hover { background: #2c5184; transform: translateY(-1px); }
-.unlock-btn:active { transform: translateY(1px); box-shadow: 0 4px 12px -6px rgba(34,64,107,0.5); }
+.unlock-btn:hover { background: #1a4090; transform: translateY(-1px); }
+.unlock-btn:active { transform: translateY(1px); box-shadow: 0 4px 12px -6px rgba(16,48,112,0.5); }
 
 .lock-hint {
   margin: 18px 0 0;
@@ -308,7 +309,7 @@ button {
 .page-glass {
   position: absolute;
   inset: 0;
-  background: rgba(246, 242, 231, 0.35);
+  background: rgba(238, 243, 248, 0.35);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   z-index: 1;
@@ -352,21 +353,21 @@ button {
 }
 .music-bg {
   background:
-    radial-gradient(circle at 20% 30%, rgba(232, 131, 122, 0.18), transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(227, 172, 61, 0.18), transparent 55%),
-    linear-gradient(180deg, var(--paper), #FBF7EC);
+    radial-gradient(circle at 20% 30%, rgba(200, 120, 144, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(112, 144, 208, 0.18), transparent 55%),
+    linear-gradient(180deg, var(--paper), var(--paper));
 }
 .puzzle-bg {
   background:
     radial-gradient(circle at 70% 20%, rgba(191, 216, 240, 0.45), transparent 55%),
-    radial-gradient(circle at 25% 80%, rgba(232, 131, 122, 0.15), transparent 60%),
-    linear-gradient(180deg, #FBF7EC, var(--paper));
+    radial-gradient(circle at 25% 80%, rgba(200, 120, 144, 0.15), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--paper));
 }
 .final-bg {
   background:
-    radial-gradient(circle at 50% 30%, rgba(232, 131, 122, 0.22), transparent 55%),
-    radial-gradient(circle at 50% 90%, rgba(165, 51, 63, 0.10), transparent 60%),
-    linear-gradient(180deg, var(--paper), #F0E8D5);
+    radial-gradient(circle at 50% 30%, rgba(200, 120, 144, 0.22), transparent 55%),
+    radial-gradient(circle at 50% 90%, rgba(48, 72, 128, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--paper), #E8EEF5);
 }
 
 .custom-inner {
@@ -409,8 +410,8 @@ button {
   margin: 0 auto 14px;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff, rgba(232, 131, 122, 0.15));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 0 8px 18px -8px rgba(34,64,107,0.3);
+  background: radial-gradient(circle at 30% 30%, #fff, rgba(200, 120, 144, 0.15));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 0 8px 18px -8px rgba(16,48,112,0.3);
   animation: spinSlow 22s linear infinite;
 }
 .player-card:not(.playing) .player-cover { animation-play-state: paused; }
@@ -447,7 +448,7 @@ button {
   position: relative;
   height: 6px;
   border-radius: 3px;
-  background: rgba(34, 64, 107, 0.15);
+  background: rgba(16, 48, 112, 0.15);
   cursor: pointer;
 }
 .scrub-fill {
@@ -465,7 +466,7 @@ button {
   width: 14px; height: 14px;
   border-radius: 50%;
   background: var(--ink);
-  box-shadow: 0 2px 6px -1px rgba(34,64,107,0.5);
+  box-shadow: 0 2px 6px -1px rgba(16,48,112,0.5);
   transition: left 120ms linear;
 }
 
@@ -483,15 +484,15 @@ button {
   color: var(--ink);
   transition: background 200ms ease, color 200ms ease, transform 200ms ease;
 }
-.ctrl-btn:hover { background: rgba(34, 64, 107, 0.08); color: var(--coral); }
+.ctrl-btn:hover { background: rgba(16, 48, 112, 0.08); color: var(--coral); }
 .ctrl-btn.ctrl-play {
   width: 60px; height: 60px;
   color: #fff;
   background: linear-gradient(135deg, var(--coral), var(--brick));
-  box-shadow: 0 10px 24px -8px rgba(232, 131, 122, 0.7);
+  box-shadow: 0 10px 24px -8px rgba(200, 120, 144, 0.7);
 }
 .ctrl-btn.ctrl-play:hover { transform: scale(1.05); color: #fff; background: linear-gradient(135deg, var(--coral), var(--brick)); }
-.ctrl-btn[aria-pressed="true"] { color: var(--coral); background: rgba(232, 131, 122, 0.12); }
+.ctrl-btn[aria-pressed="true"] { color: var(--coral); background: rgba(200, 120, 144, 0.12); }
 .player-note {
   font-size: 12px;
   color: var(--ink);
@@ -532,7 +533,7 @@ button {
 .enter-room-btn:hover {
   transform: translateY(-2px);
   background: rgba(255,255,255,0.35);
-  box-shadow: 0 18px 50px -15px rgba(34, 64, 107, 0.32);
+  box-shadow: 0 18px 50px -15px rgba(16, 48, 112, 0.32);
 }
 .enter-room-line {
   font-family: var(--font-script);
@@ -557,9 +558,9 @@ button {
 /* ---------- 10c. Birthday-room entry section (the "step inside" page) ---------- */
 .room-bg {
   background:
-    radial-gradient(circle at 30% 20%, rgba(34, 64, 107, 0.10), transparent 55%),
-    radial-gradient(circle at 70% 80%, rgba(232, 131, 122, 0.16), transparent 60%),
-    linear-gradient(180deg, #F0E8D5, var(--paper));
+    radial-gradient(circle at 30% 20%, rgba(16, 48, 112, 0.10), transparent 55%),
+    radial-gradient(circle at 70% 80%, rgba(200, 120, 144, 0.16), transparent 60%),
+    linear-gradient(180deg, #E8EEF5, var(--paper));
 }
 .room-intro {
   font-family: var(--font-script);
@@ -612,8 +613,8 @@ button {
   display: grid;
   place-items: center;
   cursor: pointer;
-  border: 1.5px solid rgba(34, 64, 107, 0.18);
-  box-shadow: 0 4px 10px -4px rgba(34,64,107,0.3);
+  border: 1.5px solid rgba(16, 48, 112, 0.18);
+  box-shadow: 0 4px 10px -4px rgba(16,48,112,0.3);
   transition: transform 180ms cubic-bezier(.22,1,.36,1),
               background 220ms ease,
               box-shadow 220ms ease;
@@ -625,7 +626,7 @@ button {
 .tile:active:not(.blank) { transform: scale(0.96); }
 .tile.blank {
   background: transparent;
-  border: 1.5px dashed rgba(34, 64, 107, 0.25);
+  border: 1.5px dashed rgba(16, 48, 112, 0.25);
   box-shadow: none;
   cursor: default;
   pointer-events: none;
@@ -664,7 +665,7 @@ button {
   font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--ink);
-  border: 1.5px solid rgba(34, 64, 107, 0.25);
+  border: 1.5px solid rgba(16, 48, 112, 0.25);
   border-radius: 999px;
   background: rgba(255,255,255,0.4);
   transition: background 200ms ease, transform 200ms ease;
@@ -705,10 +706,10 @@ button {
   color: #fff;
   background: var(--ink);
   border-radius: 999px;
-  box-shadow: 0 10px 22px -8px rgba(34,64,107,0.6);
+  box-shadow: 0 10px 22px -8px rgba(16,48,112,0.6);
   transition: transform 200ms ease, background 200ms ease;
 }
-.solid-btn:hover { transform: translateY(-2px); background: #2c5184; }
+.solid-btn:hover { transform: translateY(-2px); background: #1a4090; }
 
 /* Heart confetti from grid on solve */
 .confetti-piece {
@@ -756,10 +757,10 @@ button {
   color: #fff;
   background: linear-gradient(135deg, var(--coral), var(--brick));
   border-radius: 999px;
-  box-shadow: 0 14px 30px -10px rgba(232, 131, 122, 0.6);
+  box-shadow: 0 14px 30px -10px rgba(200, 120, 144, 0.6);
   transition: transform 220ms cubic-bezier(.22,1,.36,1), box-shadow 220ms ease;
 }
-.heart-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 18px 36px -10px rgba(232, 131, 122, 0.7); }
+.heart-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 18px 36px -10px rgba(200, 120, 144, 0.7); }
 .heart-btn svg { animation: heartbeat 1.6s ease-in-out infinite; }
 @keyframes heartbeat {
   0%, 50%, 100% { transform: scale(1); }
@@ -834,6 +835,18 @@ button {
   background: var(--paper);
 }
 
+/* ---------- 12b. Image loading skeleton ---------- */
+.page-img {
+  background: linear-gradient(90deg, var(--gingham-b) 25%, var(--gingham-a) 50%, var(--gingham-b) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+.page-img.loaded { animation: none; background: none; }
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* ---------- 13. Reveal animations ---------- */
 .reveal {
   opacity: 0;
@@ -877,7 +890,7 @@ button {
   .ctrl-btn.ctrl-play { width: 54px; height: 54px; }
 
   .final-letter { padding: 22px 20px; }
-  .puzzle-grid { --cell: clamp(60px, 26vw, 100px); --gap: 5px; padding: 10px; }
+  .puzzle-grid { --cell: clamp(76px, 28vw, 110px); --gap: 6px; padding: 10px; }
 }
 
 /* iOS Safari 100vh fix */

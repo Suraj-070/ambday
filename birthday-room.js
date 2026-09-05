@@ -753,7 +753,7 @@ function stopParticles() {
 }
 function spawnParticles() {
   if (!particlesOn) return;
-  const colors = ['#E8837A', '#E3AC3D', '#BFD8F0', '#ffffff'];
+  const colors = ['#C87890', '#7090D0', '#B0D0F0', '#90B0F0', '#ffffff'];
   for (let i = 0; i < 3; i++) {
     const p = document.createElement('span');
     p.className = 'br-particle';
@@ -778,7 +778,7 @@ function burstConfetti() {
   const overlayRect = overlay.getBoundingClientRect();
   const cx = rect.left - overlayRect.left + rect.width / 2;
   const cy = rect.top  - overlayRect.top;
-  const colors = ['#E8837A', '#E3AC3D', '#A5333F', '#22406B', '#BFD8F0'];
+  const colors = ['#C87890', '#7090D0', '#304880', '#103070', '#B0D0F0'];
   const N = 14;
   for (let i = 0; i < N; i++) {
     const c = document.createElement('span');

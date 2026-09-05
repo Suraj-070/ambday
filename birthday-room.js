@@ -527,16 +527,26 @@ function getDecorationHTML(kind) {
 
     case 'banner': return `
       <div class="dec-banner-full">
-        <svg width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Strings from wall corners -->
-          <path d="M0 0 Q150 60 300 40 Q450 20 600 0" fill="none" stroke="#b8860b" stroke-width="2"/>
-          <!-- Flag triangles -->
-          ${[0,1,2,3,4,5,6,7,8,9].map(i => {
-            const colors = ['#E8837A','#C87890','#7090D0','#B0D0F0','#E3AC3D','#90B0F0','#C87890','#E8837A','#7090D0','#B0D0F0'];
-            const x = 30 + i * 58;
-            const yTop = i < 5 ? (i * 4) + 8 : ((9-i) * 4) + 8;
-            return '<polygon points="' + x + ',' + yTop + ' ' + (x+22) + ',' + yTop + ' ' + (x+11) + ',' + (yTop+28) + '" fill="' + colors[i] + '" opacity="0.95"/>';
-          }).join('')}
+        <svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <!-- Left nail -->
+          <circle cx="8" cy="4" r="5" fill="#c8a96e"/><circle cx="8" cy="4" r="3" fill="#f0d080"/>
+          <!-- Right nail -->
+          <circle cx="692" cy="4" r="5" fill="#c8a96e"/><circle cx="692" cy="4" r="3" fill="#f0d080"/>
+          <!-- Main string -->
+          <path d="M8 4 Q175 55 350 38 Q525 20 692 4" fill="none" stroke="#c8a96e" stroke-width="2.5"/>
+          <!-- Flag pennants -->
+          ${(() => {
+            const colors = ['#E8837A','#7090D0','#F4C430','#C87890','#90B0F0','#E8A87A','#B0D0F0','#D4709A','#7090D0','#E8837A','#F4C430','#C87890'];
+            const pts = [];
+            for(let i=0;i<12;i++){
+              const t = i/11;
+              // catenary-like y position along the string
+              const x = 30 + i*56;
+              const strY = 4 + 51*4*t*(1-t); // parabola peak ~55px at center
+              pts.push('<polygon points="'+(x)+','+(strY)+' '+(x+24)+','+(strY)+' '+(x+12)+','+(strY+32)+'" fill="'+colors[i]+'" opacity="0.95" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"/>');
+            }
+            return pts.join('');
+          })()}
         </svg>
         <div class="dec-banner-text">🎂 Happy Birthday Amisha 🎂</div>
       </div>`;

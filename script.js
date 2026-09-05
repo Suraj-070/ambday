@@ -139,23 +139,30 @@ function unlock() {
   // 1. Fade out lock screen
   lockScreen.classList.add('unlocked');
 
-  // 2. Show surprise reveal overlay
+  // 2. Show surprise reveal overlay immediately
   const sr = $('#surpriseReveal');
   sr.hidden = false;
-  // small tick so hidden→show transition fires
   requestAnimationFrame(() => requestAnimationFrame(() => sr.classList.add('show')));
 
-  // 3. After "okay. open them" has appeared (~2.8s), fade it out and reveal scrapbook
-  setTimeout(() => {
-    sr.classList.add('fade-out');
+  // 3. Start preloading audio now (user gesture is active)
+  bgAudio.preload = 'auto';
+  bgAudio.volume = 0;
+  bgAudio.load();
 
-    // Start audio during the fade — feels magical
+  // 4. Wait for audio buffered enough OR 3.5s timeout — whichever first
+  //    Then fade reveal out and open scrapbook
+  let revealed = false;
+  function doReveal() {
+    if (revealed) return;
+    revealed = true;
+
+    // play audio with fade
     try {
-      bgAudio.volume = 0;
       AudioManager.play(bgAudio);
-      AudioManager.fadeTo(bgAudio, 0.45, 1200);
+      AudioManager.fadeTo(bgAudio, 0.45, 1400);
     } catch(e) {}
 
+    sr.classList.add('fade-out');
     setTimeout(() => {
       sr.hidden = true;
       sr.classList.remove('show', 'fade-out');
@@ -164,11 +171,14 @@ function unlock() {
       daysWidget.hidden = false;
       observeReveals();
       focusFirstVisible();
-
-      // Remove lock from DOM
       if (lockScreen.parentNode) lockScreen.parentNode.removeChild(lockScreen);
     }, 900);
-  }, 3200);
+  }
+
+  // Fire when enough audio is buffered
+  bgAudio.addEventListener('canplaythrough', doReveal, { once: true });
+  // Hard timeout fallback — don't keep her waiting forever
+  setTimeout(doReveal, 3800);
 }
 
 function failUnlock() {

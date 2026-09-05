@@ -364,13 +364,13 @@ const playlist = [
     title: "Can't Stop Thinking About You",
     artist: "Yabesh Thapa, Bizen, Vek Dong",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Yabesh_Thapa_Bizen_Vek_Dong_-_Can_t_Stop_Thinking_About_You_ClassX_Connects_6uRXg5EDv00_p6kwpi.mp3",
-    caption: "this one is literally in my head 24/7. not even joking. you're just always there baby, i can't switch it off and honestly i don't want to."
+    caption: "this one is literally in my head 24/7. not even joking. you're just always there, maichaa. i can't switch it off and honestly i don't want to."
   },
   {
     title: "Ishq Wala Love",
     artist: "Neeti Mohan · Salim Merchant",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597847/Ishq_Wala_Love_4K_Alia_Bhatt_Sidharth_Malhotra_Varun_Dhawan_Neeti_Mohan_Salim_Merchant_mjizs6.mp3",
-    caption: "this is exactly what i mean when i say i love you. not the loud showy kind. the quiet, stays-even-when-it's-hard kind. that one, baby."
+    caption: "this is exactly what i mean when i say i love you. not the loud showy kind. the quiet, stays-even-when-it's-hard kind. that one."
   },
   {
     title: "Laakhau Hajarau",
@@ -382,7 +382,7 @@ const playlist = [
     title: "Treat You Better",
     artist: "Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597846/Shawn_Mendes_-_Treat_You_Better_Lyrics_mzeeff.mp3",
-    caption: "i'm gonna be honest — i don't always get it right. but i'm always trying to. you deserve every good thing and i mean that, baby."
+    caption: "i'm gonna be honest — i don't always get it right. but i'm always trying to. you deserve every good thing and i mean that, babe."
   },
   {
     title: "You Belong With Me",
@@ -394,25 +394,25 @@ const playlist = [
     title: "Timi Sangai",
     artist: "Apurva Tamang",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597839/Timi_Sangai_-_Apurva_Tamang_Official_MV_hoqlte.mp3",
-    caption: "timi sangai — with you, baby. that's literally all i want. the boring days, the random evenings, the stupid little things. all of it, with you."
+    caption: "timi sangai — with you, maichaa. that's literally all i want. the boring days, the random evenings, the stupid little things. all of it."
   },
   {
     title: "Lover (Remix)",
     artist: "Taylor Swift ft. Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597824/Taylor_Swift_-_Lover_Remix_Feat._Shawn_Mendes_Lyric_Video_tk2ich.mp3",
-    caption: "can i just be yours? completely? that's the whole request baby. yours to keep, yours to bother, yours to call at 2am. yours."
+    caption: "can i just be yours? completely? that's the whole request, cutipie. yours to keep, yours to bother, yours to call at 2am. yours."
   },
   {
     title: "Thamana Haat",
     artist: "Samir Shrestha",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597820/Samir_Shrestha_-_Thamana_Haat_Official_Music_Video___Prod._Foeseal_qyRrUEInzAs_tdngru.mp3",
-    caption: "thamana haat — hold my hand, baby. that's genuinely the whole request. just don't let go. especially when it's hard. okay?"
+    caption: "thamana haat — hold my hand, maichaa. that's genuinely all i'm asking. just don't let go. especially when it's hard."
   },
   {
     title: "There's Nothing Holdin' Me Back",
     artist: "Shawn Mendes",
     src: "https://res.cloudinary.com/dceqegqpr/video/upload/v1788597816/Shawn_Mendes_-_There_s_Nothing_Holdin_Me_Back_Official_Music_Video_mlh8ii.mp3",
-    caption: "literally nothing could hold me back from you. no bad day, no distance, nothing. i'd go through all of it just to get back to you. every time, baby."
+    caption: "literally nothing could hold me back from you. no bad day, no distance, nothing. i'd go through all of it just to get back to you. every single time, babe."
   },
 ];
 

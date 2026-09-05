@@ -22,10 +22,10 @@ const birthdayRoomConfig = {
   /* Personal birthday wish. Replace the body text with your real message.
      Use \n for line breaks. */
   birthdayWish:
-    "okay baby i tried so hard to write something good and i don't know if i did but here goes.\n" +
+    "okay i tried so hard to write something good and i don't know if i did but here goes, maichaa.\n" +
     "thank you for being you. for the random calls, the dumb jokes, the moments where we're just existing and it somehow feels like the most i've ever felt.\n" +
     "you make everything better just by being in it. that's just facts.\n" +
-    "i love you, Amisha baby. happy birthday. here's to a year that's as warm and ridiculous and wonderful as you are. ♡",
+    "i love you, cutipie. happy birthday. here's to a year as warm and ridiculous and wonderful as you are. ♡",
 
   /* Birthday song. Place the file at this path. */
   birthdaySong: 'assets/audio/birthday-song.mp3',
@@ -207,7 +207,7 @@ function onStateChange(state) {
       setCaption("okay it's dark in here 😅 there's a switch somewhere");
       // Hint sequence — point to the switch
       later(() => {
-        setCaption("psst — the switch is on the right wall baby 💡");
+        setCaption("psst — the switch is on the right wall 💡 go on, babe");
         if (lightSwitch) {
           lightSwitch.classList.add('pulse-hint');
           later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
@@ -249,7 +249,7 @@ function onStateChange(state) {
       cakeEl.classList.add('placed');
       setCaption("okay now the candle 🕯️");
       later(() => revealCandle(), 800);
-      later(() => setCaption("tap the candle, baby 🕯️"), 2000);
+      later(() => setCaption("tap the candle, maichaa 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
@@ -265,7 +265,7 @@ function onStateChange(state) {
       room.classList.add('lit');
       // Don't overwrite banner if decoration already placed it
       if (!banner.classList.contains('pre-visible')) {
-        bannerText.textContent = 'happy birthday Amisha baby 🎂♡';
+        bannerText.textContent = 'happy birthday, cutipie 🎂♡';
       }
       banner.classList.add('visible');
       if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
@@ -578,7 +578,7 @@ function getDecorationHTML(kind) {
             return pts.join('');
           })()}
         </svg>
-        <div class="dec-banner-text">🎂 happy birthday Amisha baby 🎂</div>
+        <div class="dec-banner-text">🎂 happy birthday, babe 🎂</div>
       </div>`;
 
     case 'photo': {
@@ -844,7 +844,7 @@ function revealCake() {
   cakeEl.style.left = (roomRect.width * 0.08) + 'px';
   cakeEl.style.top  = (roomRect.height * 0.62) + 'px';
   setState(ST.CAKE_AVAILABLE);
-  setCaption("drag the cake onto the table baby 🎂");
+  setCaption("drag the cake onto the table, maichaa 🎂");
 }
 
 function enableCakeDrag() {
@@ -1147,7 +1147,7 @@ function enableKnifeDrag() {
     cakeEl.classList.add('cut');
     knifeEl.style.transition = 'opacity 600ms ease';
     knifeEl.style.opacity = '0';
-    setCaption("make a wish, baby 🌟 i'll wait");
+    setCaption("make a wish, cutipie 🌟 i'll wait right here");
     // Music fades out and clears AudioManager.active so ambient can return later
     if (AudioManager && birthdayAudio) {
       AudioManager.fadeTo(birthdayAudio, 0, 2500, () => {

@@ -1291,12 +1291,7 @@ function showWish() {
 }
 
 function blowCandle() {
-  // Fade birthday music out as candle is blown
-  if (AudioManager && birthdayAudio && !birthdayAudio.paused) {
-    AudioManager.fadeTo(birthdayAudio, 0, 1500, () => {
-      AudioManager.pause(birthdayAudio);
-    });
-  }
+  // Music keeps playing — fades only after cake is cut
   setState(ST.CANDLE_EXTINGUISHED);
 }
 

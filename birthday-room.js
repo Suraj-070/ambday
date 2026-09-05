@@ -44,7 +44,7 @@ const birthdayRoomConfig = {
   ],
 
   /* Photo to show in the frame — replace with Amisha's Cloudinary URL */
-  photoUrl: 'PHOTO_URL_HERE',
+  photoUrl: 'https://res.cloudinary.com/dceqegqpr/image/upload/v1788600853/Snapchat-28097105_ptmy1g.jpg',
 
   /* Cake element size hint (used by drag snap math) */
   cakeWidth: 110,

@@ -413,7 +413,7 @@ function getDecorationHTML(kind) {
   switch (kind) {
     case 'balloons': return `
       <div class="dec-balloons">
-        <svg width="110" height="160" viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
           <!-- Left balloon -->
           <ellipse cx="28" cy="44" rx="22" ry="26" fill="#E8837A" opacity="0.92"/>
           <ellipse cx="20" cy="34" rx="7" ry="5" fill="rgba(255,255,255,0.35)" transform="rotate(-20,20,34)"/>
@@ -473,7 +473,7 @@ function getDecorationHTML(kind) {
 
     case 'flowers': return `
       <div class="dec-flowers">
-        <svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
           <!-- Stems -->
           <path d="M40 115 Q38 90 35 70" stroke="#4a7c59" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           <path d="M60 118 Q60 95 60 75" stroke="#4a7c59" stroke-width="2.5" fill="none" stroke-linecap="round"/>
@@ -519,7 +519,7 @@ function getDecorationHTML(kind) {
 
     case 'gift': return `
       <div class="dec-gift">
-        <svg width="110" height="130" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
           <!-- Shadow -->
           <ellipse cx="55" cy="126" rx="38" ry="5" fill="rgba(0,0,0,0.15)"/>
           <!-- Box body -->

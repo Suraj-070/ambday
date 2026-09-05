@@ -22,10 +22,10 @@ const birthdayRoomConfig = {
   /* Personal birthday wish. Replace the body text with your real message.
      Use \n for line breaks. */
   birthdayWish:
-    "I don't know how to put everything I feel into words, so I'll just try.\n" +
-    "Thank you for being mine. For the small days, the loud ones, and every quiet moment in between.\n" +
-    "You make everything softer and warmer just by being in it.\n" +
-    "Happy Birthday, Amisha. Here's to a year as beautiful as you are. ♡",
+    "okay baby i tried so hard to write something good and i don't know if i did but here goes.\n" +
+    "thank you for being you. for the random calls, the dumb jokes, the moments where we're just existing and it somehow feels like the most i've ever felt.\n" +
+    "you make everything better just by being in it. that's just facts.\n" +
+    "i love you, Amisha baby. happy birthday. here's to a year that's as warm and ridiculous and wonderful as you are. ♡",
 
   /* Birthday song. Place the file at this path. */
   birthdaySong: 'assets/audio/birthday-song.mp3',
@@ -174,7 +174,7 @@ function openRoom() {
 
   // Set state
   setState(ST.ROOM_ENTER);
-  setCaption("It's dark in here... maybe there's a light?");
+  setCaption("okay it's dark in here 😅 there's a switch somewhere");
 
   // The HTML already provides a <source> child for #birthdayAudio, so we
   // don't need to append one here. The src is wired at parse time.
@@ -204,10 +204,10 @@ function onStateChange(state) {
     case ST.LIGHTS_OFF:
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
-      setCaption("It's dark in here... maybe there's a light?");
+      setCaption("okay it's dark in here 😅 there's a switch somewhere");
       // Hint sequence — point to the switch
       later(() => {
-        setCaption("Psst — there's a light switch on the right wall 💡");
+        setCaption("psst — the switch is on the right wall baby 💡");
         if (lightSwitch) {
           lightSwitch.classList.add('pulse-hint');
           later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
@@ -225,20 +225,20 @@ function onStateChange(state) {
       if (brLightFlash) { brLightFlash.classList.add('flash'); setTimeout(() => brLightFlash.classList.remove('flash'), 700); }
       // Moonbeam fades out naturally via CSS
       later(() => {
-        setCaption("Let's get this place ready for your birthday...");
+        setCaption("okay let's decorate this for you 🎈 go on");
         showTray();
         setState(ST.DECORATING);
       }, birthdayRoomConfig.timing.captionHold);
       break;
 
     case ST.DECORATION_COMPLETE:
-      setCaption("Perfect... ✨ You did it!");
+      setCaption("WAIT you actually did it?? 🥹✨");
       startFallingConfetti();
       later(() => {
-        setCaption("Almost complete... something's still missing.");
+        setCaption("almost... something's still missing though");
       }, 1800);
       later(() => {
-        setCaption("One last thing...");
+        setCaption("one last thing, i promise");
         stopFallingConfetti();
         revealCake();
       }, birthdayRoomConfig.timing.captionHold + 1800);
@@ -247,9 +247,9 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       if (brCakeShadow) brCakeShadow.hidden = false;
       cakeEl.classList.add('placed');
-      setCaption("Now for the candle...");
+      setCaption("okay now the candle 🕯️");
       later(() => revealCandle(), 800);
-      later(() => setCaption("Tap the candle to light it 🕯️"), 2000);
+      later(() => setCaption("tap the candle, baby 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
@@ -265,7 +265,7 @@ function onStateChange(state) {
       room.classList.add('lit');
       // Don't overwrite banner if decoration already placed it
       if (!banner.classList.contains('pre-visible')) {
-        bannerText.textContent = 'Happy Birthday, Amisha ♡';
+        bannerText.textContent = 'happy birthday Amisha baby 🎂♡';
       }
       banner.classList.add('visible');
       if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
@@ -273,13 +273,13 @@ function onStateChange(state) {
       startFallingConfetti();
       later(() => {
         stopFallingConfetti();
-        setCaption("Drag the knife across the cake...");
+        setCaption("okay cut the cake now 🎂 drag the knife");
         revealKnife();
       }, birthdayRoomConfig.timing.musicToKnife);
       break;
 
     case ST.CAKE_CUTTING:
-      setCaption("Drag the knife across the cake...");
+      setCaption("okay cut the cake now 🎂 drag the knife");
       break;
 
     case ST.WISH:
@@ -578,7 +578,7 @@ function getDecorationHTML(kind) {
             return pts.join('');
           })()}
         </svg>
-        <div class="dec-banner-text">🎂 Happy Birthday Amisha 🎂</div>
+        <div class="dec-banner-text">🎂 happy birthday Amisha baby 🎂</div>
       </div>`;
 
     case 'photo': {
@@ -598,7 +598,7 @@ function getDecorationHTML(kind) {
             <div class="dec-photo-corner dec-photo-corner-bl"></div>
             <div class="dec-photo-corner dec-photo-corner-br"></div>
           </div>
-          <div class="dec-photo-caption">us ♡</div>
+          <div class="dec-photo-caption">that's us baby 🤍</div>
         </div>`;
     }
 
@@ -844,7 +844,7 @@ function revealCake() {
   cakeEl.style.left = (roomRect.width * 0.08) + 'px';
   cakeEl.style.top  = (roomRect.height * 0.62) + 'px';
   setState(ST.CAKE_AVAILABLE);
-  setCaption("Drag the cake onto the table...");
+  setCaption("drag the cake onto the table baby 🎂");
 }
 
 function enableCakeDrag() {
@@ -953,7 +953,7 @@ enableCakeDrag();
    ============================================================ */
 function revealCandle() {
   setState(ST.CANDLE_AVAILABLE);
-  setCaption("Light the candle...");
+  setCaption("light the candle now ✨");
 
   // Make candle clickable
   candleEl.style.cursor = 'pointer';
@@ -1147,7 +1147,7 @@ function enableKnifeDrag() {
     cakeEl.classList.add('cut');
     knifeEl.style.transition = 'opacity 600ms ease';
     knifeEl.style.opacity = '0';
-    setCaption("Make a wish...");
+    setCaption("make a wish, baby 🌟 i'll wait");
     // Music fades out and clears AudioManager.active so ambient can return later
     if (AudioManager && birthdayAudio) {
       AudioManager.fadeTo(birthdayAudio, 0, 2500, () => {

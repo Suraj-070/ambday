@@ -32,16 +32,21 @@ const birthdayRoomConfig = {
 
   /* Decorations the user must place to complete the room.
      Each key matches a data-zone attribute on a .br-dropzone element. */
-  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift'],
+  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles'],
 
   /* Decoration tray items (in display order).
      `kind` matches a zone; `emoji` is the visual. */
   decorations: [
-    { kind: 'balloons', emoji: '🎈', label: 'Balloons' },
-    { kind: 'banner',   emoji: '🎉', label: 'Banner'   },
-    { kind: 'photo',    emoji: '🖼️', label: 'Photo'    },
-    { kind: 'flowers',  emoji: '🌸', label: 'Flowers'  },
-    { kind: 'gift',     emoji: '🎁', label: 'Gift'     },
+    { kind: 'balloons',  emoji: '🎈', label: 'Balloons'  },
+    { kind: 'banner',    emoji: '🎉', label: 'Banner'    },
+    { kind: 'photo',     emoji: '🖼️', label: 'Photo'     },
+    { kind: 'flowers',   emoji: '🌸', label: 'Flowers'   },
+    { kind: 'gift',      emoji: '🎁', label: 'Gift'      },
+    { kind: 'lights',    emoji: '✨', label: 'Fairy Lights' },
+    { kind: 'confetti',  emoji: '🎊', label: 'Confetti'  },
+    { kind: 'heartwall', emoji: '💝', label: 'Heart Wall' },
+    { kind: 'polaroids', emoji: '📸', label: 'Polaroids' },
+    { kind: 'candles',   emoji: '🕯️', label: 'Candles'   },
   ],
 
   /* Photo to show in the frame — replace with Amisha's Cloudinary URL */
@@ -705,6 +710,156 @@ function getDecorationHTML(kind) {
             <linearGradient id="giftGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
               <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>`;
+
+
+    case 'lights': return `
+      <div class="dec-fairy-lights">
+        <svg viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <!-- String -->
+          <path d="M5 20 Q75 50 150 35 Q225 20 295 40" fill="none" stroke="#c8a96e" stroke-width="1.8"/>
+          ${(() => {
+            const colors = ['#FFD700','#FF6B6B','#6BB5FF','#FF9EE5','#98FF98','#FFB347','#C8A9F0','#FFD700','#FF6B6B','#6BB5FF'];
+            return colors.map((c,i) => {
+              const t = i/9;
+              const x = 5 + t*290;
+              const y = 20 + 30*4*t*(1-t) + (i%2===0?-6:6);
+              return `<ellipse cx="${x}" cy="${y+10}" rx="7" ry="10" fill="${c}" opacity="0.92" filter="url(#glow${i})"/>
+                      <ellipse cx="${x}" cy="${y+4}" rx="4" ry="4" fill="${c}" opacity="0.5"/>
+                      <rect x="${x-2}" y="${y}" width="4" height="4" fill="#888" rx="1"/>
+                      <filter id="glow${i}"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+            }).join('');
+          })()}
+        </svg>
+      </div>`;
+
+    case 'confetti': return `
+      <div class="dec-confetti-burst">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          ${(() => {
+            const pieces = [
+              {x:40,y:30,w:12,h:8,rot:20,c:'#E8837A'},{x:80,y:15,w:8,h:12,rot:-30,c:'#7090D0'},
+              {x:130,y:25,w:14,h:7,rot:45,c:'#FFD700'},{x:160,y:40,w:9,h:13,rot:-15,c:'#C87890'},
+              {x:20,y:70,w:10,h:10,rot:60,c:'#90B0F0'},{x:170,y:80,w:12,h:8,rot:-45,c:'#F4A7B9'},
+              {x:55,y:120,w:8,h:14,rot:30,c:'#E8837A'},{x:145,y:130,w:14,h:8,rot:-20,c:'#7090D0'},
+              {x:100,y:50,w:10,h:10,rot:15,c:'#FFD700'},{x:90,y:150,w:12,h:7,rot:50,c:'#C87890'},
+              {x:30,y:155,w:7,h:12,rot:-35,c:'#90B0F0'},{x:165,y:165,w:9,h:9,rot:25,c:'#F4A7B9'},
+              // circles
+              {x:110,y:90,r:6,c:'#E8837A'},{x:60,y:80,r:5,c:'#FFD700'},
+              {x:150,y:100,r:7,c:'#7090D0'},{x:35,y:105,r:5,c:'#C87890'},
+              // streamers
+            ];
+            return pieces.map(p => p.r
+              ? `<circle cx="${p.x}" cy="${p.y}" r="${p.r}" fill="${p.c}" opacity="0.9"/>`
+              : `<rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" fill="${p.c}" opacity="0.88" rx="2" transform="rotate(${p.rot} ${p.x+p.w/2} ${p.y+p.h/2})"/>`
+            ).join('') +
+            // streamers
+            `<path d="M95 10 Q80 50 100 90 Q120 130 95 170" fill="none" stroke="#E8837A" stroke-width="3" opacity="0.6" stroke-linecap="round"/>
+             <path d="M115 5 Q135 45 115 85 Q95 125 115 165" fill="none" stroke="#7090D0" stroke-width="3" opacity="0.6" stroke-linecap="round"/>`;
+          })()}
+        </svg>
+      </div>`;
+
+    case 'heartwall': return `
+      <div class="dec-heartwall">
+        <svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          ${(() => {
+            const hearts = [
+              {x:20,y:20,s:1.1,c:'#E8837A',op:0.9},{x:65,y:10,s:0.7,c:'#C87890',op:0.7},
+              {x:105,y:18,s:1.2,c:'#F4A7B9',op:0.85},{x:155,y:8,s:0.8,c:'#E8837A',op:0.75},
+              {x:190,y:22,s:0.9,c:'#C87890',op:0.8},
+              {x:5,y:65,s:0.8,c:'#F4A7B9',op:0.7},{x:48,y:58,s:1.3,c:'#E8837A',op:0.95},
+              {x:100,y:55,s:0.9,c:'#C87890',op:0.8},{x:148,y:60,s:1.1,c:'#F4A7B9',op:0.85},
+              {x:195,y:58,s:0.7,c:'#E8837A',op:0.7},
+              {x:25,y:115,s:1.0,c:'#C87890',op:0.8},{x:75,y:108,s:0.8,c:'#E8837A',op:0.75},
+              {x:120,y:112,s:1.2,c:'#F4A7B9',op:0.9},{x:168,y:105,s:0.9,c:'#C87890',op:0.8},
+              {x:205,y:118,s:0.7,c:'#E8837A',op:0.7},
+            ];
+            const hPath = 'M0,-8 C0,-14 -10,-18 -10,-8 C-10,2 0,10 0,10 C0,10 10,2 10,-8 C10,-18 0,-14 0,-8';
+            return hearts.map(h =>
+              `<path d="${hPath}" fill="${h.c}" opacity="${h.op}" transform="translate(${h.x},${h.y}) scale(${h.s})"/>`
+            ).join('');
+          })()}
+          <!-- Centre big heart with "us" text -->
+          <path d="M0,-18 C0,-32 -22,-38 -22,-18 C-22,4 0,22 0,22 C0,22 22,4 22,-18 C22,-38 0,-32 0,-18"
+            fill="#E8837A" opacity="0.95" transform="translate(110,80)"/>
+          <text x="110" y="84" text-anchor="middle" font-size="10" fill="white" font-family="serif" font-weight="bold">us ♡</text>
+        </svg>
+      </div>`;
+
+    case 'polaroids': return `
+      <div class="dec-polaroids">
+        <!-- Left polaroid — tilted left -->
+        <div class="dec-pol dec-pol-l">
+          <div class="dec-pol-frame">
+            <div class="dec-pol-img">
+              <svg viewBox="0 0 60 55" width="60" height="55" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="55" fill="#f5f0e8"/>
+                <circle cx="30" cy="22" r="12" fill="#C87890" opacity="0.5"/>
+                <path d="M8 50 Q30 30 52 50" fill="#C87890" opacity="0.3"/>
+                <text x="30" y="52" text-anchor="middle" font-size="7" fill="#C87890" font-family="cursive">may 21 🤍</text>
+              </svg>
+            </div>
+            <p class="dec-pol-caption">day 1 🤍</p>
+          </div>
+        </div>
+        <!-- Right polaroid — tilted right -->
+        <div class="dec-pol dec-pol-r">
+          <div class="dec-pol-frame">
+            <div class="dec-pol-img">
+              <svg viewBox="0 0 60 55" width="60" height="55" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="55" fill="#f5f0e8"/>
+                <circle cx="30" cy="22" r="12" fill="#7090D0" opacity="0.5"/>
+                <path d="M8 50 Q30 30 52 50" fill="#7090D0" opacity="0.3"/>
+                <text x="30" y="52" text-anchor="middle" font-size="7" fill="#7090D0" font-family="cursive">still us ♡</text>
+              </svg>
+            </div>
+            <p class="dec-pol-caption">now 🎂</p>
+          </div>
+        </div>
+      </div>`;
+
+    case 'candles': return `
+      <div class="dec-table-candles">
+        <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <!-- Left tall candle -->
+          <rect x="28" y="40" width="18" height="80" rx="3" fill="#F4C8D0"/>
+          <rect x="28" y="40" width="18" height="80" rx="3" fill="url(#cwL)"/>
+          <ellipse cx="37" cy="40" rx="9" ry="4" fill="#f8d8e0"/>
+          <line x1="37" y1="36" x2="37" y2="28" stroke="#333" stroke-width="1.5"/>
+          <ellipse cx="37" cy="24" rx="5" ry="8" fill="#FFD700" opacity="0.9"/>
+          <ellipse cx="37" cy="20" rx="3" ry="5" fill="#FFF" opacity="0.6"/>
+          <ellipse cx="34" cy="42" rx="3" ry="6" fill="rgba(255,255,255,0.2)"/>
+          <!-- Middle short candle -->
+          <rect x="71" y="70" width="16" height="50" rx="3" fill="#C8E0F4"/>
+          <ellipse cx="79" cy="70" rx="8" ry="3.5" fill="#d8eef8"/>
+          <line x1="79" y1="66" x2="79" y2="59" stroke="#333" stroke-width="1.5"/>
+          <ellipse cx="79" cy="55" rx="5" ry="8" fill="#FFB347" opacity="0.9"/>
+          <ellipse cx="79" cy="51" rx="3" ry="5" fill="#FFF" opacity="0.5"/>
+          <!-- Right tall candle -->
+          <rect x="114" y="45" width="18" height="75" rx="3" fill="#D4C8F4"/>
+          <ellipse cx="123" cy="45" rx="9" ry="4" fill="#e4d8ff"/>
+          <line x1="123" y1="41" x2="123" y2="33" stroke="#333" stroke-width="1.5"/>
+          <ellipse cx="123" cy="29" rx="5" ry="8" fill="#FF9EE5" opacity="0.9"/>
+          <ellipse cx="123" cy="25" rx="3" ry="5" fill="#FFF" opacity="0.55"/>
+          <!-- Candleholders -->
+          <ellipse cx="37" cy="122" rx="14" ry="5" fill="#d4af5a"/>
+          <rect x="30" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
+          <ellipse cx="79" cy="122" rx="12" ry="4.5" fill="#d4af5a"/>
+          <rect x="72" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
+          <ellipse cx="123" cy="122" rx="14" ry="5" fill="#d4af5a"/>
+          <rect x="116" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
+          <!-- Wax drips -->
+          <path d="M30 80 Q28 90 29 95" stroke="#f8d8e0" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M118 85 Q120 95 119 100" stroke="#e4d8ff" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="cwL" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="rgba(0,0,0,0.08)"/>
+              <stop offset="40%" stop-color="rgba(255,255,255,0.15)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.06)"/>
             </linearGradient>
           </defs>
         </svg>

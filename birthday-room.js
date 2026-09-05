@@ -209,10 +209,9 @@ function onStateChange(state) {
     case ST.LIGHTS_ON:
       room.classList.remove('dark');
       room.classList.add('lit');
-      // Fairy lights come on
       stringLights.classList.add('on');
-      // Try to (re)start ambient audio since user just clicked
       tryRestartAmbient();
+      startDust();
       later(() => {
         setCaption("let's get this place ready for your birthday...");
         showTray();
@@ -357,9 +356,53 @@ function setCaption(text) {
   }
 })();
 
-/* ============================================================
-   8. Decoration tray — tap to place + drag on desktop + idle hint
-   ============================================================ */
+/* ---- Live clock hands ---- */
+(function startClock() {
+  const hourHand   = $('#brClockHour');
+  const minuteHand = $('#brClockMinute');
+  if (!hourHand || !minuteHand) return;
+  function tickClock() {
+    const now = new Date();
+    const h = now.getHours() % 12;
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    const hourDeg   = h * 30 + m * 0.5;
+    const minuteDeg = m * 6 + s * 0.1;
+    hourHand.style.transform   = `rotate(${hourDeg}deg)`;
+    minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+  }
+  tickClock();
+  setInterval(tickClock, 10000);
+})();
+
+/* ---- Dust motes (only when lit) ---- */
+let dustInterval = null;
+function startDust() {
+  const dustEl = $('#brDust');
+  if (!dustEl || PRM) return;
+  dustInterval = setInterval(() => {
+    const mote = document.createElement('div');
+    mote.className = 'br-dust-mote';
+    const size = 1.5 + Math.random() * 2.5;
+    mote.style.width  = size + 'px';
+    mote.style.height = size + 'px';
+    mote.style.left   = (10 + Math.random() * 80) + '%';
+    mote.style.bottom = (8 + Math.random() * 40) + '%';
+    mote.style.setProperty('--dx', (Math.random() * 40 - 20) + 'px');
+    const dur = 6 + Math.random() * 8;
+    mote.style.animationDuration = dur + 's';
+    mote.style.animationDelay   = (Math.random() * 2) + 's';
+    dustEl.appendChild(mote);
+    setTimeout(() => mote.remove(), (dur + 2) * 1000);
+  }, 800);
+}
+function stopDust() {
+  if (dustInterval) { clearInterval(dustInterval); dustInterval = null; }
+  const dustEl = $('#brDust');
+  if (dustEl) dustEl.innerHTML = '';
+}
+
+
 function showTray() {
   tray.hidden = false;
   requestAnimationFrame(() => tray.classList.add('show'));
@@ -1128,6 +1171,7 @@ function closeRoomCleanup() {
     AudioManager.pause(birthdayAudio);
   }
   stopParticles();
+  stopDust();
   // Mark complete
   birthdayRoomState.roomClosed = true;
   setState(ST.ROOM_COMPLETE);

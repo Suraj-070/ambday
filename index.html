@@ -328,13 +328,58 @@
     <div class="br-ceiling"></div>
     <div class="br-floor"></div>
 
+    <!-- Wallpaper subtle pattern -->
+    <div class="br-wallpaper" aria-hidden="true"></div>
+
+    <!-- Ceiling pendant lamp -->
+    <div class="br-ceiling-light" id="brCeilingLight" aria-hidden="true">
+      <div class="br-lamp-wire"></div>
+      <div class="br-lamp-shade"></div>
+      <div class="br-lamp-bulb"></div>
+      <div class="br-lamp-glow"></div>
+    </div>
+
     <!-- Window with moonlight (visible even in the dark) -->
     <div class="br-window" aria-hidden="true">
       <div class="br-window-moon"></div>
       <div class="br-window-frame"></div>
       <div class="br-window-cross-h"></div>
       <div class="br-window-cross-v"></div>
+      <div class="br-window-sill"></div>
     </div>
+    <!-- Curtains flanking the window -->
+    <div class="br-curtain br-curtain-l" aria-hidden="true"></div>
+    <div class="br-curtain br-curtain-r" aria-hidden="true"></div>
+
+    <!-- Rug on the floor -->
+    <div class="br-rug" aria-hidden="true">
+      <div class="br-rug-inner"></div>
+      <div class="br-rug-fringe"></div>
+    </div>
+
+    <!-- Shelf on left wall -->
+    <div class="br-shelf" aria-hidden="true">
+      <div class="br-shelf-top"></div>
+      <div class="br-shelf-bracket br-shelf-bracket-l"></div>
+      <div class="br-shelf-bracket br-shelf-bracket-r"></div>
+      <div class="br-shelf-items">
+        <span class="br-shelf-item">📚</span>
+        <span class="br-shelf-item">🕯️</span>
+        <span class="br-shelf-item">🪴</span>
+      </div>
+    </div>
+
+    <!-- Wall clock on right wall -->
+    <div class="br-clock" id="brClock" aria-hidden="true">
+      <div class="br-clock-face">
+        <div class="br-clock-hand br-clock-hour" id="brClockHour"></div>
+        <div class="br-clock-hand br-clock-minute" id="brClockMinute"></div>
+        <div class="br-clock-center"></div>
+      </div>
+    </div>
+
+    <!-- Floating dust motes -->
+    <div class="br-dust" id="brDust" aria-hidden="true"></div>
 
     <!-- Light switch on the right wall -->
     <button class="br-light-switch" id="brLightSwitch" aria-label="Turn on the lights" aria-pressed="false">

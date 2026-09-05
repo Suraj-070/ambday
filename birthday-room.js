@@ -22,9 +22,10 @@ const birthdayRoomConfig = {
   /* Personal birthday wish. Replace the body text with your real message.
      Use \n for line breaks. */
   birthdayWish:
-    "i don't know how to fit a year of you into a paragraph, so i won't try.\n" +
-    "just — thank you for staying. for the small days, not just the loud ones.\n" +
-    "i hope this year is softer to you than you let yourself hope for.",
+    "I don't know how to put everything I feel into words, so I'll just try.\n" +
+    "Thank you for being mine. For the small days, the loud ones, and every quiet moment in between.\n" +
+    "You make everything softer and warmer just by being in it.\n" +
+    "Happy Birthday, Amisha. Here's to a year as beautiful as you are. ♡",
 
   /* Birthday song. Place the file at this path. */
   birthdaySong: 'assets/audio/birthday-song.mp3',
@@ -103,7 +104,7 @@ const wishCue     = $('#brWishCue');
 const blowBtn     = $('#brBlowBtn');
 const doors       = $('#brDoors');
 const doorsMsg    = $('#brDoorsMsg');
-const skipBtn     = $('#brSkipBtn');
+const SkipBtn     = $('#brSkipBtn');
 const birthdayAudio = $('#birthdayAudio');
 
 const enterRoomBtn = $('#enterRoomBtn');
@@ -1264,7 +1265,7 @@ function closeRoomCleanup() {
 }
 
 /* Skip button — immediately close the room */
-skipBtn.addEventListener('click', () => {
+SkipBtn.addEventListener('click', () => {
   // Stop everything immediately
   clearAllTimers();
   if (AudioManager && birthdayAudio) {

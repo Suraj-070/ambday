@@ -432,7 +432,7 @@ function loadTrack(i) {
 
   trackAudio.src = t.src;
   trackAudio.preload = 'auto';
-  if (trackTitle)  trackTitle.textContent  = t.title;
+  if (trackTitle)  trackTitle.textContent  = t.title || '—';
   if (trackArtist) trackArtist.textContent = t.artist || '';
   if (trackNum)    trackNum.textContent    = `${trackIndex + 1} / ${playlist.length}`;
   if (scrubFill)   scrubFill.style.width   = '0%';
@@ -821,7 +821,7 @@ function burstHearts() {
   const rect = puzzleGrid.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
-  const colors = ['#E8837A', '#E3AC3D', '#A5333F', '#22406B', '#BFD8F0'];
+  const colors = ['var(--coral)', 'var(--mustard)', 'var(--brick)', 'var(--ink)', '#BFD8F0'];
   const N = 18;
   for (let i = 0; i < N; i++) {
     const piece = document.createElement('span');

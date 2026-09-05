@@ -835,6 +835,103 @@ button {
   background: var(--paper);
 }
 
+/* ---------- 12a. Surprise reveal overlay ---------- */
+.surprise-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  opacity: 0;
+  transition: opacity 500ms ease;
+  pointer-events: none;
+}
+.surprise-reveal[hidden] { display: none; }
+.surprise-reveal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.surprise-reveal.fade-out {
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+
+.sr-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sr-hearts {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.sr-hearts span {
+  font-size: 28px;
+  color: var(--coral);
+  opacity: 0;
+  animation: srHeartPop 600ms cubic-bezier(.22,1,.36,1) forwards;
+}
+.sr-hearts span:nth-child(1) { animation-delay: 200ms; }
+.sr-hearts span:nth-child(2) { animation-delay: 400ms; font-size: 38px; }
+.sr-hearts span:nth-child(3) { animation-delay: 600ms; }
+@keyframes srHeartPop {
+  0%   { opacity: 0; transform: scale(0.4) translateY(10px); }
+  70%  { transform: scale(1.2) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sr-line1, .sr-line2, .sr-line3 {
+  font-family: var(--font-script);
+  color: var(--ink);
+  margin: 0;
+  opacity: 0;
+}
+.sr-line1 {
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 700;
+  animation: srFadeUp 700ms ease 500ms forwards;
+}
+.sr-line2 {
+  font-size: clamp(20px, 4vw, 30px);
+  opacity: 0.75;
+  animation: srFadeUp 700ms ease 900ms forwards;
+}
+.sr-line3 {
+  font-size: clamp(22px, 4vw, 32px);
+  color: var(--coral);
+  animation: srFadeUp 700ms ease 2000ms forwards;
+}
+@keyframes srFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Waiting dots */
+.sr-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  opacity: 0;
+  animation: srFadeUp 400ms ease 1400ms forwards;
+}
+.sr-dots span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--mustard);
+  animation: srDotPulse 1s ease-in-out infinite;
+}
+.sr-dots span:nth-child(2) { animation-delay: 160ms; }
+.sr-dots span:nth-child(3) { animation-delay: 320ms; }
+@keyframes srDotPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%       { transform: scale(1.4); opacity: 1; }
+}
+
 /* ---------- 12b. Image loading skeleton ---------- */
 .page-img {
   background: linear-gradient(90deg, var(--gingham-b) 25%, var(--gingham-a) 50%, var(--gingham-b) 75%);

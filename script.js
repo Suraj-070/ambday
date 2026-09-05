@@ -136,27 +136,39 @@ function unlock() {
   unlocked = true;
   sessionStorage.setItem(SESSION_KEY, '1');
 
-  // Hide lock screen
+  // 1. Fade out lock screen
   lockScreen.classList.add('unlocked');
-  scrapbook.setAttribute('aria-hidden', 'false');
-  soundToggle.hidden = false;
-  daysWidget.hidden = false;
 
-  // Try background autoplay (this click IS the user gesture)
-  try {
-    bgAudio.volume = 0.45;
-    AudioManager.play(bgAudio);
-  } catch(e) {}
+  // 2. Show surprise reveal overlay
+  const sr = $('#surpriseReveal');
+  sr.hidden = false;
+  // small tick so hidden→show transition fires
+  requestAnimationFrame(() => requestAnimationFrame(() => sr.classList.add('show')));
 
-  // Reveal custom sections that are already in view
-  observeReveals();
-
-  // Remove lock from DOM after transition
+  // 3. After "okay. open them" has appeared (~2.8s), fade it out and reveal scrapbook
   setTimeout(() => {
-    if (lockScreen.parentNode) lockScreen.parentNode.removeChild(lockScreen);
-  }, 700);
+    sr.classList.add('fade-out');
 
-  focusFirstVisible();
+    // Start audio during the fade — feels magical
+    try {
+      bgAudio.volume = 0;
+      AudioManager.play(bgAudio);
+      AudioManager.fadeTo(bgAudio, 0.45, 1200);
+    } catch(e) {}
+
+    setTimeout(() => {
+      sr.hidden = true;
+      sr.classList.remove('show', 'fade-out');
+      scrapbook.setAttribute('aria-hidden', 'false');
+      soundToggle.hidden = false;
+      daysWidget.hidden = false;
+      observeReveals();
+      focusFirstVisible();
+
+      // Remove lock from DOM
+      if (lockScreen.parentNode) lockScreen.parentNode.removeChild(lockScreen);
+    }, 900);
+  }, 3200);
 }
 
 function failUnlock() {

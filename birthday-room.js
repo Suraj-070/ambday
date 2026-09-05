@@ -42,8 +42,8 @@ const birthdayRoomConfig = {
     { kind: 'photo',     emoji: '🖼️', label: 'Photo'     },
     { kind: 'flowers',   emoji: '🌸', label: 'Flowers'   },
     { kind: 'gift',      emoji: '🎁', label: 'Gift'      },
-    { kind: 'lights',    emoji: '✨', label: 'Fairy Lights' },
-    { kind: 'confetti',  emoji: '🎊', label: 'Confetti'  },
+    { kind: 'lights',    emoji: '✨', label: 'String Lights' },
+    { kind: 'confetti',  emoji: '✉️', label: 'Letters'   },
     { kind: 'heartwall', emoji: '💝', label: 'Heart Wall' },
     { kind: 'polaroids', emoji: '📸', label: 'Polaroids' },
     { kind: 'candles',   emoji: '🕯️', label: 'Candles'   },
@@ -273,7 +273,7 @@ function onStateChange(state) {
       room.classList.remove('dim');
       room.classList.add('lit');
       if (!banner.classList.contains('pre-visible')) {
-        bannerText.textContent = 'happy birthday, cutipie 🎂♡';
+        bannerText.textContent = 'miles apart, hearts together 🤍';
       }
       banner.classList.add('visible');
       if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
@@ -628,7 +628,7 @@ function getDecorationHTML(kind) {
             <div class="dec-photo-mat">
               ${hasPhoto
                 ? '<img src="' + url + '" class="dec-photo-img" alt="our photo" />'
-                : '<div class="dec-photo-placeholder"><svg viewBox="0 0 80 80" width="56" height="56" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="30" r="14" fill="#C87890" opacity="0.6"/><path d="M10 70 Q40 45 70 70" fill="#C87890" opacity="0.4"/><path d="M0 80 L80 80 L80 60 Q40 35 0 60 Z" fill="#C87890" opacity="0.25"/></svg><span>us ♡</span></div>'
+                : '<div class="dec-photo-placeholder"><svg viewBox="0 0 80 80" width="56" height="56" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="28" r="14" fill="#C87890" opacity="0.5"/><path d="M10 70 Q40 42 70 70" fill="#C87890" opacity="0.3"/></svg></div>'
               }
             </div>
             <div class="dec-photo-corner dec-photo-corner-tl"></div>
@@ -636,7 +636,7 @@ function getDecorationHTML(kind) {
             <div class="dec-photo-corner dec-photo-corner-bl"></div>
             <div class="dec-photo-corner dec-photo-corner-br"></div>
           </div>
-          <div class="dec-photo-caption">that's us baby 🤍</div>
+
         </div>`;
     }
 
@@ -712,9 +712,12 @@ function getDecorationHTML(kind) {
           <ellipse cx="55" cy="40" rx="9" ry="7" fill="#FFC200"/>
           <!-- Shine on lid -->
           <ellipse cx="32" cy="50" rx="8" ry="3" fill="rgba(255,255,255,0.25)" transform="rotate(-15,32,50)"/>
-          <!-- Small stars -->
-          <text x="20" y="98" font-size="14" opacity="0.6">★</text>
-          <text x="78" y="88" font-size="10" opacity="0.5">★</text>
+          <!-- Gift tag — open when... -->
+          <rect x="72" y="18" width="36" height="18" rx="3" fill="#fff8e0" stroke="#c8a96e" stroke-width="1"/>
+          <circle cx="72" cy="27" r="2.5" fill="#c8a96e"/>
+          <line x1="66" y1="27" x2="72" y2="27" stroke="#c8a96e" stroke-width="1"/>
+          <text x="90" y="30" text-anchor="middle" font-size="5" fill="#8b6914" font-family="serif">open when</text>
+          <text x="90" y="32" text-anchor="middle" font-size="4" fill="#8b6914" font-family="serif">you miss me</text>
           <defs>
             <linearGradient id="giftGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
@@ -792,41 +795,82 @@ function getDecorationHTML(kind) {
               `<path d="${hPath}" fill="${h.c}" opacity="${h.op}" transform="translate(${h.x},${h.y}) scale(${h.s})"/>`
             ).join('');
           })()}
-          <!-- Centre big heart with "us" text -->
+          <!-- Centre big heart — no text -->
           <path d="M0,-18 C0,-32 -22,-38 -22,-18 C-22,4 0,22 0,22 C0,22 22,4 22,-18 C22,-38 0,-32 0,-18"
             fill="#E8837A" opacity="0.95" transform="translate(110,80)"/>
-          <text x="110" y="84" text-anchor="middle" font-size="10" fill="white" font-family="serif" font-weight="bold">us ♡</text>
+          <!-- Small heart pulse -->
+          <path d="M0,-6 C0,-10 -7,-12 -7,-6 C-7,0 0,6 0,6 C0,6 7,0 7,-6 C7,-12 0,-10 0,-6"
+            fill="white" opacity="0.4" transform="translate(110,80)"/>
         </svg>
       </div>`;
 
     case 'polaroids': return `
       <div class="dec-polaroids">
-        <!-- Left polaroid — tilted left -->
+        <!-- Left polaroid — sunset sky -->
         <div class="dec-pol dec-pol-l">
           <div class="dec-pol-frame">
             <div class="dec-pol-img">
-              <svg viewBox="0 0 60 55" width="60" height="55" xmlns="http://www.w3.org/2000/svg">
-                <rect width="60" height="55" fill="#f5f0e8"/>
-                <circle cx="30" cy="22" r="12" fill="#C87890" opacity="0.5"/>
-                <path d="M8 50 Q30 30 52 50" fill="#C87890" opacity="0.3"/>
-                <text x="30" y="52" text-anchor="middle" font-size="7" fill="#C87890" font-family="cursive">may 21 🤍</text>
+              <svg viewBox="0 0 60 55" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2a4080"/>
+                    <stop offset="50%" stop-color="#E8837A"/>
+                    <stop offset="100%" stop-color="#FFD700"/>
+                  </linearGradient>
+                </defs>
+                <rect width="60" height="55" fill="url(#sky1)"/>
+                <!-- Moon -->
+                <circle cx="46" cy="10" r="7" fill="#fff8e0" opacity="0.9"/>
+                <circle cx="49" cy="8" r="5" fill="#2a4080" opacity="0.8"/>
+                <!-- Stars -->
+                <circle cx="8" cy="8" r="1" fill="white" opacity="0.8"/>
+                <circle cx="20" cy="5" r="1.2" fill="white" opacity="0.9"/>
+                <circle cx="30" cy="12" r="0.8" fill="white" opacity="0.7"/>
+                <circle cx="14" cy="18" r="1" fill="white" opacity="0.6"/>
+                <!-- Silhouette city far -->
+                <rect x="0" y="38" width="60" height="17" fill="#1a2040"/>
+                <rect x="4" y="30" width="6" height="8" fill="#1a2040"/>
+                <rect x="14" y="28" width="5" height="10" fill="#1a2040"/>
+                <rect x="22" y="33" width="8" height="5" fill="#1a2040"/>
+                <rect x="40" y="29" width="5" height="9" fill="#1a2040"/>
+                <rect x="50" y="32" width="7" height="6" fill="#1a2040"/>
+                <!-- Window lights -->
+                <rect x="5" y="32" width="2" height="2" fill="#FFD700" opacity="0.8"/>
+                <rect x="15" y="30" width="2" height="2" fill="#FFD700" opacity="0.7"/>
+                <rect x="42" y="31" width="2" height="2" fill="#FFD700" opacity="0.8"/>
               </svg>
             </div>
-            <p class="dec-pol-caption">day 1 🤍</p>
+            <p class="dec-pol-caption">your city 🌙</p>
           </div>
         </div>
-        <!-- Right polaroid — tilted right -->
+        <!-- Right polaroid — stars night -->
         <div class="dec-pol dec-pol-r">
           <div class="dec-pol-frame">
             <div class="dec-pol-img">
-              <svg viewBox="0 0 60 55" width="60" height="55" xmlns="http://www.w3.org/2000/svg">
-                <rect width="60" height="55" fill="#f5f0e8"/>
-                <circle cx="30" cy="22" r="12" fill="#7090D0" opacity="0.5"/>
-                <path d="M8 50 Q30 30 52 50" fill="#7090D0" opacity="0.3"/>
-                <text x="30" y="52" text-anchor="middle" font-size="7" fill="#7090D0" font-family="cursive">still us ♡</text>
+              <svg viewBox="0 0 60 55" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0a0d18"/>
+                    <stop offset="100%" stop-color="#1a2550"/>
+                  </linearGradient>
+                </defs>
+                <rect width="60" height="55" fill="url(#sky2)"/>
+                <!-- Stars -->
+                ${Array.from({length:18},(_,i)=>
+                  '<circle cx="'+(4+i*3.2)+'" cy="'+(3+Math.sin(i*1.3)*12)+'" r="'+(0.8+Math.sin(i)*0.5)+'" fill="white" opacity="'+(0.5+Math.cos(i)*0.4)+'"/>'
+                ).join('')}
+                <!-- Big star -->
+                <polygon points="30,8 31.5,13 36,13 32.5,16 34,21 30,18 26,21 27.5,16 24,13 28.5,13" fill="#FFD700" opacity="0.9"/>
+                <!-- Rolling hills -->
+                <path d="M0 42 Q15 34 30 38 Q45 42 60 36 L60 55 L0 55 Z" fill="#1a3020"/>
+                <path d="M0 48 Q20 40 40 44 Q52 46 60 42 L60 55 L0 55 Z" fill="#0d2010"/>
+                <!-- Fireflies -->
+                <circle cx="10" cy="44" r="1.5" fill="#90FF90" opacity="0.8"/>
+                <circle cx="45" cy="40" r="1.2" fill="#90FF90" opacity="0.7"/>
+                <circle cx="22" cy="47" r="1" fill="#90FF90" opacity="0.6"/>
               </svg>
             </div>
-            <p class="dec-pol-caption">now 🎂</p>
+            <p class="dec-pol-caption">my city 🌟</p>
           </div>
         </div>
       </div>`;
@@ -916,7 +960,8 @@ function placeDecoration(kind, zone) {
   const remaining = birthdayRoomConfig.requiredDecorations.filter(k => !placedDecorations.has(k));
   if (remaining.length > 0) {
     startIdleHint();
-    if (hintEl) hintEl.innerHTML = '<span>👆</span> ' + remaining.length + ' more — tap <b>' + remaining[0] + '</b> next!';
+    const labels = {'balloons':'balloons 🎈','banner':'banner','photo':'photo frame 🖼️','flowers':'flowers 🌸','gift':'gift box 🎁','lights':'string lights ✨','confetti':'letters ✉️','heartwall':'heart wall 💝','polaroids':'polaroids 📸','candles':'candles 🕯️'};
+    if (hintEl) hintEl.innerHTML = '<span>👆</span> ' + remaining.length + ' more — try the <b>' + (labels[remaining[0]]||remaining[0]) + '</b>!';
     showZoneArrow(remaining[0]);
   }
 

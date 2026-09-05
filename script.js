@@ -354,24 +354,34 @@ const playlist = [
   },
 ];
 
-const trackAudio   = $('#trackAudio');
-const playBtn      = $('#playBtn');
-const iconPlay     = $('.icon-play', playBtn);
-const iconPause    = $('.icon-pause', playBtn);
-const prevBtn      = $('#prevBtn');
-const nextBtn      = $('#nextBtn');
-const repeatBtn    = $('#repeatBtn');
-const trackTitle   = $('#trackTitle');
-const trackArtist  = $('#trackArtist');
-const curTime      = $('#curTime');
-const durTime      = $('#durTime');
-const scrubTrack   = $('#scrubTrack');
-const scrubFill    = $('#scrubFill');
-const scrubThumb   = $('#scrubThumb');
-const playerCard   = $('.player-card');
+/* ============================================================
+   6. Music player — rebuilt
+   ============================================================ */
+const trackAudio      = $('#trackAudio');
+const playBtn         = $('#playBtn');
+const prevBtn         = $('#prevBtn');
+const nextBtn         = $('#nextBtn');
+const repeatBtn       = $('#repeatBtn');
+const shuffleTrackBtn = $('#shuffleTrackBtn');
+const trackTitle      = $('#trackTitle');
+const trackArtist     = $('#trackArtist');
+const trackNum        = $('#trackNum');
+const curTime         = $('#curTime');
+const durTime         = $('#durTime');
+const scrubTrack      = $('#scrubTrack');
+const scrubFill       = $('#scrubFill');
+const scrubThumb      = $('#scrubThumb');
+const playerCard      = $('#playerCard');
+const playerLoading   = $('#playerLoading');
+const trackCaptionBox = $('#trackCaption');
+const trackCaptionTxt = $('#trackCaptionText');
+const trackListEl     = $('#trackList');
 
-let trackIndex = 0;
-let repeatOne = false;
+let trackIndex  = 0;
+let repeatOne   = false;
+let shuffleOn   = false;
+let isLoading   = false;
+let scrubbing   = false;
 
 function fmtTime(s) {
   if (!isFinite(s) || s < 0) s = 0;
@@ -380,130 +390,124 @@ function fmtTime(s) {
   return `${m}:${sec}`;
 }
 
+/* ---- Build track list ---- */
+function buildTrackList() {
+  if (!trackListEl) return;
+  trackListEl.innerHTML = '';
+  playlist.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tracklist-item' + (i === trackIndex ? ' active' : '');
+    btn.type = 'button';
+    btn.innerHTML = `
+      <span class="tl-num">${i + 1}</span>
+      <span class="tl-info">
+        <span class="tl-title">${t.title}</span>
+        <span class="tl-artist">${t.artist}</span>
+      </span>
+      <span class="tl-playing" aria-hidden="true"><span></span><span></span><span></span></span>`;
+    btn.addEventListener('click', () => {
+      loadTrack(i);
+      playTrack();
+    });
+    trackListEl.appendChild(btn);
+  });
+}
+buildTrackList();
+
+function updateTrackListActive() {
+  if (!trackListEl) return;
+  $$('.tracklist-item', trackListEl).forEach((el, i) => {
+    el.classList.toggle('active', i === trackIndex);
+  });
+}
+
+/* ---- Load track ---- */
 function loadTrack(i) {
   if (!playlist.length) return;
-  trackIndex = (i + playlist.length) % playlist.length;
+  trackIndex = ((i % playlist.length) + playlist.length) % playlist.length;
   const t = playlist[trackIndex];
+
   trackAudio.src = t.src;
-  trackTitle.textContent = t.title;
-  trackArtist.textContent = t.artist || '';
-  scrubFill.style.width = '0%';
-  scrubThumb.style.left = '0%';
-  curTime.textContent = '0:00';
-  durTime.textContent = '0:00';
-  // update caption
-  const caption = $('#trackCaption');
-  if (caption) {
-    caption.textContent = t.caption || '';
-    caption.classList.remove('caption-pop');
-    void caption.offsetWidth; // reflow to restart animation
-    caption.classList.add('caption-pop');
-  }
-  // update mini bar
+  trackAudio.preload = 'auto';
+  if (trackTitle)  trackTitle.textContent  = t.title;
+  if (trackArtist) trackArtist.textContent = t.artist || '';
+  if (trackNum)    trackNum.textContent    = `${trackIndex + 1} / ${playlist.length}`;
+  if (scrubFill)   scrubFill.style.width   = '0%';
+  if (scrubThumb)  scrubThumb.style.left   = '0%';
+  if (curTime)     curTime.textContent     = '0:00';
+  if (durTime)     durTime.textContent     = '—:——';
+
+  // caption — only show after play starts
+  if (trackCaptionBox) trackCaptionBox.hidden = true;
+  if (trackCaptionTxt && t.caption) trackCaptionTxt.textContent = t.caption;
+
+  updateTrackListActive();
   updateMiniBar();
 }
 loadTrack(0);
 
+/* ---- Playing UI ---- */
 function setPlayingUI(isPlaying) {
-  if (isPlaying) {
-    iconPlay.hidden = true;
-    iconPause.hidden = false;
-    playBtn.setAttribute('aria-label', 'Pause');
-    playerCard.classList.add('playing');
-  } else {
-    iconPlay.hidden = false;
-    iconPause.hidden = true;
-    playBtn.setAttribute('aria-label', 'Play');
-    playerCard.classList.remove('playing');
+  const iPlay  = playBtn && playBtn.querySelector('.icon-play');
+  const iPause = playBtn && playBtn.querySelector('.icon-pause');
+  const iLoad  = playBtn && playBtn.querySelector('.icon-loading');
+  if (iPlay && iPause && iLoad) {
+    iPlay.hidden  = isPlaying || isLoading;
+    iPause.hidden = !isPlaying || isLoading;
+    iLoad.hidden  = !isLoading;
   }
+  if (playBtn) playBtn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+  if (playBtn) playBtn.classList.toggle('loading', isLoading);
+  if (playerCard) playerCard.classList.toggle('playing', isPlaying);
   updateMiniBar();
+  checkMiniBar();
 }
 
-/* ---- Mini floating bar ---- */
-const miniBar = $('#miniBar');
-const miniTitle = $('#miniTitle');
-const miniPlayBtn = $('#miniPlayBtn');
-
-function updateMiniBar() {
-  if (!miniBar) return;
-  const t = playlist[trackIndex];
-  if (miniTitle) miniTitle.textContent = t ? t.title : '';
-  // sync play/pause icon
-  const mp = miniBar.querySelector('.mini-icon-play');
-  const mpa = miniBar.querySelector('.mini-icon-pause');
-  if (mp && mpa) {
-    mp.hidden = !trackAudio.paused;
-    mpa.hidden = trackAudio.paused;
-  }
+/* ---- Loading state ---- */
+function setLoadingUI(loading) {
+  isLoading = loading;
+  if (playerLoading) playerLoading.hidden = !loading;
+  const playerScrub = $('#playerScrub');
+  if (playerScrub) playerScrub.style.opacity = loading ? '0.4' : '1';
+  setPlayingUI(!trackAudio.paused);
 }
 
-function checkMiniBar() {
-  if (!miniBar) return;
-  const musicScreen = $('#music-screen');
-  if (!musicScreen) return;
-  const rect = musicScreen.getBoundingClientRect();
-  const musicVisible = rect.top < window.innerHeight && rect.bottom > 0;
-  // show mini bar only if playing AND music screen not visible
-  if (!trackAudio.paused && !musicVisible) {
-    miniBar.classList.add('mini-visible');
-  } else {
-    miniBar.classList.remove('mini-visible');
-  }
-}
-
-scrapbook.addEventListener('scroll', checkMiniBar, { passive: true });
-
-if (miniPlayBtn) {
-  miniPlayBtn.addEventListener('click', () => {
-    if (trackAudio.paused) playTrack();
-    else pauseTrack();
-  });
-}
-
+/* ---- Play / Pause ---- */
 function playTrack() {
   if (!playlist.length) return;
+  setLoadingUI(true);
   AudioManager.play(trackAudio);
-  setPlayingUI(true);
-  setTimeout(checkMiniBar, 100);
 }
-
 function pauseTrack() {
   AudioManager.pause(trackAudio);
   setPlayingUI(false);
-  setTimeout(checkMiniBar, 100);
+  checkMiniBar();
 }
 
-playBtn.addEventListener('click', () => {
-  if (trackAudio.paused) playTrack();
-  else pauseTrack();
+trackAudio.addEventListener('playing', () => {
+  setLoadingUI(false);
+  setPlayingUI(true);
+  // show caption once actually playing
+  if (trackCaptionBox && trackCaptionTxt && trackCaptionTxt.textContent) {
+    trackCaptionBox.hidden = false;
+    // restart animation
+    trackCaptionBox.style.animation = 'none';
+    void trackCaptionBox.offsetWidth;
+    trackCaptionBox.style.animation = '';
+  }
 });
-
-prevBtn.addEventListener('click', () => {
-  loadTrack(trackIndex - 1);
-  playTrack();
-});
-nextBtn.addEventListener('click', () => {
-  loadTrack(trackIndex + 1);
-  playTrack();
-});
-repeatBtn.addEventListener('click', () => {
-  repeatOne = !repeatOne;
-  repeatBtn.setAttribute('aria-pressed', String(repeatOne));
-});
-
-trackAudio.addEventListener('timeupdate', () => {
-  if (!trackAudio.duration) return;
-  const pct = (trackAudio.currentTime / trackAudio.duration) * 100;
-  scrubFill.style.width = pct + '%';
-  scrubThumb.style.left = pct + '%';
-  curTime.textContent = fmtTime(trackAudio.currentTime);
-});
+trackAudio.addEventListener('waiting', () => setLoadingUI(true));
+trackAudio.addEventListener('canplay',  () => { if (!trackAudio.paused) setLoadingUI(false); });
 trackAudio.addEventListener('loadedmetadata', () => {
-  durTime.textContent = fmtTime(trackAudio.duration);
+  if (durTime) durTime.textContent = fmtTime(trackAudio.duration);
 });
 trackAudio.addEventListener('ended', () => {
   if (repeatOne) {
     trackAudio.currentTime = 0;
+    playTrack();
+  } else if (shuffleOn) {
+    const next = Math.floor(Math.random() * playlist.length);
+    loadTrack(next);
     playTrack();
   } else {
     loadTrack(trackIndex + 1);
@@ -511,34 +515,98 @@ trackAudio.addEventListener('ended', () => {
   }
 });
 
-// Scrubber click / drag
-let scrubbing = false;
+/* ---- Controls ---- */
+playBtn && playBtn.addEventListener('click', () => {
+  if (trackAudio.paused) playTrack();
+  else pauseTrack();
+});
+prevBtn && prevBtn.addEventListener('click', () => {
+  // if >3s in, restart; else go prev
+  if (trackAudio.currentTime > 3) {
+    trackAudio.currentTime = 0;
+  } else {
+    loadTrack(trackIndex - 1);
+    if (!trackAudio.paused) playTrack();
+  }
+});
+nextBtn && nextBtn.addEventListener('click', () => {
+  loadTrack(shuffleOn ? Math.floor(Math.random() * playlist.length) : trackIndex + 1);
+  playTrack();
+});
+repeatBtn && repeatBtn.addEventListener('click', () => {
+  repeatOne = !repeatOne;
+  repeatBtn.setAttribute('aria-pressed', String(repeatOne));
+});
+shuffleTrackBtn && shuffleTrackBtn.addEventListener('click', () => {
+  shuffleOn = !shuffleOn;
+  shuffleTrackBtn.setAttribute('aria-pressed', String(shuffleOn));
+});
+
+/* ---- Scrubber ---- */
+trackAudio.addEventListener('timeupdate', () => {
+  if (!trackAudio.duration || scrubbing) return;
+  const pct = (trackAudio.currentTime / trackAudio.duration) * 100;
+  if (scrubFill)  scrubFill.style.width = pct + '%';
+  if (scrubThumb) scrubThumb.style.left = pct + '%';
+  if (curTime)    curTime.textContent   = fmtTime(trackAudio.currentTime);
+  if (scrubTrack) scrubTrack.setAttribute('aria-valuenow', Math.round(pct));
+});
+
 function seekFromEvent(e) {
+  if (!scrubTrack) return;
   const rect = scrubTrack.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const pct = Math.max(0, Math.min(1, x / rect.width));
+  const cx = e.touches ? e.touches[0].clientX : e.clientX;
+  const pct = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
   if (trackAudio.duration) {
     trackAudio.currentTime = pct * trackAudio.duration;
-    scrubFill.style.width = (pct * 100) + '%';
-    scrubThumb.style.left = (pct * 100) + '%';
+    if (scrubFill)  scrubFill.style.width = (pct * 100) + '%';
+    if (scrubThumb) scrubThumb.style.left  = (pct * 100) + '%';
+    if (curTime)    curTime.textContent    = fmtTime(trackAudio.currentTime);
   }
 }
-scrubTrack.addEventListener('mousedown', (e) => {
-  scrubbing = true;
-  seekFromEvent(e);
-});
+if (scrubTrack) {
+  scrubTrack.addEventListener('mousedown',  (e) => { scrubbing = true; seekFromEvent(e); });
+  scrubTrack.addEventListener('touchstart', (e) => { scrubbing = true; seekFromEvent(e); }, { passive: true });
+  scrubTrack.addEventListener('touchmove',  (e) => { if (scrubbing) seekFromEvent(e); }, { passive: true });
+  scrubTrack.addEventListener('touchend',   () => { scrubbing = false; });
+  scrubTrack.addEventListener('keydown', (e) => {
+    if (!trackAudio.duration) return;
+    if (e.key === 'ArrowLeft')  { trackAudio.currentTime = Math.max(0, trackAudio.currentTime - 5); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { trackAudio.currentTime = Math.min(trackAudio.duration, trackAudio.currentTime + 5); e.preventDefault(); }
+  });
+}
 window.addEventListener('mousemove', (e) => { if (scrubbing) seekFromEvent(e); });
-window.addEventListener('mouseup', () => { scrubbing = false; });
-scrubTrack.addEventListener('touchstart', (e) => {
-  scrubbing = true;
-  seekFromEvent(e);
-}, { passive: true });
-scrubTrack.addEventListener('touchmove', (e) => { if (scrubbing) seekFromEvent(e); }, { passive: true });
-scrubTrack.addEventListener('touchend', () => { scrubbing = false; });
-scrubTrack.addEventListener('keydown', (e) => {
-  if (!trackAudio.duration) return;
-  if (e.key === 'ArrowLeft')  { trackAudio.currentTime = Math.max(0, trackAudio.currentTime - 5); e.preventDefault(); }
-  if (e.key === 'ArrowRight') { trackAudio.currentTime = Math.min(trackAudio.duration, trackAudio.currentTime + 5); e.preventDefault(); }
+window.addEventListener('mouseup',   () => { scrubbing = false; });
+
+/* ---- Mini floating bar ---- */
+const miniBar     = $('#miniBar');
+const miniTitle   = $('#miniTitle');
+const miniPlayBtn = $('#miniPlayBtn');
+
+function updateMiniBar() {
+  if (!miniBar) return;
+  const t = playlist[trackIndex];
+  if (miniTitle) miniTitle.textContent = t ? t.title : '';
+  const mp  = miniBar.querySelector('.mini-icon-play');
+  const mpa = miniBar.querySelector('.mini-icon-pause');
+  if (mp && mpa) { mp.hidden = !trackAudio.paused; mpa.hidden = trackAudio.paused; }
+  // waveform: animate only when playing
+  const wf = miniBar.querySelector('.mini-waveform');
+  if (wf) wf.classList.toggle('paused', trackAudio.paused);
+}
+
+function checkMiniBar() {
+  if (!miniBar) return;
+  const ms = $('#music-screen');
+  if (!ms) return;
+  const r = ms.getBoundingClientRect();
+  const visible = r.top < window.innerHeight && r.bottom > 0;
+  miniBar.classList.toggle('mini-visible', !trackAudio.paused && !visible);
+}
+
+scrapbook.addEventListener('scroll', checkMiniBar, { passive: true });
+miniPlayBtn && miniPlayBtn.addEventListener('click', () => {
+  if (trackAudio.paused) playTrack(); else pauseTrack();
 });
 
 /* ============================================================

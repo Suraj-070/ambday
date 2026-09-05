@@ -133,22 +133,38 @@
   <!-- ========================================================== -->
   <section class="page-snap page page-custom" id="music-screen" data-page="7">
     <div class="custom-bg music-bg"></div>
-    <div class="custom-inner">
+    <div class="custom-inner music-inner">
 
-      <div class="player-card reveal">
-        <div class="player-cover">
-          <svg viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">
-            <circle cx="40" cy="40" r="34" fill="none" stroke="#7090D0" stroke-width="1.5"/>
-            <circle cx="40" cy="40" r="6" fill="#C87890"/>
-            <path d="M40 6 V14 M40 66 V74 M6 40 H14 M66 40 H74" stroke="#103070" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+      <h2 class="custom-heading reveal">songs that remind me<br>of you ♡</h2>
+      <p class="custom-sub reveal">every one of these played at the right moment. press play.</p>
+
+      <!-- Player card -->
+      <div class="player-card reveal" id="playerCard">
+
+        <!-- Disc art -->
+        <div class="player-disc" id="playerDisc">
+          <div class="disc-ring disc-ring-outer"></div>
+          <div class="disc-ring disc-ring-mid"></div>
+          <div class="disc-center">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
         </div>
+
+        <!-- Track info -->
         <div class="player-meta">
-          <div class="player-title" id="trackTitle">I Like Me Better</div>
-          <div class="player-artist" id="trackArtist">— for the late drives home</div>
+          <div class="player-track-num" id="trackNum">1 / 9</div>
+          <div class="player-title" id="trackTitle">—</div>
+          <div class="player-artist" id="trackArtist">—</div>
         </div>
 
-        <div class="player-scrub">
+        <!-- Loading bar (shown while buffering) -->
+        <div class="player-loading" id="playerLoading" hidden>
+          <div class="loading-bar"></div>
+          <span>loading...</span>
+        </div>
+
+        <!-- Scrubber -->
+        <div class="player-scrub" id="playerScrub">
           <span class="time" id="curTime">0:00</span>
           <div class="scrub-track" id="scrubTrack" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div class="scrub-fill" id="scrubFill"></div>
@@ -157,36 +173,45 @@
           <span class="time" id="durTime">0:00</span>
         </div>
 
+        <!-- Controls -->
         <div class="player-controls">
+          <button class="ctrl-btn ctrl-repeat" id="repeatBtn" aria-label="Repeat" aria-pressed="false" title="Repeat">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
           <button class="ctrl-btn" id="prevBtn" aria-label="Previous track">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 5h2v14H6zM20 5L9 12l11 7z"/></svg>
           </button>
           <button class="ctrl-btn ctrl-play" id="playBtn" aria-label="Play">
-            <svg class="icon-play" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" hidden><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            <svg class="icon-play" viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" width="26" height="26" fill="currentColor" hidden><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            <svg class="icon-loading" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" hidden><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
           </button>
           <button class="ctrl-btn" id="nextBtn" aria-label="Next track">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg>
           </button>
-          <button class="ctrl-btn ctrl-repeat" id="repeatBtn" aria-label="Repeat" aria-pressed="false">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <button class="ctrl-btn ctrl-shuffle" id="shuffleTrackBtn" aria-label="Shuffle" aria-pressed="false" title="Shuffle">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
           </button>
         </div>
 
-        <p class="player-note">playing this pauses the soft hum in the background — pick up where you left off when you're done ♡</p>
+        <!-- Emotional caption -->
+        <div class="track-caption" id="trackCaption" hidden>
+          <p id="trackCaptionText"></p>
+        </div>
 
-        <!-- Emotional caption per song -->
-        <p class="track-caption caption-pop" id="trackCaption"></p>
+        <p class="player-note">♡ tap play — this pauses the background hum</p>
       </div>
 
-      <!-- Entry into the birthday room (replaces generic "keep scrolling" cue) -->
+      <!-- Track list -->
+      <div class="tracklist reveal" id="trackList"></div>
+
+      <!-- Entry into the birthday room -->
       <button id="enterRoomBtn" class="enter-room-btn reveal" aria-label="Wait, there's one more thing">
         <span class="enter-room-line">wait...</span>
         <span class="enter-room-sub">there's one more thing</span>
         <span class="enter-room-arrow" aria-hidden="true">↓</span>
       </button>
 
-      <div class="scroll-cue" aria-hidden="true">keep scrolling ↓</div>
     </div>
   </section>
 

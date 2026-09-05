@@ -394,87 +394,166 @@ button {
   letter-spacing: 0.2px;
 }
 
-/* ---------- 9. Music player card ---------- */
+/* ---------- 9. Music screen layout ---------- */
+.music-inner { max-width: 480px; }
+
+/* ---------- 9a. Player card ---------- */
 .player-card {
-  background: var(--glass);
+  background: rgba(255,255,255,0.55);
   border: 1px solid var(--glass-border);
-  border-radius: var(--r-lg);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  padding: 28px 24px 24px;
-  box-shadow: var(--shadow-card);
+  border-radius: 24px;
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  padding: 28px 24px 20px;
+  box-shadow: 0 24px 60px -16px rgba(16,48,112,0.22);
   text-align: center;
 }
-.player-cover {
-  width: 96px; height: 96px;
-  margin: 0 auto 14px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff, rgba(200, 120, 144, 0.15));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 0 8px 18px -8px rgba(16,48,112,0.3);
-  animation: spinSlow 22s linear infinite;
-}
-.player-card:not(.playing) .player-cover { animation-play-state: paused; }
-@keyframes spinSlow { to { transform: rotate(360deg); } }
 
+/* Disc */
+.player-disc {
+  width: 100px; height: 100px;
+  margin: 0 auto 20px;
+  position: relative;
+  border-radius: 50%;
+}
+.disc-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+}
+.disc-ring-outer {
+  background: conic-gradient(var(--gingham-a), var(--mustard), var(--coral), var(--gingham-a));
+  animation: discSpin 8s linear infinite;
+  opacity: 0.7;
+}
+.disc-ring-mid {
+  inset: 10px;
+  background: conic-gradient(var(--mustard), var(--coral), var(--gingham-a), var(--mustard));
+  animation: discSpin 12s linear infinite reverse;
+  opacity: 0.5;
+}
+.disc-center {
+  position: absolute;
+  inset: 22px;
+  background: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 12px rgba(16,48,112,0.12);
+}
+@keyframes discSpin { to { transform: rotate(360deg); } }
+/* pause when not playing */
+.player-card:not(.playing) .disc-ring { animation-play-state: paused; }
+
+/* Track info */
+.player-track-num {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.45;
+  margin-bottom: 6px;
+}
 .player-title {
   font-family: var(--font-script);
-  font-size: 30px;
+  font-size: clamp(22px, 5vw, 30px);
   font-weight: 700;
   color: var(--ink);
-  line-height: 1;
+  line-height: 1.1;
+  min-height: 1.2em;
 }
 .player-artist {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ink);
-  opacity: 0.6;
+  opacity: 0.55;
   margin-top: 4px;
+  letter-spacing: 0.3px;
 }
 
+/* Loading state */
+.player-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 8px;
+  font-size: 11px;
+  color: var(--ink);
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+.player-loading[hidden] { display: none; }
+.loading-bar {
+  width: 120px; height: 3px;
+  border-radius: 2px;
+  background: rgba(16,48,112,0.1);
+  overflow: hidden;
+}
+.loading-bar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, var(--coral), var(--mustard));
+  border-radius: 2px;
+  animation: loadSlide 1s ease-in-out infinite alternate;
+}
+@keyframes loadSlide {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(350%); }
+}
+
+/* Scrubber */
 .player-scrub {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 22px 0 14px;
+  margin: 18px 0 16px;
 }
 .player-scrub .time {
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.6;
+  color: var(--ink);
+  opacity: 0.5;
   min-width: 34px;
 }
 .scrub-track {
   flex: 1;
   position: relative;
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(16, 48, 112, 0.15);
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(16,48,112,0.12);
   cursor: pointer;
+  touch-action: none;
 }
+.scrub-track:hover { height: 6px; margin: -1px 0; }
 .scrub-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
   width: 0%;
   background: linear-gradient(90deg, var(--coral), var(--mustard));
-  border-radius: 3px;
-  transition: width 120ms linear;
+  border-radius: 2px;
 }
 .scrub-thumb {
   position: absolute;
   top: 50%;
   left: 0%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0);
   width: 14px; height: 14px;
   border-radius: 50%;
   background: var(--ink);
-  box-shadow: 0 2px 6px -1px rgba(16,48,112,0.5);
-  transition: left 120ms linear;
+  box-shadow: 0 2px 8px rgba(16,48,112,0.4);
+  transition: transform 150ms ease;
 }
+.scrub-track:hover .scrub-thumb,
+.scrub-track:active .scrub-thumb { transform: translate(-50%, -50%) scale(1); }
 
+/* Controls */
 .player-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 8px;
   margin-bottom: 18px;
 }
 .ctrl-btn {
@@ -482,59 +561,129 @@ button {
   display: grid; place-items: center;
   border-radius: 50%;
   color: var(--ink);
-  transition: background 200ms ease, color 200ms ease, transform 200ms ease;
+  opacity: 0.7;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease, opacity 180ms ease;
+  flex-shrink: 0;
 }
-.ctrl-btn:hover { background: rgba(16, 48, 112, 0.08); color: var(--coral); }
+.ctrl-btn:hover { background: rgba(16,48,112,0.07); opacity: 1; transform: scale(1.08); }
+.ctrl-btn:active { transform: scale(0.95); }
 .ctrl-btn.ctrl-play {
-  width: 60px; height: 60px;
+  width: 64px; height: 64px;
+  opacity: 1;
   color: #fff;
   background: linear-gradient(135deg, var(--coral), var(--brick));
-  box-shadow: 0 10px 24px -8px rgba(200, 120, 144, 0.7);
+  box-shadow: 0 10px 28px -8px rgba(200,120,144,0.65);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
-.ctrl-btn.ctrl-play:hover { transform: scale(1.05); color: #fff; background: linear-gradient(135deg, var(--coral), var(--brick)); }
-.ctrl-btn[aria-pressed="true"] { color: var(--coral); background: rgba(200, 120, 144, 0.12); }
+.ctrl-btn.ctrl-play:hover { transform: scale(1.06); box-shadow: 0 14px 32px -8px rgba(200,120,144,0.8); }
+.ctrl-btn.ctrl-play:active { transform: scale(0.97); }
+.ctrl-btn.ctrl-play.loading { animation: spinnerPulse 1s ease-in-out infinite; }
+@keyframes spinnerPulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+.ctrl-btn[aria-pressed="true"] { color: var(--coral); opacity: 1; background: rgba(200,120,144,0.1); }
+
+/* Loading icon spin */
+.icon-loading { animation: iconSpin 0.8s linear infinite; }
+@keyframes iconSpin { to { transform: rotate(360deg); } }
+
 .player-note {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.4;
   font-style: italic;
-  margin: 6px 0 0;
+  margin: 0 0 2px;
 }
 
-.scroll-cue {
-  margin-top: 36px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--ink);
-  opacity: 0.5;
-  animation: bob 2.4s ease-in-out infinite;
-}
-@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
-
-/* ---------- 10a. Track caption ---------- */
+/* ---------- 9b. Emotional caption ---------- */
 .track-caption {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   padding: 14px 16px;
-  font-family: var(--font-script);
-  font-size: clamp(16px, 3vw, 20px);
-  line-height: 1.5;
-  color: var(--ink);
-  opacity: 0.85;
-  text-align: left;
-  background: rgba(255,255,255,0.35);
+  background: rgba(176, 208, 240, 0.18);
   border-left: 3px solid var(--coral);
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
-  font-style: italic;
-  min-height: 2em;
+  text-align: left;
+  animation: captionIn 500ms cubic-bezier(.22,1,.36,1) both;
 }
-.caption-pop {
-  animation: captionIn 600ms cubic-bezier(.22,1,.36,1) both;
+.track-caption[hidden] { display: none; }
+.track-caption p {
+  font-family: var(--font-script);
+  font-size: clamp(15px, 3vw, 19px);
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  font-style: italic;
 }
 @keyframes captionIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 0.85; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ---------- 9c. Track list ---------- */
+.tracklist {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.tracklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px solid rgba(176,208,240,0.25);
+  transition: background 180ms ease;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+.tracklist-item:last-child { border-bottom: 0; }
+.tracklist-item:hover { background: rgba(176,208,240,0.18); }
+.tracklist-item.active { background: rgba(200,120,144,0.10); }
+.tl-num {
+  font-size: 11px;
+  opacity: 0.35;
+  min-width: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.tl-info { flex: 1; overflow: hidden; }
+.tl-title {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-artist {
+  font-size: 11px;
+  opacity: 0.5;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-playing {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 16px;
+}
+.tl-playing span {
+  display: block;
+  width: 3px;
+  border-radius: 1px;
+  background: var(--coral);
+  height: 6px;
+}
+.tracklist-item.active .tl-playing span { animation: miniWave 0.9s ease-in-out infinite; }
+.tracklist-item.active .tl-playing span:nth-child(2) { animation-delay: 0.15s; }
+.tracklist-item.active .tl-playing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 
 /* ---------- 10b. Mini floating music bar ---------- */
 .mini-bar {
@@ -611,6 +760,7 @@ button {
   flex-shrink: 0;
   transition: background 200ms ease, transform 200ms ease;
 }
+.mini-waveform.paused span { animation-play-state: paused; height: 6px; }
 .mini-play-btn:hover { background: rgba(255,255,255,0.28); transform: scale(1.1); }
 
 /* ---------- 10c. "Enter the room" button on the music screen ---------- */

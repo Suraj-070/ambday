@@ -22,10 +22,12 @@ const birthdayRoomConfig = {
   /* Personal birthday wish. Replace the body text with your real message.
      Use \n for line breaks. */
   birthdayWish:
-    "okay i tried so hard to write something good and i don't know if i did but here goes, maichaa.\n" +
-    "thank you for being you. for the random calls, the dumb jokes, the moments where we're just existing and it somehow feels like the most i've ever felt.\n" +
-    "you make everything better just by being in it. that's just facts.\n" +
-    "i love you, cutipie. happy birthday. here's to a year as warm and ridiculous and wonderful as you are. ♡",
+    "maichaa.\n" +
+    "aaja timi ko birthday xa ani ma yaha xu timi lai kei likhna khosdai. sahi words aaudaina. tara timi lai feel garauna chahanchhu ki ma kitna lucky xu timi jasto manchhe paayera.\n" +
+    "timi le akasma hera ani tyo jun dekh. ma pani tyahi heriraxa hola kahi na kahi bata. distance xa hami bhitra tara feeling chai ekdam najik xa.\n" +
+    "yo 107 din haru ma timi le mero sab kuch badlera diyau. timi nabhako din sochna sakdina ni hahaha. \n" +
+    "timi khusi raha. timi healthy raha. timi jati maaya paune ho utikै maaya pau. ani ek din hami dherei najik hunxau maichaa. pakka.\n" +
+    "maaya garxu timi lai. happy birthday. ♡",
 
   /* Birthday song. Place the file at this path. */
   birthdaySong: 'assets/audio/birthday-song.mp3',
@@ -179,7 +181,7 @@ function openRoom() {
 
   // Set state
   setState(ST.ROOM_ENTER);
-  setCaption("okay it's dark in here 😅 there's a switch somewhere");
+  setCaption("andhero xa yaha 😅 kahitei switch xa");
 
   // The HTML already provides a <source> child for #birthdayAudio, so we
   // don't need to append one here. The src is wired at parse time.
@@ -209,10 +211,10 @@ function onStateChange(state) {
     case ST.LIGHTS_OFF:
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
-      setCaption("okay it's dark in here 😅 there's a switch somewhere");
+      setCaption("andhero xa yaha 😅 kahitei switch xa");
       // Hint sequence — point to the switch
       later(() => {
-        setCaption("psst — the switch is on the right wall 💡 go on, babe");
+        setCaption("psst right wall ma switch xa 💡 gar");
         if (lightSwitch) {
           lightSwitch.classList.add('pulse-hint');
           later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
@@ -230,7 +232,7 @@ function onStateChange(state) {
       if (brLightFlash) { brLightFlash.classList.add('flash'); setTimeout(() => brLightFlash.classList.remove('flash'), 700); }
       // Moonbeam fades out naturally via CSS
       later(() => {
-        setCaption("okay let's decorate this for you 🎈 go on");
+        setCaption("aau milera sajau yo kotha timi ko lagi 🎈");
         showTray();
         setState(ST.DECORATING);
       }, birthdayRoomConfig.timing.captionHold);
@@ -240,10 +242,10 @@ function onStateChange(state) {
       setCaption("WAIT you actually did it?? 🥹✨");
       startFallingConfetti();
       later(() => {
-        setCaption("almost... something's still missing though");
+        setCaption("lagbhag bho... kei baki xa abhai");
       }, 1800);
       later(() => {
-        setCaption("one last thing, i promise");
+        setCaption("ek matra baki xa vakar vanxu");
         stopFallingConfetti();
         revealCake();
       }, birthdayRoomConfig.timing.captionHold + 1800);
@@ -256,15 +258,15 @@ function onStateChange(state) {
         const chars = $('#brCharacters');
         if (chars) chars.hidden = false;
       }, 500);
-      setCaption("okay now the candle 🕯️");
+      setCaption("ab batti baal 🕯️");
       later(() => revealCandle(), 800);
-      later(() => setCaption("tap the candle, maichaa 🕯️"), 2000);
+      later(() => setCaption("batti ma tap gar maichaa 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
       room.classList.remove('lit');
       room.classList.add('dim');
-      setCaption("...Happy Birthday ♡");
+      setCaption("...happy birthday maichaa 🤍");
       // Start music immediately when candle is lit — plays until blow
       later(() => startBirthdayMusic(), 800);
       break;
@@ -282,7 +284,7 @@ function onStateChange(state) {
       // After music plays — prompt blow
       later(() => {
         stopFallingConfetti();
-        setCaption("okay make a wish and blow the candle, cutipie 🕯️");
+        setCaption("aankhaa banda gar aaru manasai gar ani batti nifaar cutipie 🕯️");
         // Wire candle tap to blow it
         const blowIt = () => {
           candleEl.removeEventListener('click', blowIt);
@@ -294,7 +296,7 @@ function onStateChange(state) {
       break;
 
     case ST.CAKE_CUTTING:
-      setCaption("okay cut the cake now 🎂 drag the knife");
+      setCaption("ab cake kaat 🎂 chaaku tar");
       break;
 
     case ST.WISH:
@@ -313,11 +315,11 @@ function onStateChange(state) {
       candleEl.appendChild(smoke);
       setTimeout(() => smoke.remove(), 2200);
       // Brief wish moment caption
-      later(() => setCaption("i hope it comes true 🌟"), 600);
-      later(() => setCaption("now... cut the cake! 🎂"), 2200);
+      later(() => setCaption("pura hos tero manasai 🌟"), 600);
+      later(() => setCaption("ab cake kaat 🎂"), 2200);
       // Reveal knife AFTER wish — correct order
       later(() => {
-        setCaption("drag the knife across the cake 🎂");
+        setCaption("cake ma chaaku tar deu 🎂");
         revealKnife();
       }, 3600);
       break;
@@ -1080,7 +1082,7 @@ function revealCake() {
   cakeEl.style.left = (roomRect.width * 0.08) + 'px';
   cakeEl.style.top  = (roomRect.height * 0.62) + 'px';
   setState(ST.CAKE_AVAILABLE);
-  setCaption("drag the cake onto the table, maichaa 🎂");
+  setCaption("cake lai table ma rakhdeu maichaa 🎂");
 }
 
 function enableCakeDrag() {
@@ -1189,7 +1191,7 @@ enableCakeDrag();
    ============================================================ */
 function revealCandle() {
   setState(ST.CANDLE_AVAILABLE);
-  setCaption("light the candle now ✨");
+  setCaption("batti baalaau ab ✨");
 
   // Make candle clickable
   candleEl.style.cursor = 'pointer';
@@ -1391,7 +1393,7 @@ function enableKnifeDrag() {
       room.classList.add('dim');
     }, 1000);
     // Short personal captions then show the letter
-    later(() => setCaption("there's one last thing i wrote for you 🤍"), 1200);
+    later(() => setCaption("ek aakhiri kura lekheko xu timi lai 🤍"), 1200);
     later(() => { setCaption(""); setState(ST.WISH); }, 3200);
   }
 
@@ -1487,8 +1489,8 @@ function showWish() {
     blowBtn.addEventListener('click', () => {
       wish.classList.remove('show');
       later(() => { wish.hidden = true; }, 600);
-      later(() => setCaption("i love you, maichaa. so much. 🤍"), 700);
-      later(() => setCaption("okay... time to go 🚪"), 2400);
+      later(() => setCaption("maaya garxu maichaa. ekdum badi. 🤍"), 700);
+      later(() => setCaption("okay ab jaau 🚪"), 2400);
       later(() => { setCaption(""); setState(ST.LIGHTS_OFF_AGAIN); }, 3800);
     }, { once: true });
   }

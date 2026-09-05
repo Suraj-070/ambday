@@ -221,6 +221,9 @@ function onStateChange(state) {
       stringLights.classList.add('on');
       tryRestartAmbient();
       startDust();
+      // Light flash
+      if (brLightFlash) { brLightFlash.classList.add('flash'); setTimeout(() => brLightFlash.classList.remove('flash'), 700); }
+      // Moonbeam fades out naturally via CSS
       later(() => {
         setCaption("Let's get this place ready for your birthday...");
         showTray();
@@ -229,14 +232,21 @@ function onStateChange(state) {
       break;
 
     case ST.DECORATION_COMPLETE:
-      setCaption("Perfect... but something's missing.");
+      setCaption("Perfect... ✨ You did it!");
+      startFallingConfetti();
+      later(() => {
+        setCaption("Almost complete... something's still missing.");
+      }, 1800);
       later(() => {
         setCaption("One last thing...");
+        stopFallingConfetti();
         revealCake();
-      }, birthdayRoomConfig.timing.captionHold);
+      }, birthdayRoomConfig.timing.captionHold + 1800);
       break;
 
     case ST.CAKE_PLACED:
+      if (brCakeShadow) brCakeShadow.hidden = false;
+      cakeEl.classList.add('placed');
       setCaption("Now for the candle...");
       later(() => revealCandle(), 800);
       later(() => setCaption("Tap the candle to light it 🕯️"), 2000);
@@ -251,13 +261,21 @@ function onStateChange(state) {
       break;
 
     case ST.BIRTHDAY_MUSIC:
-      // Room brightens back up
       room.classList.remove('dim');
       room.classList.add('lit');
-      bannerText.textContent = 'HAPPY BIRTHDAY ♡';
+      // Don't overwrite banner if decoration already placed it
+      if (!banner.classList.contains('pre-visible')) {
+        bannerText.textContent = 'Happy Birthday, Amisha ♡';
+      }
       banner.classList.add('visible');
+      if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
       startParticles();
-      later(() => revealKnife(), birthdayRoomConfig.timing.musicToKnife);
+      startFallingConfetti();
+      later(() => {
+        stopFallingConfetti();
+        setCaption("Drag the knife across the cake...");
+        revealKnife();
+      }, birthdayRoomConfig.timing.musicToKnife);
       break;
 
     case ST.CAKE_CUTTING:
@@ -267,10 +285,12 @@ function onStateChange(state) {
     case ST.WISH:
       setCaption("");
       hideTray();
+      if (brCakeShadow) brCakeShadow.hidden = true;
       showWish();
       break;
 
     case ST.CANDLE_EXTINGUISHED:
+      if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
       // Flame fades out, smoke rises
       candleFlame.classList.remove('lit');
       candleGlow.classList.remove('lit');
@@ -692,6 +712,8 @@ function placeDecoration(kind, zone) {
   placed.className = 'br-placed ' + kind;
   placed.innerHTML = getDecorationHTML(kind);
   zone.appendChild(placed);
+  // Sparkle burst at placement zone
+  later(() => sparkleAt(zone), 100);
 
   // Banner: also update the real banner element in the room
   if (kind === 'banner') {
@@ -707,6 +729,7 @@ function placeDecoration(kind, zone) {
   if (remaining.length > 0) {
     startIdleHint();
     if (hintEl) hintEl.innerHTML = '<span>👆</span> ' + remaining.length + ' more — tap <b>' + remaining[0] + '</b> next!';
+    showZoneArrow(remaining[0]);
   }
 
   // Check completion
@@ -1251,6 +1274,7 @@ function closeRoomCleanup() {
   }
   stopParticles();
   stopDust();
+  stopFallingConfetti();
   // Mark complete
   birthdayRoomState.roomClosed = true;
   setState(ST.ROOM_COMPLETE);
@@ -1275,6 +1299,117 @@ SkipBtn.addEventListener('click', () => {
   stopParticles();
   closeRoomCleanup();
 });
+
+
+/* ---- Falling confetti ---- */
+let fallConfInterval = null;
+const FALL_COLORS = ['#E8837A','#C87890','#7090D0','#B0D0F0','#FFD700','#F4A7B9','#90B0F0'];
+
+function startFallingConfetti() {
+  if (fallConfInterval || PRM) return;
+  fallConfInterval = setInterval(() => {
+    if (!brConFall) return;
+    const piece = document.createElement('div');
+    piece.className = 'br-conf-piece';
+    piece.style.left = (Math.random() * 100) + '%';
+    piece.style.background = FALL_COLORS[Math.floor(Math.random() * FALL_COLORS.length)];
+    piece.style.width  = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (8 + Math.random() * 10) + 'px';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    const dur = 2.5 + Math.random() * 2;
+    piece.style.animationDuration = dur + 's';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    piece.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+    brConFall.appendChild(piece);
+    setTimeout(() => piece.remove(), (dur + 1) * 1000);
+  }, 120);
+}
+function stopFallingConfetti() {
+  if (fallConfInterval) { clearInterval(fallConfInterval); fallConfInterval = null; }
+  if (brConFall) setTimeout(() => { brConFall.innerHTML = ''; }, 3000);
+}
+
+/* ---- Wax drip ---- */
+function startWaxDrip() {
+  const candle = document.getElementById('brCandle');
+  if (!candle || PRM) return;
+  setTimeout(() => {
+    const drip = document.createElement('div');
+    drip.className = 'br-wax-drip';
+    drip.style.left = (40 + Math.random() * 20) + '%';
+    candle.appendChild(drip);
+  }, 2000);
+  setTimeout(() => {
+    const drip2 = document.createElement('div');
+    drip2.className = 'br-wax-drip';
+    drip2.style.left = (55 + Math.random() * 15) + '%';
+    drip2.style.animationDelay = '0.5s';
+    candle.appendChild(drip2);
+  }, 5000);
+}
+
+/* ---- Sparkle burst on decoration place ---- */
+function sparkleAt(zone) {
+  if (PRM) return;
+  const rect = zone.getBoundingClientRect();
+  const overlayRect = overlay.getBoundingClientRect();
+  const cx = rect.left - overlayRect.left + rect.width / 2;
+  const cy = rect.top - overlayRect.top + rect.height / 2;
+  const sparks = ['✨','⭐','🌟','💫','✨'];
+  sparks.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'br-deco-spark';
+    el.textContent = s;
+    const ang = (i / sparks.length) * Math.PI * 2;
+    const dist = 30 + Math.random() * 40;
+    el.style.left = cx + 'px';
+    el.style.top  = cy + 'px';
+    el.style.setProperty('--sx', Math.cos(ang) * dist + 'px');
+    el.style.setProperty('--sy', Math.sin(ang) * dist - 20 + 'px');
+    el.style.animationDelay = (i * 60) + 'ms';
+    overlay.appendChild(el);
+    setTimeout(() => el.remove(), 700);
+  });
+}
+
+/* ---- Zone arrow hint ---- */
+function showZoneArrow(kind) {
+  const zone = document.querySelector('.br-dropzone[data-zone="' + kind + '"]');
+  if (!zone) return;
+  // Remove existing arrow
+  const existing = overlay.querySelector('.br-zone-arrow');
+  if (existing) existing.remove();
+  const rect = zone.getBoundingClientRect();
+  const oRect = overlay.getBoundingClientRect();
+  const arrow = document.createElement('div');
+  arrow.className = 'br-zone-arrow visible';
+  arrow.textContent = '👇';
+  arrow.style.left = (rect.left - oRect.left + rect.width / 2 - 16) + 'px';
+  arrow.style.top  = (rect.top - oRect.top - 36) + 'px';
+  overlay.appendChild(arrow);
+  setTimeout(() => { arrow.classList.remove('visible'); setTimeout(() => arrow.remove(), 500); }, 3000);
+}
+
+/* ---- Typewriter wish ---- */
+function typewriterWish(el, text, speed) {
+  el.innerHTML = '';
+  let i = 0;
+  // Split into paragraphs
+  const paras = text.split('\n');
+  paras.forEach((para, pi) => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    para.split('').forEach((ch, ci) => {
+      const span = document.createElement('span');
+      span.className = 'typewriter-char';
+      span.textContent = ch === ' ' ? '\u00a0' : ch;
+      span.style.animationDelay = ((pi * para.length * 0.5 + i) * speed) + 'ms';
+      p.appendChild(span);
+      i++;
+    });
+    i += 10; // pause between paragraphs
+  });
+}
 
 /* ============================================================
    15. Wire entry buttons + room entry warning

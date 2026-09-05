@@ -520,6 +520,10 @@ function loadTrack(i) {
   updateTrackListActive();
   updateMiniBar();
 }
+// Set initial title immediately to avoid — flash
+if (playlist.length && trackTitle) trackTitle.textContent = playlist[0].title;
+if (playlist.length && trackArtist) trackArtist.textContent = playlist[0].artist || '';
+if (playlist.length && trackNum) trackNum.textContent = '1 / ' + playlist.length;
 loadTrack(0);
 
 /* ---- Playing UI ---- */

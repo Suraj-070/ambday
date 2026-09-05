@@ -270,10 +270,17 @@ function onStateChange(state) {
       if (brCandleWallGlow) brCandleWallGlow.classList.remove('active');
       startParticles();
       startFallingConfetti();
-      // After music plays for a bit — prompt to blow candle (make wish BEFORE cutting)
+      // After music plays — prompt blow
       later(() => {
         stopFallingConfetti();
         setCaption("okay make a wish and blow the candle, cutipie 🕯️");
+        // Wire candle tap to blow it
+        const blowIt = () => {
+          candleEl.removeEventListener('click', blowIt);
+          blowCandle();
+        };
+        candleEl.style.cursor = 'pointer';
+        candleEl.addEventListener('click', blowIt, { once: true });
       }, birthdayRoomConfig.timing.musicToKnife);
       break;
 
@@ -1284,6 +1291,12 @@ function showWish() {
 }
 
 function blowCandle() {
+  // Fade birthday music out as candle is blown
+  if (AudioManager && birthdayAudio && !birthdayAudio.paused) {
+    AudioManager.fadeTo(birthdayAudio, 0, 1500, () => {
+      AudioManager.pause(birthdayAudio);
+    });
+  }
   setState(ST.CANDLE_EXTINGUISHED);
 }
 

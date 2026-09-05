@@ -204,6 +204,14 @@ function onStateChange(state) {
       room.classList.remove('lit', 'dim');
       room.classList.add('dark');
       setCaption("it's dark in here... maybe there's a light?");
+      // Hint sequence — point to the switch
+      later(() => {
+        setCaption("psst — there's a light switch on the right wall 💡");
+        if (lightSwitch) {
+          lightSwitch.classList.add('pulse-hint');
+          later(() => lightSwitch.classList.remove('pulse-hint'), 3000);
+        }
+      }, 3500);
       break;
 
     case ST.LIGHTS_ON:
@@ -230,14 +238,15 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       setCaption("now for the candle...");
       later(() => revealCandle(), 800);
+      later(() => setCaption("tap the candle to light it 🕯️"), 2000);
       break;
 
     case ST.CANDLE_LIT:
-      // Room dims slightly, candle glow is the focus
       room.classList.remove('lit');
       room.classList.add('dim');
       setCaption("...happy birthday.");
-      later(() => startBirthdayMusic(), birthdayRoomConfig.timing.candleLitToMusic);
+      // Start music immediately when candle is lit — plays until blow
+      later(() => startBirthdayMusic(), 800);
       break;
 
     case ST.BIRTHDAY_MUSIC:
@@ -662,6 +671,10 @@ function getDecorationHTML(kind) {
 
 /* Place a decoration into its zone */
 function placeDecoration(kind, zone) {
+  // Guard against double-placement (drag + click firing together)
+  if (placedDecorations.has(kind)) return;
+  if (zone.classList.contains('filled')) return;
+
   if (dragging && dragging.ghostEl) dragging.ghostEl.remove();
   stopIdleHint();
 
@@ -950,16 +963,22 @@ function revealCandle() {
 function startBirthdayMusic() {
   setState(ST.BIRTHDAY_MUSIC);
   if (!AudioManager || !birthdayAudio) return;
-  // Crossfade: fade out whatever's playing, fade in birthday song
-  // Try play() — user gesture happened earlier (clicking the switch / candle),
-  // so this should satisfy autoplay policies.
-  try {
-    birthdayAudio.volume = 0;
-    AudioManager.crossfade(AudioManager.active, birthdayAudio, 1500);
-  } catch(_) {
-    // If crossfade fails, just play
-    try { AudioManager.play(birthdayAudio); } catch(_){}
+  // Fade out ambient/track audio first
+  if (AudioManager.active && AudioManager.active !== birthdayAudio) {
+    AudioManager.fadeTo(AudioManager.active, 0, 800, () => {
+      if (AudioManager.active && AudioManager.active !== birthdayAudio) {
+        AudioManager.active.pause();
+      }
+    });
   }
+  later(() => {
+    try {
+      birthdayAudio.volume = 0;
+      birthdayAudio.loop = true;
+      AudioManager.play(birthdayAudio);
+      AudioManager.fadeTo(birthdayAudio, 0.88, 1200);
+    } catch(_) {}
+  }, 900);
 }
 
 let particlesOn = false;

@@ -1,8 +1,6 @@
 /* =========================================================
    Character Animation — Birthday Room
-   Single combined SVG (characters.svg, viewBox 0 0 1000 700)
-   Boy: left half (0–500), Girl: right half (500–1000, translated)
-   State machine: idle → reaction → move-together → hug → kiss → idle
+   Side-by-side characters with emoji burst reactions
    ========================================================= */
 (function () {
   'use strict';
@@ -10,15 +8,21 @@
   const CONFIG = {
     svgPath: 'assets/characters.svg',
     timings: {
-      reaction:     900,
-      moveTogether: 1300,
-      hugHold:      1500,
-      hugSettle:    900,
-      kissApproach: 700,
-      kissHold:     800,
-      kissSeparate: 700,
-      returnToIdle: 1200
+      reaction:     800,
+      moveTogether: 600,
+      hugHold:      1800,
+      hugSettle:    600,
+      kissApproach: 600,
+      kissHold:     1000,
+      kissSeparate: 600,
+      returnToIdle: 1000
     }
+  };
+
+  const EMOJIS = {
+    reaction:    ['👀','💓','✨','💫'],
+    hug:         ['🤗','💞','🥰','💕','🫂','💗','✨'],
+    kiss:        ['💋','😘','💝','💖','💓','🌸','✨','💏']
   };
 
   const state = {
@@ -42,43 +46,82 @@
   /* ---------- Load SVG ---------- */
   async function loadSvg() {
     const res = await fetch(CONFIG.svgPath);
-    if (!res.ok) throw new Error('Failed to load ' + CONFIG.svgPath);
-    const text = await res.text();
-    wrapper.innerHTML = text;
+    if (!res.ok) throw new Error('Failed: ' + CONFIG.svgPath);
+    wrapper.innerHTML = await res.text();
     const svg = wrapper.querySelector('svg');
-    if (svg) {
-      svg.removeAttribute('width');
-      svg.removeAttribute('height');
-      svg.style.width  = '100%';
-      svg.style.height = '100%';
+    if (svg) { svg.removeAttribute('width'); svg.removeAttribute('height'); svg.style.cssText = 'width:100%;height:100%'; }
+  }
+
+  /* ---------- Emoji burst ---------- */
+  function burstEmojis(emojis, count) {
+    if (state.reducedMotion || !stage) return;
+
+    // Remove any existing burst
+    const old = stage.querySelector('.br-emoji-burst');
+    if (old) old.remove();
+
+    const burst = document.createElement('div');
+    burst.className = 'br-emoji-burst';
+    stage.appendChild(burst);
+
+    const cx = stage.offsetWidth  / 2;
+    const cy = stage.offsetHeight / 2;
+
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'br-burst-emoji';
+      el.textContent = emojis[i % emojis.length];
+
+      // Random spread from center
+      const angle = (Math.random() * 360) * (Math.PI / 180);
+      const r1 = 30  + Math.random() * 60;
+      const r2 = 80  + Math.random() * 120;
+      const r3 = 130 + Math.random() * 180;
+      const rot1 = (Math.random() - 0.5) * 40;
+      const rot2 = (Math.random() - 0.5) * 80;
+      const rot3 = (Math.random() - 0.5) * 120;
+
+      const startX = cx - 20 + (Math.random() - 0.5) * 60;
+      const startY = cy - 20 + (Math.random() - 0.5) * 40;
+
+      el.style.cssText = `
+        left: ${startX}px;
+        top:  ${startY}px;
+        animation-delay: ${Math.random() * 400}ms;
+        --tx1: ${Math.cos(angle) * r1}px;
+        --ty1: ${Math.sin(angle) * r1 - 20}px;
+        --tx2: ${Math.cos(angle) * r2}px;
+        --ty2: ${Math.sin(angle) * r2 - 60}px;
+        --tx3: ${Math.cos(angle) * r3}px;
+        --ty3: ${Math.sin(angle) * r3 - 120}px;
+        --rot1: ${rot1}deg;
+        --rot2: ${rot2}deg;
+        --rot3: ${rot3}deg;
+      `;
+      burst.appendChild(el);
     }
+
+    // Remove after animation
+    setTimeout(() => burst.remove(), 2200);
   }
 
   /* ---------- Blinking ---------- */
-  function scheduleBlink(id, eyeLeftSel, eyeRightSel, interval) {
+  function scheduleBlink(id, leftSel, rightSel, interval) {
     if (state.reducedMotion) return;
-    const leftEye  = document.querySelector(eyeLeftSel);
-    const rightEye = document.querySelector(eyeRightSel);
-    if (!leftEye || !rightEye) return;
-
+    const L = document.querySelector(leftSel);
+    const R = document.querySelector(rightSel);
+    if (!L || !R) return;
     function doBlink() {
-      leftEye.classList.add('blinking-eye');
-      rightEye.classList.add('blinking-eye');
-      void leftEye.offsetWidth;
-      setTimeout(() => {
-        leftEye.classList.remove('blinking-eye');
-        rightEye.classList.remove('blinking-eye');
-      }, 220);
+      L.classList.add('blinking-eye'); R.classList.add('blinking-eye');
+      void L.offsetWidth;
+      setTimeout(() => { L.classList.remove('blinking-eye'); R.classList.remove('blinking-eye'); }, 220);
       blinkTimers[id] = setTimeout(doBlink, interval + Math.random() * 3000);
     }
     blinkTimers[id] = setTimeout(doBlink, 1500 + Math.random() * 2000);
   }
 
   function stopAllBlinks() {
-    Object.keys(blinkTimers).forEach(id => {
-      clearTimeout(blinkTimers[id]);
-      delete blinkTimers[id];
-    });
+    Object.keys(blinkTimers).forEach(id => { clearTimeout(blinkTimers[id]); delete blinkTimers[id]; });
     ['#boy-left-eye','#boy-right-eye','#girl-left-eye','#girl-right-eye'].forEach(sel => {
       const el = document.querySelector(sel);
       if (el) el.classList.remove('blinking-eye');
@@ -92,17 +135,8 @@
   }
 
   /* ---------- State functions ---------- */
-  function clearAllTransforms() {
-    ['#boy-head','#boy-left-arm','#boy-right-arm',
-     '#girl-head','#girl-left-arm','#girl-right-arm','#girl-glasses',
-     '#boy-group','#girl-group'].forEach(sel => {
-      document.querySelectorAll(sel).forEach(el => { el.style.transform = ''; });
-    });
-  }
-
   function playIdle() {
     state.sequenceRunning = false;
-    clearAllTransforms();
     setStateAttr('idle');
     startBlinks();
   }
@@ -110,22 +144,24 @@
   async function playReaction() {
     stopAllBlinks();
     setStateAttr('reaction');
+    burstEmojis(EMOJIS.reaction, 6);
     return wait(CONFIG.timings.reaction);
   }
 
   async function playMoveTogether() {
-    stopAllBlinks();
     setStateAttr('move-together');
     return wait(CONFIG.timings.moveTogether);
   }
 
   async function playHug() {
     setStateAttr('hug');
+    burstEmojis(EMOJIS.hug, 10);
     return wait(CONFIG.timings.hugSettle + CONFIG.timings.hugHold);
   }
 
   async function playKiss() {
     setStateAttr('kiss');
+    burstEmojis(EMOJIS.kiss, 12);
     await wait(CONFIG.timings.kissApproach + CONFIG.timings.kissHold);
     return wait(CONFIG.timings.kissSeparate);
   }
@@ -165,7 +201,6 @@
     }
   }
 
-  /* ---------- Public API ---------- */
   window.CharacterAnimation = {
     startCelebration, playIdle, playReaction,
     playMoveTogether, playHug, playKiss, returnToIdle,

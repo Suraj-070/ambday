@@ -1872,29 +1872,91 @@ button {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ---- Page 5 secret blur ---- */
-.page5-blur-cover {
+
+/* ---- Page 5 photo blur patch ---- */
+.p5-photo-blur {
+  position: absolute;
+  /* default position — user drags to adjust */
+  left: 10%;
+  top: 18%;
+  width: 38%;
+  height: 52%;
+  z-index: 20;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.p5-photo-blur.locked { cursor: default; }
+.p5-photo-blur-inner {
   position: absolute;
   inset: 0;
-  z-index: 10;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  transition: opacity 600ms ease;
+}
+.p5-photo-blur.revealed .p5-photo-blur-inner { opacity: 0; pointer-events: none; }
+.p5-photo-blur-lock {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  pointer-events: none;
+  animation: hintPulse 2.5s ease-in-out infinite;
+  transition: opacity 600ms ease;
+}
+.p5-photo-blur.revealed .p5-photo-blur-lock { opacity: 0; }
+@keyframes hintPulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.85; }
+  50%     { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
+}
+/* Resize handle */
+.p5-handle-br {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 28px; height: 28px;
+  cursor: nwse-resize;
+  background: rgba(255,255,255,0.7);
+  border-radius: 12px 0 12px 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  z-index: 2;
+}
+.p5-handle-br::after { content: '↘'; font-size: 14px; }
+.p5-photo-blur.locked .p5-handle-br { display: none; }
+/* Edit bar */
+.p5-edit-bar {
+  position: absolute;
+  bottom: -40px; left: 0; right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: opacity 700ms ease;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(20,10,30,0.85);
+  border-radius: 8px;
+  padding: 6px 10px;
+  white-space: nowrap;
+  z-index: 30;
 }
-.page5-blur-cover.revealed {
-  opacity: 0;
-  pointer-events: none;
+.p5-edit-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  font-family: -apple-system, sans-serif;
 }
-.page5-blur-hint {
-  font-size: 48px;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-  animation: hintPulse 2.5s ease-in-out infinite;
+.p5-edit-done {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #e8837a;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: -apple-system, sans-serif;
 }
-@keyframes hintPulse {
-  0%,100% { transform: scale(1); opacity: 0.8; }
-  50%     { transform: scale(1.12); opacity: 1; }
-}
+.p5-photo-blur.locked .p5-edit-bar { display: none; }
+/* Dashed border in edit mode */
+.p5-photo-blur:not(.locked) { outline: 2px dashed rgba(255,255,255,0.6); }

@@ -137,8 +137,16 @@
     <div class="page-fill" style="background-image:url('assets/images/5.png')"></div>
     <div class="page-glass"></div>
     <img class="page-img" src="assets/images/5.png" alt="scrapbook page 5" loading="lazy" />
-    <div class="page5-blur-cover" id="page5BlurCover">
-      <div class="page5-blur-hint">🔒</div>
+    <!-- Photo blur patch — positioned over just the couple photo -->
+    <div class="p5-photo-blur" id="p5PhotoBlur">
+      <div class="p5-photo-blur-inner"></div>
+      <div class="p5-photo-blur-lock" id="p5Lock">🔒</div>
+      <!-- drag/resize handles — only visible in edit mode -->
+      <div class="p5-handle p5-handle-br" id="p5ResizeHandle"></div>
+      <div class="p5-edit-bar" id="p5EditBar">
+        <span class="p5-edit-label">drag to position · resize corner ↘</span>
+        <button class="p5-edit-done" id="p5DoneBtn">✓ Lock it</button>
+      </div>
     </div>
   </section>
 

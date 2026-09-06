@@ -1201,41 +1201,161 @@ window.AMB.AudioManager = AudioManager;
 })();
 
 /* ============================================================
-   Secret page 5 reveal — Ctrl+Shift+K (desktop) / shake (mobile)
+   Page 5 — draggable/resizable photo blur patch
    ============================================================ */
-(function secretPage5() {
+(function p5PhotoBlur() {
+  const patch    = document.getElementById('p5PhotoBlur');
+  const doneBtn  = document.getElementById('p5DoneBtn');
+  const resizeH  = document.getElementById('p5ResizeHandle');
+  if (!patch) return;
+
+  const STORAGE_KEY = 'p5blur_pos';
+  let locked = false;
   let revealed = false;
 
-  function revealPage5() {
-    if (revealed) return;
-    const cover = document.getElementById('page5BlurCover');
-    if (!cover) return;
-    revealed = true;
-    cover.classList.add('revealed');
-    setTimeout(() => cover.remove(), 750);
+  /* --- Restore saved position --- */
+  function restorePos() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved) {
+        patch.style.left   = saved.left;
+        patch.style.top    = saved.top;
+        patch.style.width  = saved.width;
+        patch.style.height = saved.height;
+        if (saved.locked) lockPatch();
+      }
+    } catch(e) {}
   }
 
-  /* Desktop — Ctrl+Shift+K */
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'K') {
-      e.preventDefault();
-      revealPage5();
-    }
+  function savePos(doLock) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        left:   patch.style.left,
+        top:    patch.style.top,
+        width:  patch.style.width,
+        height: patch.style.height,
+        locked: doLock
+      }));
+    } catch(e) {}
+  }
+
+  function lockPatch() {
+    locked = true;
+    patch.classList.add('locked');
+  }
+
+  doneBtn && doneBtn.addEventListener('click', () => {
+    lockPatch();
+    savePos(true);
   });
 
-  /* Mobile — shake */
-  let lastX = null, lastY = null, lastZ = null;
-  const THRESHOLD = 18;
+  /* --- Drag --- */
+  let dragStartX, dragStartY, origLeft, origTop;
+
+  function onDragStart(e) {
+    if (locked) return;
+    if (e.target === resizeH || e.target === doneBtn) return;
+    e.preventDefault();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const rect = patch.parentElement.getBoundingClientRect();
+    dragStartX = clientX;
+    dragStartY = clientY;
+    origLeft = patch.offsetLeft;
+    origTop  = patch.offsetTop;
+    patch.style.cursor = 'grabbing';
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup',   onDragEnd);
+    document.addEventListener('touchmove', onDragMove, { passive: false });
+    document.addEventListener('touchend',  onDragEnd);
+  }
+
+  function onDragMove(e) {
+    e.preventDefault();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const dx = clientX - dragStartX;
+    const dy = clientY - dragStartY;
+    const parent = patch.parentElement;
+    const newLeft = Math.max(0, Math.min(origLeft + dx, parent.offsetWidth  - patch.offsetWidth));
+    const newTop  = Math.max(0, Math.min(origTop  + dy, parent.offsetHeight - patch.offsetHeight));
+    patch.style.left = newLeft + 'px';
+    patch.style.top  = newTop  + 'px';
+  }
+
+  function onDragEnd() {
+    patch.style.cursor = 'grab';
+    savePos(false);
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup',   onDragEnd);
+    document.removeEventListener('touchmove', onDragMove);
+    document.removeEventListener('touchend',  onDragEnd);
+  }
+
+  patch.addEventListener('mousedown', onDragStart);
+  patch.addEventListener('touchstart', onDragStart, { passive: false });
+
+  /* --- Resize --- */
+  let resStartX, resStartY, resOrigW, resOrigH;
+
+  resizeH && resizeH.addEventListener('mousedown', startResize);
+  resizeH && resizeH.addEventListener('touchstart', startResize, { passive: false });
+
+  function startResize(e) {
+    if (locked) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    resStartX = clientX;
+    resStartY = clientY;
+    resOrigW  = patch.offsetWidth;
+    resOrigH  = patch.offsetHeight;
+    document.addEventListener('mousemove', onResize);
+    document.addEventListener('mouseup',   endResize);
+    document.addEventListener('touchmove', onResize, { passive: false });
+    document.addEventListener('touchend',  endResize);
+  }
+
+  function onResize(e) {
+    e.preventDefault();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const newW = Math.max(80,  resOrigW + (clientX - resStartX));
+    const newH = Math.max(60, resOrigH + (clientY - resStartY));
+    patch.style.width  = newW + 'px';
+    patch.style.height = newH + 'px';
+  }
+
+  function endResize() {
+    savePos(false);
+    document.removeEventListener('mousemove', onResize);
+    document.removeEventListener('mouseup',   endResize);
+    document.removeEventListener('touchmove', onResize);
+    document.removeEventListener('touchend',  endResize);
+  }
+
+  /* --- Reveal: Ctrl+Shift+K or shake --- */
+  function revealPhoto() {
+    if (revealed) return;
+    revealed = true;
+    patch.classList.add('revealed');
+    setTimeout(() => patch.style.display = 'none', 700);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); revealPhoto(); }
+  });
+
+  let lX = null, lY = null, lZ = null;
   window.addEventListener('devicemotion', (e) => {
     const a = e.accelerationIncludingGravity;
     if (!a) return;
-    if (lastX === null) { lastX = a.x; lastY = a.y; lastZ = a.z; return; }
-    const delta = Math.abs(a.x - lastX) + Math.abs(a.y - lastY) + Math.abs(a.z - lastZ);
-    if (delta > THRESHOLD) revealPage5();
-    lastX = a.x; lastY = a.y; lastZ = a.z;
+    if (lX === null) { lX = a.x; lY = a.y; lZ = a.z; return; }
+    if (Math.abs(a.x-lX)+Math.abs(a.y-lY)+Math.abs(a.z-lZ) > 18) revealPhoto();
+    lX = a.x; lY = a.y; lZ = a.z;
   }, { passive: true });
 
-  /* iOS 13+ motion permission */
   window.addEventListener('touchend', function req() {
     if (typeof DeviceMotionEvent !== 'undefined' &&
         typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -1243,4 +1363,6 @@ window.AMB.AudioManager = AudioManager;
     }
     window.removeEventListener('touchend', req);
   }, { once: true });
+
+  restorePos();
 })();

@@ -1930,12 +1930,12 @@ button {
 /* Edit bar */
 .p5-edit-bar {
   position: absolute;
-  bottom: -40px; left: 0; right: 0;
+  bottom: 8px; left: 8px; right: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  background: rgba(20,10,30,0.85);
+  background: rgba(20,10,30,0.88);
   border-radius: 8px;
   padding: 6px 10px;
   white-space: nowrap;

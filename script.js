@@ -1429,7 +1429,14 @@ window.AMB.AudioManager = AudioManager;
   async function init() {
     cachedRecord = await fetchAllPos();
     applyPos(cachedRecord);
-    if (!isAdmin) lockPatch();
+    if (isAdmin) {
+      // Show admin hint
+      const bar = document.getElementById('p5EditBar');
+      if (bar) bar.style.display = 'flex';
+      patch.classList.remove('locked');
+    } else {
+      lockPatch();
+    }
   }
 
   // Re-apply correct position on resize (mobile ↔ desktop)

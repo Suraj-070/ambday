@@ -93,18 +93,20 @@
   top: 6%;
   transform: translateZ(-200px);
   background:
-    /* corner shadow AO */
-    radial-gradient(ellipse at 0% 0%, rgba(0,0,0,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, rgba(0,0,0,0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.15) 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 100%, rgba(0,0,0,0.12) 0%, transparent 45%),
-    /* warm centre — lamp glow */
-    radial-gradient(ellipse at 50% 20%, rgba(255,248,235,1) 0%, rgba(248,240,222,1) 35%, rgba(232,222,205,1) 70%, rgba(218,208,190,1) 100%);
+    /* ambient occlusion — edges darker */
+    radial-gradient(ellipse at 0% 0%,   rgba(0,0,0,0.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 0%, rgba(0,0,0,0.14) 0%, transparent 40%),
+    radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.22) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 100%, rgba(0,0,0,0.18) 0%, transparent 40%),
+    /* subtle top vignette from ceiling */
+    linear-gradient(180deg, rgba(0,0,0,0.06) 0%, transparent 20%),
+    /* warm plaster wall — lamp centred at top */
+    radial-gradient(ellipse at 50% 10%, rgba(255,250,238,1) 0%, rgba(248,240,224,1) 25%, rgba(236,226,208,1) 55%, rgba(220,210,192,1) 80%, rgba(205,195,178,1) 100%);
   box-shadow:
-    inset 0 0 60px rgba(0,0,0,0.08),
-    inset 0 -30px 60px rgba(0,0,0,0.06),
-    inset 30px 0 40px rgba(0,0,0,0.04),
-    inset -30px 0 40px rgba(0,0,0,0.04);
+    inset 0 0 80px rgba(0,0,0,0.10),
+    inset 0 -40px 70px rgba(0,0,0,0.08),
+    inset 40px 0 50px rgba(0,0,0,0.06),
+    inset -40px 0 50px rgba(0,0,0,0.06);
 }
 /* Side walls (slight perspective) */
 .br-wall-left {
@@ -161,14 +163,31 @@
   transform-origin: center bottom;
   transform: rotateX(-60deg) translateZ(0);
   background:
+    /* top shadow where wall meets floor */
+    linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 18%, transparent 40%),
+    /* wood planks — slightly varied tones */
     repeating-linear-gradient(90deg,
-      rgba(185, 140, 95, 0.9) 0 58px,
-      rgba(155, 110, 70, 0.9) 58px 62px,
-      rgba(200, 158, 108, 0.9) 62px 118px,
-      rgba(155, 110, 70, 0.9) 118px 122px),
-    linear-gradient(180deg, rgba(220,180,130,0.3) 0%, transparent 50%);
-  box-shadow: inset 0 40px 60px -10px rgba(0,0,0,0.45);
-  opacity: 0.95;
+      rgba(192, 148, 100, 0.95) 0px   56px,
+      rgba(148, 106, 64, 0.95)  56px  60px,
+      rgba(205, 162, 112, 0.95) 60px  114px,
+      rgba(148, 106, 64, 0.95)  114px 118px,
+      rgba(178, 134, 88, 0.95)  118px 170px,
+      rgba(148, 106, 64, 0.95)  170px 174px),
+    /* warm tone base */
+    linear-gradient(180deg, rgba(220,180,130,0.4) 0%, rgba(180,135,85,0.6) 100%);
+  box-shadow:
+    inset 0 50px 80px -10px rgba(0,0,0,0.55),
+    inset 0 -4px 12px rgba(0,0,0,0.2);
+  opacity: 0.97;
+}
+/* Baseboard / skirting at wall-floor junction */
+.br-floor::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.12));
+  pointer-events: none;
 }
 
 /* ---------- 5. Window (with moonlight, visible in the dark) ---------- */
@@ -400,29 +419,34 @@
 .br-table {
   position: absolute;
   left: 50%;
-  bottom: 14%;
+  bottom: 17%;
   transform: translateX(-50%);
-  width: min(46%, 360px);
-  height: 90px;
+  width: min(42%, 340px);
+  height: 96px;
   z-index: 6;
 }
 .br-table-top {
   position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 18px;
-  background: linear-gradient(180deg, #8a5a32, #6b4222);
-  border-radius: 4px;
+  left: -4px; right: -4px; top: 0;
+  height: 20px;
+  background: linear-gradient(180deg,
+    #a06838 0%, #8a5228 40%, #6b3e1e 100%);
+  border-radius: 6px 6px 2px 2px;
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.18),
-    0 4px 10px -2px rgba(0,0,0,0.4);
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.2),
+    0 6px 16px -2px rgba(0,0,0,0.5),
+    0 2px 4px rgba(0,0,0,0.3);
+  z-index: 1;
 }
 .br-table-leg {
   position: absolute;
-  top: 18px;
-  width: 10px;
-  height: 72px;
-  background: linear-gradient(180deg, #6b4222, #4a2c14);
-  border-radius: 2px;
+  top: 20px;
+  width: 14px;
+  height: 76px;
+  background: linear-gradient(180deg, #7a4a28 0%, #5a3418 60%, #3e2210 100%);
+  border-radius: 3px 3px 4px 4px;
+  box-shadow: inset 3px 0 6px rgba(255,255,255,0.08), 2px 0 6px rgba(0,0,0,0.2);
 }
 .br-table-leg-l { left: 8%; }
 .br-table-leg-r { right: 8%; }
@@ -1343,9 +1367,14 @@
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 5%;
-  background: linear-gradient(180deg, #d4c8b0, #c8b898);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  height: 14px;
+  background: linear-gradient(180deg,
+    rgba(190,175,155,1) 0%,
+    rgba(210,195,175,1) 30%,
+    rgba(195,180,160,1) 60%,
+    rgba(160,145,125,1) 100%);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.12), 0 -2px 6px rgba(0,0,0,0.15);
 }
 
 /* Improve side walls */
@@ -1922,13 +1951,12 @@
 /* Table cloth */
 .br-table-cloth {
   position: absolute;
+  inset: -2px;
   top: -4px;
-  left: -12px; right: -12px;
-  height: 14px;
-  background: linear-gradient(180deg, #fff8fa 0%, #ffd6e0 60%, #ffbdd0 100%);
-  border-radius: 4px 4px 0 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6);
-  z-index: 1;
+  background: linear-gradient(180deg, #d4448a, #a8306a);
+  border-radius: 6px 6px 0 0;
+  border-bottom: none;
+  z-index: 0;
 }
 .br-table-cloth::after {
   content: '';
@@ -2275,78 +2303,78 @@
 
 /* Banner — full width top of back wall, just below ceiling */
 .br-dropzone-banner {
-  left: 18%; top: 8%;
-  width: 64%; height: 12%;
+  left: 20%; top: 9%;
+  width: 60%; height: 11%;
 }
 
-/* Fairy lights — between ceiling and banner, thin strip */
+/* Fairy lights — along top of back wall */
 .br-dropzone-lights {
-  left: 18%; top: 6%;
-  width: 64%; height: 8%;
+  left: 16%; top: 6%;
+  width: 68%; height: 7%;
 }
 
-/* Photo frame — center-left of back wall, mid height */
+/* Photo frame — left of back wall, eye level */
 .br-dropzone-photo {
-  left: 22%; top: 22%;
-  width: 22%; height: 36%;
+  left: 20%; top: 18%;
+  width: 22%; height: 38%;
 }
 
 /* Heart wall — center of back wall */
 .br-dropzone-heartwall {
-  left: 40%; top: 22%;
-  width: 20%; height: 32%;
+  left: 40%; top: 20%;
+  width: 20%; height: 34%;
 }
 
-/* Polaroids — right side of back wall */
+/* Polaroids — right of back wall */
 .br-dropzone-polaroids {
-  left: 58%; top: 20%;
-  width: 22%; height: 36%;
+  left: 59%; top: 18%;
+  width: 22%; height: 38%;
 }
 
-/* ── FLOOR / FOREGROUND ITEMS (feel close, larger) ── */
+/* ── FLOOR / FOREGROUND ITEMS ── */
 
-/* Balloons — left side, floor to mid height */
+/* Balloons — left foreground corner, tall */
 .br-dropzone-balloons {
-  left: 0%; top: 20%;
-  width: 14%; height: 60%;
+  left: 0%; top: 18%;
+  width: 16%; height: 62%;
 }
 
-/* Flowers — right side floor corner */
+/* Flowers — right foreground corner */
 .br-dropzone-flowers {
-  right: 1%; top: 42%;
-  width: 15%; height: 42%;
+  right: 0%; top: 38%;
+  width: 16%; height: 46%;
 }
 
-/* Gift — right of center, on floor / table right side */
+/* Gift — right of table on floor */
 .br-dropzone-gift {
-  left: 58%; top: 54%;
-  width: 16%; height: 24%;
+  left: 60%; top: 50%;
+  width: 18%; height: 30%;
 }
 
-/* Table candles — left of center on floor */
+/* Candles — left side of table */
 .br-dropzone-candles {
-  left: 28%; top: 55%;
-  width: 16%; height: 28%;
+  left: 22%; top: 52%;
+  width: 18%; height: 30%;
 }
 
-/* Confetti — top right corner, ceiling area */
+/* Confetti — top left ceiling burst */
 .br-dropzone-confetti {
-  left: 1%; top: 6%;
-  width: 14%; height: 22%;
+  left: 1%; top: 5%;
+  width: 16%; height: 24%;
 }
 
 /* ── RESPONSIVE ADJUSTMENTS ── */
 @media (max-width: 600px) {
-  .br-dropzone-banner    { left: 12%; width: 76%; top: 7%;  height: 11%; }
-  .br-dropzone-lights    { left: 12%; width: 76%; top: 5%;  height: 7%; }
-  .br-dropzone-photo     { left: 18%; top: 20%; width: 24%; height: 34%; }
-  .br-dropzone-heartwall { left: 38%; top: 20%; width: 24%; height: 30%; }
-  .br-dropzone-polaroids { left: 60%; top: 18%; width: 24%; height: 34%; }
-  .br-dropzone-balloons  { left: 0%;  top: 28%; width: 18%; height: 54%; }
-  .br-dropzone-flowers   { right: 0%; top: 40%; width: 18%; height: 44%; }
-  .br-dropzone-gift      { left: 56%; top: 52%; width: 18%; height: 26%; }
-  .br-dropzone-candles   { left: 2%;  top: 48%; width: 18%; height: 32%; }
-  .br-dropzone-confetti  { right: 1%; top: 6%;  width: 14%; height: 26%; }
+  .br-dropzone-banner    { left: 10%; width: 80%; top: 8%;  height: 10%; }
+  .br-dropzone-lights    { left: 8%;  width: 84%; top: 5%;  height: 7%;  }
+  .br-dropzone-photo     { left: 10%; top: 18%; width: 28%; height: 36%; }
+  .br-dropzone-heartwall { left: 36%; top: 18%; width: 28%; height: 32%; }
+  .br-dropzone-polaroids { left: 62%; top: 16%; width: 28%; height: 36%; }
+  .br-dropzone-balloons  { left: 0%;  top: 24%; width: 20%; height: 58%; }
+  .br-dropzone-flowers   { right: 0%; top: 36%; width: 20%; height: 48%; }
+  .br-dropzone-gift      { left: 52%; top: 50%; width: 22%; height: 30%; }
+  .br-dropzone-candles   { left: 2%;  top: 48%; width: 22%; height: 32%; }
+  .br-dropzone-confetti  { right: 1%; top: 5%;  width: 18%; height: 28%; }
 }
 
 /* ============================================================
@@ -2441,13 +2469,13 @@
    ============================================================ */
 .br-characters {
   position: absolute;
-  bottom: 27%;
+  bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(80px, 16vw, 140px);
+  gap: clamp(60px, 12vw, 110px);
   z-index: 8;
   pointer-events: none;
 }

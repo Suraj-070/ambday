@@ -2476,7 +2476,7 @@
   bottom: 17%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(600px, 72%);
+  width: min(560px, 68%);
   height: 34%;
   z-index: 8;
   pointer-events: none;
@@ -2487,6 +2487,10 @@
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 32px);
 }
 
 /* Floating heart */

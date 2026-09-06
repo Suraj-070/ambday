@@ -480,13 +480,16 @@
     <!-- Cake shadow -->
     <div class="br-cake-shadow" id="brCakeShadow" hidden></div>
 
-    <!-- Characters — single SVG for proper overlap during hug/kiss -->
+    <!-- Characters — two separate divs, no overlap -->
     <div class="br-characters" id="brCharacters" hidden aria-hidden="true">
       <div class="br-char-stage" id="brCharStage" data-state="idle">
-        <div class="character-svg-wrap" id="charSvgWrap">
-          <!-- combined characters.svg injected by character-animation.js -->
+        <div class="character character--boy" id="boyCharacter">
+          <div class="character__inner"></div>
         </div>
-        <div class="br-char-heart" aria-hidden="true">♡</div>
+        <div class="br-char-heart" id="brCharHeart" aria-hidden="true">♡</div>
+        <div class="character character--girl" id="girlCharacter">
+          <div class="character__inner"></div>
+        </div>
       </div>
     </div>
 

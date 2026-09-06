@@ -1,68 +1,85 @@
 /* =========================================================
-   Character Animation — Side by side, emoji reactions
-   No sliding/overlap — just idle breathing + emoji bursts
+   Character Animation — Two separate divs, original animations
    ========================================================= */
 
 #brCharStage {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.character-svg-wrap {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+/* ---------- Characters ---------- */
+.character {
+  position: relative;
+  width: 38%;
+  max-width: 150px;
+  min-width: 70px;
   height: 100%;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  flex-shrink: 0;
 }
 
-.character-svg-wrap svg {
+.character__inner {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  will-change: transform;
+}
+
+.character__inner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
   overflow: visible;
 }
 
-/* Groups just sit in place — no sliding */
-#boy-group, #girl-group {
-  transition: transform 600ms cubic-bezier(0.34, 1.15, 0.64, 1);
-}
-
-/* Head/arm pivots */
-#boy-head, #boy-left-arm, #boy-right-arm,
-#girl-head, #girl-left-arm, #girl-right-arm, #girl-glasses {
+/* SVG group animations use view-box within each character's own SVG */
+#boy-head, #boy-left-arm, #boy-right-arm {
+  transform-box: view-box;
+  transform-origin: 250px 305px;
   transition: transform 600ms cubic-bezier(0.34, 1.3, 0.64, 1);
 }
-#boy-head      { transform-origin: 250px 305px; transform-box: view-box; }
-#boy-left-arm  { transform-origin: 145px 340px; transform-box: view-box; }
-#boy-right-arm { transform-origin: 355px 340px; transform-box: view-box; }
-#girl-head      { transform-origin: 950px 305px; transform-box: view-box; }
-#girl-left-arm  { transform-origin: 838px 340px; transform-box: view-box; }
-#girl-right-arm { transform-origin: 1062px 340px; transform-box: view-box; }
-#girl-glasses   { transform-origin: 950px 305px; transform-box: view-box; }
+#boy-left-arm  { transform-origin: 145px 340px; }
+#boy-right-arm { transform-origin: 355px 340px; }
+
+#girl-head, #girl-left-arm, #girl-right-arm, #girl-glasses {
+  transform-box: view-box;
+  transform-origin: 250px 305px;
+  transition: transform 600ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+#girl-left-arm  { transform-origin: 138px 340px; }
+#girl-right-arm { transform-origin: 362px 340px; }
 
 /* ---------- Breathing ---------- */
-@keyframes breathe-boy  { 0%,100%{transform:translateY(0);}  50%{transform:translateY(-3px);} }
-@keyframes breathe-girl { 0%,100%{transform:translateY(0);}  50%{transform:translateY(-3px);} }
+@keyframes breathe-boy  { 0%,100%{transform:translateY(0) scale(1,1);} 50%{transform:translateY(-1px) scale(1.004,1.006);} }
+@keyframes breathe-girl { 0%,100%{transform:translateY(0) scale(1,1);} 50%{transform:translateY(-1.2px) scale(1.005,1.008);} }
 @keyframes head-sway-boy  { 0%,100%{transform:rotate(0deg);} 33%{transform:rotate(-0.8deg);} 66%{transform:rotate(0.6deg);} }
-@keyframes head-sway-girl { 0%,100%{transform:rotate(0deg);} 40%{transform:rotate(0.7deg);}  75%{transform:rotate(-0.6deg);} }
-@keyframes hair-sway      { 0%,100%{transform:rotate(0deg);} 50%{transform:rotate(0.5deg);} }
-@keyframes blink          { 0%,92%,100%{transform:scaleY(1);} 96%{transform:scaleY(0.05);} }
+@keyframes head-sway-girl { 0%,100%{transform:rotate(0deg);} 40%{transform:rotate(0.7deg);} 75%{transform:rotate(-0.6deg);} }
+@keyframes hair-sway-girl { 0%,100%{transform:rotate(0deg) translateX(0);} 50%{transform:rotate(0.5deg) translateX(0.5px);} }
+@keyframes blink { 0%,92%,100%{transform:scaleY(1);} 96%{transform:scaleY(0.05);} }
 
 /* ---------- IDLE ---------- */
-#brCharStage[data-state="idle"] #boy-group  { animation: breathe-boy  4.2s ease-in-out infinite; }
-#brCharStage[data-state="idle"] #girl-group { animation: breathe-girl 4.8s ease-in-out 0.6s infinite; }
-#brCharStage[data-state="idle"] #boy-head   { animation: head-sway-boy  9s ease-in-out infinite; }
-#brCharStage[data-state="idle"] #girl-head  { animation: head-sway-girl 11s ease-in-out infinite; }
+#brCharStage[data-state="idle"] .character--boy  .character__inner { animation: breathe-boy  4.2s ease-in-out infinite; }
+#brCharStage[data-state="idle"] .character--girl .character__inner { animation: breathe-girl 4.8s ease-in-out infinite; }
+#brCharStage[data-state="idle"] #boy-head  { animation: head-sway-boy  9s ease-in-out infinite; }
+#brCharStage[data-state="idle"] #girl-head { animation: head-sway-girl 11s ease-in-out infinite; }
 #brCharStage[data-state="idle"] #girl-hair-back,
-#brCharStage[data-state="idle"] #girl-hair-front { animation: hair-sway 7s ease-in-out infinite; }
+#brCharStage[data-state="idle"] #girl-hair-front { animation: hair-sway-girl 7s ease-in-out infinite; }
 
 .blinking-eye { animation: blink 5.5s ease-in-out infinite; }
+.character--boy  .blinking-eye { animation-duration: 5.2s; }
+.character--girl .blinking-eye { animation-duration: 6.4s; }
 
-#brCharStage:not([data-state="idle"]) #boy-group,
-#brCharStage:not([data-state="idle"]) #girl-group,
+/* Pause in non-idle */
+#brCharStage:not([data-state="idle"]) .character__inner,
 #brCharStage:not([data-state="idle"]) #boy-head,
 #brCharStage:not([data-state="idle"]) #girl-head,
 #brCharStage:not([data-state="idle"]) #girl-hair-back,
@@ -71,29 +88,35 @@
 }
 
 /* ---------- REACTION — heads turn toward each other ---------- */
-#brCharStage[data-state="reaction"] #boy-head    { transform: rotate(8deg); }
-#brCharStage[data-state="reaction"] #girl-head   { transform: rotate(-8deg); }
-#brCharStage[data-state="reaction"] #girl-glasses { transform: rotate(-8deg); }
+#brCharStage[data-state="reaction"] #boy-head   { transform: rotate(6deg); }
+#brCharStage[data-state="reaction"] #girl-head  { transform: rotate(-6deg); }
+#brCharStage[data-state="reaction"] #girl-glasses { transform: rotate(-6deg); }
+#brCharStage[data-state="reaction"] .character--boy  .character__inner { transform: rotate(1deg); }
+#brCharStage[data-state="reaction"] .character--girl .character__inner { transform: rotate(-1deg); }
 
 /* ---------- HUG — arms up, heads tilt ---------- */
-#brCharStage[data-state="hug"] #boy-head    { transform: rotate(10deg); }
-#brCharStage[data-state="hug"] #girl-head   { transform: rotate(-10deg); }
+#brCharStage[data-state="hug"] .character--boy  .character__inner { transform: rotate(2deg); }
+#brCharStage[data-state="hug"] .character--girl .character__inner { transform: rotate(-2deg); }
+#brCharStage[data-state="hug"] #boy-head   { transform: rotate(10deg); }
+#brCharStage[data-state="hug"] #girl-head  { transform: rotate(-10deg); }
 #brCharStage[data-state="hug"] #girl-glasses { transform: rotate(-10deg); }
-#brCharStage[data-state="hug"] #boy-right-arm  { transform: rotate(-85deg); }
-#brCharStage[data-state="hug"] #boy-left-arm   { transform: rotate(65deg); }
-#brCharStage[data-state="hug"] #girl-left-arm  { transform: rotate(85deg); }
-#brCharStage[data-state="hug"] #girl-right-arm { transform: rotate(-65deg); }
+#brCharStage[data-state="hug"] #boy-right-arm  { transform: rotate(-90deg); }
+#brCharStage[data-state="hug"] #boy-left-arm   { transform: rotate(70deg); }
+#brCharStage[data-state="hug"] #girl-left-arm  { transform: rotate(90deg); }
+#brCharStage[data-state="hug"] #girl-right-arm { transform: rotate(-70deg); }
 
 /* ---------- KISS — heads tilt more ---------- */
-#brCharStage[data-state="kiss"] #boy-head    { transform: rotate(18deg) translateY(-5px); }
-#brCharStage[data-state="kiss"] #girl-head   { transform: rotate(-18deg) translateY(-5px); }
-#brCharStage[data-state="kiss"] #girl-glasses { transform: rotate(-18deg) translateY(-5px); }
-#brCharStage[data-state="kiss"] #boy-right-arm  { transform: rotate(-60deg); }
-#brCharStage[data-state="kiss"] #boy-left-arm   { transform: rotate(45deg); }
-#brCharStage[data-state="kiss"] #girl-left-arm  { transform: rotate(60deg); }
-#brCharStage[data-state="kiss"] #girl-right-arm { transform: rotate(-45deg); }
+#brCharStage[data-state="kiss"] .character--boy  .character__inner { transform: rotate(1.5deg); }
+#brCharStage[data-state="kiss"] .character--girl .character__inner { transform: rotate(-1.5deg); }
+#brCharStage[data-state="kiss"] #boy-head   { transform: rotate(16deg) translateY(-4px); }
+#brCharStage[data-state="kiss"] #girl-head  { transform: rotate(-16deg) translateY(-4px); }
+#brCharStage[data-state="kiss"] #girl-glasses { transform: rotate(-16deg) translateY(-4px); }
+#brCharStage[data-state="kiss"] #boy-right-arm  { transform: rotate(-65deg); }
+#brCharStage[data-state="kiss"] #boy-left-arm   { transform: rotate(50deg); }
+#brCharStage[data-state="kiss"] #girl-left-arm  { transform: rotate(65deg); }
+#brCharStage[data-state="kiss"] #girl-right-arm { transform: rotate(-50deg); }
 
-/* ---------- Emoji burst overlay ---------- */
+/* ---------- Emoji burst ---------- */
 .br-emoji-burst {
   position: absolute;
   inset: 0;
@@ -103,24 +126,38 @@
 }
 .br-burst-emoji {
   position: absolute;
-  font-size: clamp(20px, 4vw, 36px);
+  font-size: clamp(18px, 3.5vw, 32px);
   animation: emojiFly 1600ms ease-out forwards;
   pointer-events: none;
 }
 @keyframes emojiFly {
-  0%   { opacity: 0; transform: translate(0, 0) scale(0.4) rotate(0deg); }
-  20%  { opacity: 1; transform: translate(var(--tx1), var(--ty1)) scale(1.2) rotate(var(--rot1)); }
-  80%  { opacity: 1; transform: translate(var(--tx2), var(--ty2)) scale(1) rotate(var(--rot2)); }
-  100% { opacity: 0; transform: translate(var(--tx3), var(--ty3)) scale(0.6) rotate(var(--rot3)); }
+  0%   { opacity:0; transform:translate(0,0) scale(0.4) rotate(0deg); }
+  20%  { opacity:1; transform:translate(var(--tx1),var(--ty1)) scale(1.2) rotate(var(--rot1)); }
+  80%  { opacity:1; transform:translate(var(--tx2),var(--ty2)) scale(1) rotate(var(--rot2)); }
+  100% { opacity:0; transform:translate(var(--tx3),var(--ty3)) scale(0.6) rotate(var(--rot3)); }
+}
+
+/* ---------- Floating heart between characters ---------- */
+.br-char-heart {
+  font-size: clamp(14px, 2.5vw, 22px);
+  color: #E8837A;
+  animation: heartBob 2.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(232,131,122,0.5));
+  align-self: flex-end;
+  margin-bottom: 30%;
+  flex-shrink: 0;
+}
+@keyframes heartBob {
+  0%,100% { transform: translateY(0) scale(1); opacity:0.85; }
+  50%     { transform: translateY(-8px) scale(1.15); opacity:1; }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  #boy-group, #girl-group, #boy-head, #girl-head,
-  #girl-hair-back, #girl-hair-front,
-  #boy-left-arm, #boy-right-arm,
-  #girl-left-arm, #girl-right-arm,
-  .blinking-eye, .br-burst-emoji {
+  .character, .character__inner,
+  #boy-head, #girl-head, #girl-hair-back, #girl-hair-front,
+  #boy-left-arm, #boy-right-arm, #girl-left-arm, #girl-right-arm,
+  .blinking-eye, .br-burst-emoji, .br-char-heart {
     animation: none !important;
     transition-duration: 50ms !important;
   }

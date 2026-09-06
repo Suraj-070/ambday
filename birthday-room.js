@@ -256,7 +256,16 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       if (brCakeShadow) brCakeShadow.hidden = false;
       cakeEl.classList.add('placed');
-      later(() => { const c = $('#brCharacters'); if(c) c.hidden = false; }, 500);
+      later(() => {
+        const c = $('#brCharacters');
+        if (c) {
+          c.hidden = false;
+          c.removeAttribute('aria-hidden');
+          later(() => {
+            if (window.CharacterAnimation) window.CharacterAnimation.startCelebration();
+          }, 600);
+        }
+      }, 500);
 
       setCaption("Now for the candle 🕯️");
       later(() => revealCandle(), 800);

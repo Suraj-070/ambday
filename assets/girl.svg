@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 700" width="100%" height="100%">
+  <defs>
+    <!-- ============ SKIN ============ -->
+    <radialGradient id="girlSkinGrad" cx="38%" cy="32%" r="80%">
+      <stop offset="0%" stop-color="#FFE5D2"/>
+      <stop offset="50%" stop-color="#F5CFB0"/>
+      <stop offset="100%" stop-color="#D8A288"/>
+    </radialGradient>
+    <radialGradient id="girlSkinShadow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#E8B594"/>
+      <stop offset="100%" stop-color="#C2856B"/>
+    </radialGradient>
+    <radialGradient id="girlBlush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F5A89A" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#F5A89A" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#F5A89A" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============ HAIR (dark chocolate bob) ============ -->
+    <linearGradient id="girlHairMain" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#7A5340"/>
+      <stop offset="40%" stop-color="#4A2F22"/>
+      <stop offset="100%" stop-color="#2A1810"/>
+    </linearGradient>
+    <linearGradient id="girlHairClump" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6B4530"/>
+      <stop offset="100%" stop-color="#3A2218"/>
+    </linearGradient>
+    <radialGradient id="girlHairShine" cx="35%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#B6826A" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#7A5340" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4A2F22" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="girlHairEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3A2218"/>
+      <stop offset="100%" stop-color="#1A0F08"/>
+    </linearGradient>
+
+    <!-- ============ SWEATER (cream knit) ============ -->
+    <linearGradient id="girlSweaterGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#FAF4E8"/>
+      <stop offset="55%" stop-color="#EFE5D0"/>
+      <stop offset="100%" stop-color="#C8B894"/>
+    </linearGradient>
+    <linearGradient id="girlSweaterDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D8C8A8"/>
+      <stop offset="100%" stop-color="#A89878"/>
+    </linearGradient>
+    <radialGradient id="girlSweaterHighlight" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#FFFAEC" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#FAF4E8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============ PANTS (sage green) ============ -->
+    <linearGradient id="girlPantsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9FB585"/>
+      <stop offset="50%" stop-color="#7D9168"/>
+      <stop offset="100%" stop-color="#5F7548"/>
+    </linearGradient>
+    <linearGradient id="girlPantsCuff" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A8C08C"/>
+      <stop offset="100%" stop-color="#7D9168"/>
+    </linearGradient>
+
+    <!-- ============ SHOES (white platform) ============ -->
+    <linearGradient id="girlShoeBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D8D4CC"/>
+    </linearGradient>
+    <linearGradient id="girlShoeShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E0DCD4"/>
+      <stop offset="100%" stop-color="#B8B4AC"/>
+    </linearGradient>
+    <linearGradient id="girlShoeSole" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F5F0E0"/>
+      <stop offset="100%" stop-color="#C8B894"/>
+    </linearGradient>
+
+    <!-- ============ EYES ============ -->
+    <radialGradient id="girlIris" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#7A5C44"/>
+      <stop offset="35%" stop-color="#3D2E22"/>
+      <stop offset="80%" stop-color="#1A120B"/>
+      <stop offset="100%" stop-color="#0A0604"/>
+    </radialGradient>
+    <linearGradient id="girlEyeWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="80%" stop-color="#F0E8E8"/>
+      <stop offset="100%" stop-color="#D8CCCC"/>
+    </linearGradient>
+    <linearGradient id="girlUpperLid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3D2E22" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#3D2E22" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- ============ GLASSES ============ -->
+    <linearGradient id="girlGlassesFrame" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5A6878"/>
+      <stop offset="50%" stop-color="#3A4858"/>
+      <stop offset="100%" stop-color="#1A2838"/>
+    </linearGradient>
+    <linearGradient id="girlGlassesLens" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25"/>
+      <stop offset="50%" stop-color="#E8F0F8" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#C8D8E8" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- ============ FLOOR SHADOW ============ -->
+    <radialGradient id="girlFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2A1F18" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="#2A1F18" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#2A1F18" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    /* Animation transform-origins — adjustable by CSS/JS later */
+    #girl-left-arm  { transform-origin: 165px 340px; }
+    #girl-right-arm { transform-origin: 335px 340px; }
+    #girl-left-hand { transform-origin: 145px 470px; }
+    #girl-right-hand{ transform-origin: 355px 470px; }
+    #girl-left-leg  { transform-origin: 225px 545px; }
+    #girl-right-leg { transform-origin: 275px 545px; }
+    #girl-head      { transform-origin: 250px 320px; }
+    #girl-hair-front{ transform-origin: 250px 110px; }
+    #girl-hair-back { transform-origin: 250px 110px; }
+    #girl-face      { transform-origin: 250px 195px; }
+    #girl-left-eye  { transform-origin: 210px 205px; }
+    #girl-right-eye { transform-origin: 290px 205px; }
+    #girl-mouth     { transform-origin: 250px 260px; }
+    #girl-glasses   { transform-origin: 250px 205px; }
+    #girl-shadow    { transform-origin: 250px 672px; }
+  </style>
+
+  <g id="girl">
+
+    <!-- ============ FLOOR SHADOW ============ -->
+    <g id="girl-shadow">
+      <ellipse cx="250" cy="672" rx="135" ry="18" fill="url(#girlFloorShadow)"/>
+      <ellipse cx="250" cy="672" rx="80" ry="9" fill="#2A1F18" opacity="0.2"/>
+    </g>
+
+    <!-- ============ LEGS ============ -->
+    <g id="girl-legs">
+
+      <!-- LEFT LEG -->
+      <g id="girl-left-leg">
+        <!-- Pant leg (cropped, slim) -->
+        <path d="M 205 540
+                 Q 200 555 200 580
+                 L 202 615
+                 Q 205 625 215 626
+                 L 240 626
+                 Q 250 625 250 615
+                 L 248 580
+                 Q 245 555 240 540
+                 Z"
+              fill="url(#girlPantsGrad)"/>
+        <!-- Subtle fold shadow -->
+        <path d="M 215 555 Q 218 585 222 615" stroke="#3D5028" stroke-width="2" fill="none" opacity="0.4"/>
+        <path d="M 200 555 Q 196 585 198 610" stroke="#B0C89A" stroke-width="1.5" fill="none" opacity="0.55"/>
+        <!-- Rolled cuff -->
+        <path d="M 200 612 Q 226 605 252 612 L 252 624 Q 226 632 200 624 Z"
+              fill="url(#girlPantsCuff)"/>
+        <path d="M 203 614 Q 226 608 249 614" stroke="#B8D0A0" stroke-width="1" fill="none" opacity="0.8"/>
+        <path d="M 203 621 Q 226 616 249 621" stroke="#3D5028" stroke-width="0.8" fill="none" opacity="0.6"/>
+        <path d="M 200 624 Q 226 632 252 624" stroke="#3D5028" stroke-width="1" fill="none" opacity="0.5"/>
+
+        <!-- LEFT SHOE (chunky white platform) -->
+        <g id="girl-left-shoe">
+          <!-- Sole bottom (thick platform) -->
+          <path d="M 188 638
+                   Q 188 660 200 663
+                   L 256 663
+                   Q 270 660 270 638
+                   L 268 632
+                   L 190 632 Z"
+                fill="url(#girlShoeSole)"/>
+          <!-- Sole stitch line -->
+          <path d="M 192 650 Q 228 656 266 650" stroke="#A89878" stroke-width="1" fill="none" opacity="0.7"/>
+          <!-- Sole side stripe -->
+          <path d="M 188 638 Q 188 660 200 663 L 256 663 Q 270 660 270 638" stroke="#A89878" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <ellipse cx="262" cy="655" rx="4" ry="2" fill="#FFFFFF" opacity="0.7"/>
+
+          <!-- Shoe body (white, rounded toe) -->
+          <path d="M 192 615
+                   Q 188 622 188 638
+                   L 190 642
+                   Q 200 645 220 646
+                   L 252 646
+                   Q 268 645 270 638
+                   L 270 622
+                   Q 268 615 256 612
+                   L 208 612
+                   Q 196 612 192 615 Z"
+                fill="url(#girlShoeBody)"/>
+
+          <!-- Side panel shadow (3D) -->
+          <path d="M 240 612
+                   Q 268 615 270 622
+                   L 270 638
+                   Q 268 645 252 646
+                   L 240 646
+                   Q 250 630 248 615
+                   Q 245 612 240 612 Z"
+                fill="url(#girlShoeShadow)" opacity="0.55"/>
+
+          <!-- Toe cap highlight -->
+          <ellipse cx="200" cy="630" rx="8" ry="3" fill="#FFFFFF" opacity="0.9"/>
+          <!-- Side panel highlight -->
+          <ellipse cx="230" cy="625" rx="20" ry="5" fill="#FFFFFF" opacity="0.5"/>
+
+          <!-- Tongue (under laces) -->
+          <path d="M 215 612 Q 226 608 235 612 L 235 632 Q 226 634 215 632 Z" fill="#F0E8D8" opacity="0.9"/>
+          <path d="M 218 615 Q 226 612 232 615 L 232 630 Q 226 632 218 630 Z" fill="#E8E0D0" opacity="0.7"/>
+
+          <!-- Lace eyelets -->
+          <circle cx="216" cy="620" r="1.4" fill="#5A4830"/>
+          <circle cx="222" cy="618" r="1.4" fill="#5A4830"/>
+          <circle cx="230" cy="618" r="1.4" fill="#5A4830"/>
+          <circle cx="236" cy="620" r="1.4" fill="#5A4830"/>
+
+          <!-- Laces (X pattern) -->
+          <path d="M 216 620 L 236 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M 216 620 Q 226 616 236 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M 216 620 Q 226 624 236 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Ankle shadow -->
+          <path d="M 192 618 Q 230 614 270 618 L 270 622 Q 230 618 192 622 Z" fill="#B8B4AC" opacity="0.4"/>
+        </g>
+      </g>
+
+      <!-- RIGHT LEG -->
+      <g id="girl-right-leg">
+        <path d="M 260 540
+                 Q 255 555 252 580
+                 L 250 615
+                 Q 250 625 260 626
+                 L 285 626
+                 Q 295 625 298 615
+                 L 300 580
+                 Q 298 555 295 540
+                 Z"
+              fill="url(#girlPantsGrad)"/>
+        <path d="M 285 555 Q 282 585 278 615" stroke="#3D5028" stroke-width="2" fill="none" opacity="0.4"/>
+        <path d="M 300 555 Q 304 585 302 610" stroke="#B0C89A" stroke-width="1.5" fill="none" opacity="0.55"/>
+        <!-- Rolled cuff -->
+        <path d="M 248 612 Q 274 605 300 612 L 300 624 Q 274 632 248 624 Z"
+              fill="url(#girlPantsCuff)"/>
+        <path d="M 251 614 Q 274 608 297 614" stroke="#B8D0A0" stroke-width="1" fill="none" opacity="0.8"/>
+        <path d="M 251 621 Q 274 616 297 621" stroke="#3D5028" stroke-width="0.8" fill="none" opacity="0.6"/>
+        <path d="M 248 624 Q 274 632 300 624" stroke="#3D5028" stroke-width="1" fill="none" opacity="0.5"/>
+
+        <g id="girl-right-shoe">
+          <path d="M 230 638
+                   Q 230 660 244 663
+                   L 300 663
+                   Q 312 660 312 638
+                   L 310 632
+                   L 232 632 Z"
+                fill="url(#girlShoeSole)"/>
+          <path d="M 234 650 Q 274 656 308 650" stroke="#A89878" stroke-width="1" fill="none" opacity="0.7"/>
+          <path d="M 230 638 Q 230 660 244 663 L 300 663 Q 312 660 312 638" stroke="#A89878" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <ellipse cx="240" cy="655" rx="4" ry="2" fill="#FFFFFF" opacity="0.7"/>
+
+          <path d="M 234 615
+                   Q 230 622 230 638
+                   L 232 642
+                   Q 244 645 264 646
+                   L 296 646
+                   Q 310 645 312 638
+                   L 312 622
+                   Q 310 615 298 612
+                   L 250 612
+                   Q 240 612 234 615 Z"
+                fill="url(#girlShoeBody)"/>
+
+          <!-- Side panel shadow -->
+          <path d="M 260 612
+                   Q 295 615 312 622
+                   L 312 638
+                   Q 310 645 296 646
+                   L 282 646
+                   Q 290 630 288 615
+                   Q 280 612 260 612 Z"
+                fill="url(#girlShoeShadow)" opacity="0.55"/>
+
+          <ellipse cx="244" cy="630" rx="8" ry="3" fill="#FFFFFF" opacity="0.9"/>
+          <ellipse cx="276" cy="625" rx="20" ry="5" fill="#FFFFFF" opacity="0.5"/>
+
+          <path d="M 265 612 Q 274 608 282 612 L 282 632 Q 274 634 265 632 Z" fill="#F0E8D8" opacity="0.9"/>
+          <path d="M 268 615 Q 274 612 280 615 L 280 630 Q 274 632 268 630 Z" fill="#E8E0D0" opacity="0.7"/>
+
+          <circle cx="264" cy="620" r="1.4" fill="#5A4830"/>
+          <circle cx="270" cy="618" r="1.4" fill="#5A4830"/>
+          <circle cx="278" cy="618" r="1.4" fill="#5A4830"/>
+          <circle cx="284" cy="620" r="1.4" fill="#5A4830"/>
+
+          <path d="M 264 620 L 284 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M 264 620 Q 274 616 284 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M 264 620 Q 274 624 284 620" stroke="#F8F8F0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <path d="M 230 618 Q 274 614 312 618 L 312 622 Q 274 618 230 622 Z" fill="#B8B4AC" opacity="0.4"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ BODY (cream sweater torso) ============ -->
+    <g id="girl-body">
+      <!-- Main sweater torso (oversized, balloon shape) -->
+      <path d="M 132 345
+               Q 132 325 158 320
+               L 342 320
+               Q 368 325 368 345
+               L 378 530
+               Q 378 555 348 560
+               L 152 560
+               Q 122 555 122 530
+               Z"
+            fill="url(#girlSweaterGrad)"/>
+
+      <!-- Side shading (right side darker for 3D) -->
+      <path d="M 322 322
+               Q 368 325 368 345
+               L 378 530
+               Q 378 555 348 560
+               L 305 560
+               Q 322 480 322 410
+               Q 320 365 322 322 Z"
+            fill="url(#girlSweaterDark)" opacity="0.5"/>
+      <!-- Center highlight -->
+      <ellipse cx="240" cy="430" rx="60" ry="80" fill="url(#girlSweaterHighlight)"/>
+
+      <!-- Knit texture (subtle vertical lines) -->
+      <g opacity="0.25">
+        <path d="M 150 350 L 150 540" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 165 352 L 165 542" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 180 354 L 180 544" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 195 355 L 195 545" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 210 356 L 210 546" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 225 357 L 225 547" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 240 357 L 240 548" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 255 357 L 255 548" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 270 356 L 270 547" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 285 355 L 285 546" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 300 354 L 300 545" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 315 352 L 315 544" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 330 350 L 330 542" stroke="#C8B894" stroke-width="0.6"/>
+        <path d="M 345 348 L 345 540" stroke="#C8B894" stroke-width="0.6"/>
+      </g>
+      <!-- Horizontal knit rows (very subtle) -->
+      <g opacity="0.1">
+        <path d="M 135 410 Q 250 416 365 410" stroke="#A89878" stroke-width="0.6" fill="none"/>
+        <path d="M 132 470 Q 250 476 368 470" stroke="#A89878" stroke-width="0.6" fill="none"/>
+        <path d="M 130 530 Q 250 536 370 530" stroke="#A89878" stroke-width="0.6" fill="none"/>
+      </g>
+
+      <!-- Ribbed crew neckline -->
+      <path d="M 220 322 Q 250 332 280 322 L 280 340 Q 250 348 220 340 Z" fill="url(#girlSweaterDark)" opacity="0.85"/>
+      <path d="M 222 325 Q 250 334 278 325 L 278 332 Q 250 338 222 332 Z" fill="#A89878" opacity="0.5"/>
+      <!-- Neckline knit ribs -->
+      <path d="M 224 326 L 224 340 M 230 327 L 230 341 M 236 328 L 236 342 M 242 329 L 242 342 M 248 329 L 248 343 M 254 329 L 254 343 M 260 328 L 260 342 M 266 328 L 266 342 M 272 327 L 272 341 M 278 326 L 278 340"
+            stroke="#7A6244" stroke-width="0.8" opacity="0.6"/>
+
+      <!-- Ribbed hem (thick waistband) -->
+      <path d="M 124 540 Q 250 548 376 540 L 376 562 Q 250 570 124 562 Z" fill="url(#girlSweaterDark)" opacity="0.85"/>
+      <path d="M 134 542 L 134 562 M 150 543 L 150 563 M 166 544 L 166 564 M 182 545 L 182 565 M 198 546 L 198 566 M 214 546 L 214 566 M 230 547 L 230 567 M 246 547 L 246 567 M 262 547 L 262 567 M 278 546 L 278 566 M 294 546 L 294 566 M 310 545 L 310 565 M 326 544 L 326 564 M 342 543 L 342 563 M 358 542 L 358 562 M 374 541 L 374 561"
+            stroke="#7A6244" stroke-width="0.9" opacity="0.55"/>
+      <path d="M 127 542 Q 250 549 373 542" stroke="#8A7548" stroke-width="0.8" fill="none" opacity="0.6"/>
+
+      <!-- Shoulder highlights -->
+      <ellipse cx="175" cy="350" rx="28" ry="10" fill="#FFFAEC" opacity="0.55"/>
+      <ellipse cx="325" cy="350" rx="28" ry="10" fill="#FFFAEC" opacity="0.35"/>
+
+      <!-- Sweater soft fold shadows -->
+      <path d="M 195 410 Q 200 470 205 530" stroke="#A89878" stroke-width="2" fill="none" opacity="0.4"/>
+      <path d="M 295 410 Q 290 470 285 530" stroke="#A89878" stroke-width="2" fill="none" opacity="0.4"/>
+      <path d="M 250 345 Q 250 470 250 540" stroke="#A89878" stroke-width="1.5" fill="none" opacity="0.25"/>
+    </g>
+
+    <!-- ============ ARMS (balloon/dolman sleeves) ============ -->
+    <g id="girl-arms">
+      <!-- LEFT ARM -->
+      <g id="girl-left-arm">
+        <!-- Upper sleeve (very puffy/balloon) -->
+        <path d="M 138 340
+                 Q 110 355 100 390
+                 Q 95 425 105 455
+                 Q 115 475 145 478
+                 Q 175 475 180 455
+                 L 185 390
+                 Q 180 355 168 340
+                 Z"
+              fill="url(#girlSweaterGrad)"/>
+        <!-- Sleeve shading -->
+        <path d="M 138 340
+                 Q 110 355 100 390
+                 Q 95 425 105 455
+                 Q 115 475 145 478
+                 Q 152 477 155 474
+                 Q 130 470 122 445
+                 Q 110 410 118 380
+                 Q 128 355 138 342 Z"
+              fill="url(#girlSweaterDark)" opacity="0.5"/>
+        <!-- Sleeve top puff highlight -->
+        <ellipse cx="130" cy="370" rx="18" ry="10" fill="#FFFAEC" opacity="0.65"/>
+        <!-- Puffy sleeve gather lines -->
+        <path d="M 110 455 Q 145 462 180 455" stroke="#A89878" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <path d="M 108 465 Q 145 472 182 465" stroke="#A89878" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <!-- Ribbed cuff (tighter) -->
+        <path d="M 105 470 Q 145 478 185 470 L 185 488 Q 145 496 105 488 Z" fill="url(#girlSweaterDark)" opacity="0.95"/>
+        <path d="M 108 472 L 108 490 M 118 473 L 118 491 M 128 474 L 128 492 M 138 475 L 138 493 M 148 475 L 148 493 M 158 474 L 158 492 M 168 473 L 168 491 M 178 472 L 178 490"
+              stroke="#7A6244" stroke-width="0.9" opacity="0.6"/>
+
+        <!-- LEFT HAND (peeking out from cuff) -->
+        <g id="girl-left-hand">
+          <path d="M 118 488
+                   Q 112 492 112 505
+                   Q 112 518 122 524
+                   Q 138 528 152 524
+                   Q 162 518 162 505
+                   Q 162 492 156 488
+                   Z"
+                fill="url(#girlSkinGrad)"/>
+          <!-- Finger separation hints -->
+          <path d="M 128 505 Q 128 515 132 520" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 138 505 Q 138 516 142 521" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 148 505 Q 148 515 152 520" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <!-- Thumb -->
+          <path d="M 158 498 Q 168 498 172 505 Q 172 514 164 516 Q 158 514 156 508 Z"
+                fill="url(#girlSkinGrad)"/>
+          <path d="M 162 502 Q 168 502 170 506" stroke="#C2856B" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <!-- Highlight -->
+          <ellipse cx="130" cy="498" rx="8" ry="4" fill="#FFE5D2" opacity="0.7"/>
+          <!-- Knuckle shadow -->
+          <ellipse cx="138" cy="510" rx="14" ry="3" fill="#C2856B" opacity="0.3"/>
+        </g>
+      </g>
+
+      <!-- RIGHT ARM -->
+      <g id="girl-right-arm">
+        <path d="M 362 340
+                 Q 390 355 400 390
+                 Q 405 425 395 455
+                 Q 385 475 355 478
+                 Q 325 475 320 455
+                 L 315 390
+                 Q 320 355 332 340
+                 Z"
+              fill="url(#girlSweaterGrad)"/>
+        <path d="M 362 340
+                 Q 390 355 400 390
+                 Q 405 425 395 455
+                 Q 385 475 355 478
+                 Q 348 477 345 474
+                 Q 370 470 378 445
+                 Q 390 410 382 380
+                 Q 372 355 362 342 Z"
+              fill="url(#girlSweaterDark)" opacity="0.5"/>
+        <ellipse cx="370" cy="370" rx="18" ry="10" fill="#FFFAEC" opacity="0.45"/>
+        <path d="M 320 455 Q 355 462 390 455" stroke="#A89878" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <path d="M 318 465 Q 355 472 392 465" stroke="#A89878" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <path d="M 315 470 Q 355 478 395 470 L 395 488 Q 355 496 315 488 Z" fill="url(#girlSweaterDark)" opacity="0.95"/>
+        <path d="M 322 472 L 322 490 M 332 473 L 332 491 M 342 474 L 342 492 M 352 475 L 352 493 M 362 475 L 362 493 M 372 474 L 372 492 M 382 473 L 382 491 M 392 472 L 392 490"
+              stroke="#7A6244" stroke-width="0.9" opacity="0.6"/>
+
+        <g id="girl-right-hand">
+          <path d="M 338 488
+                   Q 332 492 332 505
+                   Q 332 518 342 524
+                   Q 358 528 372 524
+                   Q 382 518 382 505
+                   Q 382 492 376 488
+                   Z"
+                fill="url(#girlSkinGrad)"/>
+          <path d="M 348 505 Q 348 515 352 520" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 358 505 Q 358 516 362 521" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 368 505 Q 368 515 372 520" stroke="#C2856B" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 342 498 Q 332 498 328 505 Q 328 514 336 516 Q 342 514 344 508 Z"
+                fill="url(#girlSkinGrad)"/>
+          <path d="M 338 502 Q 332 502 330 506" stroke="#C2856B" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <ellipse cx="370" cy="498" rx="8" ry="4" fill="#FFE5D2" opacity="0.5"/>
+          <ellipse cx="362" cy="510" rx="14" ry="3" fill="#C2856B" opacity="0.3"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ NECK ============ -->
+    <g id="girl-neck">
+      <path d="M 222 295 Q 222 320 218 340 L 282 340 Q 278 320 278 295 Z" fill="url(#girlSkinShadow)"/>
+      <path d="M 218 320 Q 250 328 282 320 L 282 340 L 218 340 Z" fill="#C2856B" opacity="0.6"/>
+      <path d="M 222 295 Q 222 315 220 335" stroke="#C2856B" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M 278 295 Q 278 315 280 335" stroke="#C2856B" stroke-width="2" fill="none" opacity="0.5"/>
+    </g>
+
+    <!-- ============ HAIR BACK (long bob behind head & shoulders, with outward flip) ============ -->
+    <g id="girl-hair-back">
+      <!-- Back hair mass (falls to shoulders with outward flip at ends) -->
+      <path d="M 128 175
+               Q 120 125 145 90
+               Q 175 60 250 58
+               Q 325 60 355 90
+               Q 380 125 372 175
+               L 385 330
+               Q 395 365 380 385
+               Q 360 395 345 380
+               L 340 360
+               Q 335 250 332 220
+               L 168 220
+               Q 165 250 160 380
+               L 155 395
+               Q 140 400 125 385
+               Q 110 365 120 330
+               Z"
+            fill="url(#girlHairMain)"/>
+      <!-- Hair top shine -->
+      <ellipse cx="220" cy="100" rx="60" ry="35" fill="url(#girlHairShine)"/>
+      <ellipse cx="305" cy="95" rx="30" ry="18" fill="#7A5340" opacity="0.5"/>
+
+      <!-- Back hair bottom taper shadow -->
+      <path d="M 125 360 Q 250 380 380 360 L 380 385 Q 250 400 125 385 Z" fill="#1A0F08" opacity="0.4"/>
+
+      <!-- Outward flip ends (left side) -->
+      <path d="M 120 330 Q 110 350 105 370 Q 108 388 120 395 Q 132 398 140 388 Q 135 365 138 340 Q 130 335 120 330 Z"
+            fill="url(#girlHairClump)" opacity="0.95"/>
+      <!-- Outward flip ends (right side) -->
+      <path d="M 380 330 Q 390 350 395 370 Q 392 388 380 395 Q 368 398 360 388 Q 365 365 362 340 Q 370 335 380 330 Z"
+            fill="url(#girlHairClump)" opacity="0.95"/>
+
+      <!-- Subtle back hair flow lines -->
+      <path d="M 155 200 Q 145 280 135 365" stroke="#2A1810" stroke-width="2" fill="none" opacity="0.55"/>
+      <path d="M 345 200 Q 355 280 365 365" stroke="#2A1810" stroke-width="2" fill="none" opacity="0.55"/>
+      <path d="M 175 220 Q 168 290 160 370" stroke="#2A1810" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M 325 220 Q 332 290 340 370" stroke="#2A1810" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M 195 220 Q 192 280 188 360" stroke="#2A1810" stroke-width="1.2" fill="none" opacity="0.4"/>
+      <path d="M 305 220 Q 308 280 312 360" stroke="#2A1810" stroke-width="1.2" fill="none" opacity="0.4"/>
+
+      <!-- Hair edge highlight -->
+      <path d="M 165 90 Q 175 80 200 75" stroke="#B6826A" stroke-width="2" fill="none" opacity="0.6"/>
+      <path d="M 300 75 Q 325 80 335 90" stroke="#B6826A" stroke-width="2" fill="none" opacity="0.6"/>
+    </g>
+
+    <!-- ============ HEAD ============ -->
+    <g id="girl-head">
+      <!-- Face base (round, apple shape) -->
+      <path d="M 250 70
+               Q 365 70 370 175
+               Q 370 245 340 280
+               Q 310 305 250 305
+               Q 190 305 160 280
+               Q 130 245 130 175
+               Q 135 70 250 70 Z"
+            fill="url(#girlSkinGrad)"/>
+
+      <!-- Cheek blush (prominent coral) -->
+      <ellipse cx="180" cy="225" rx="34" ry="22" fill="url(#girlBlush)"/>
+      <ellipse cx="320" cy="225" rx="34" ry="22" fill="url(#girlBlush)"/>
+
+      <!-- Forehead highlight -->
+      <ellipse cx="225" cy="130" rx="48" ry="22" fill="#FFE5D2" opacity="0.6"/>
+      <!-- Nose bridge highlight -->
+      <ellipse cx="240" cy="195" rx="6" ry="22" fill="#FFE5D2" opacity="0.4"/>
+      <!-- Chin highlight -->
+      <ellipse cx="245" cy="275" rx="20" ry="8" fill="#FFE5D2" opacity="0.4"/>
+
+      <!-- Soft face shadow on right side -->
+      <path d="M 250 305 Q 320 295 355 250 Q 370 200 363 145 Q 370 220 345 265 Q 310 300 250 302 Z"
+            fill="#D8A288" opacity="0.35"/>
+
+      <!-- Ears (smaller, mostly hidden by hair) -->
+      <g id="girl-left-ear">
+        <ellipse cx="138" cy="200" rx="8" ry="14" fill="url(#girlSkinGrad)"/>
+        <ellipse cx="138" cy="202" rx="4" ry="8" fill="#C2856B" opacity="0.6"/>
+      </g>
+      <g id="girl-right-ear">
+        <ellipse cx="362" cy="200" rx="8" ry="14" fill="url(#girlSkinGrad)"/>
+        <ellipse cx="362" cy="202" rx="4" ry="8" fill="#C2856B" opacity="0.6"/>
+      </g>
+    </g>
+
+    <!-- ============ HAIR FRONT (side-swept bangs + frame, with flip layers) ============ -->
+    <g id="girl-hair-front">
+      <!-- Side-swept bangs (covering forehead, parted off-center) -->
+      <path d="M 130 175
+               Q 122 115 155 88
+               Q 195 62 250 60
+               Q 305 62 345 88
+               Q 378 115 370 175
+               Q 365 185 358 178
+               Q 350 158 338 142
+               Q 333 175 322 192
+               Q 316 175 305 152
+               Q 298 178 285 195
+               Q 273 175 266 152
+               Q 256 180 244 195
+               Q 232 175 224 148
+               Q 213 180 200 195
+               Q 188 175 180 152
+               Q 168 180 158 195
+               Q 148 175 142 158
+               Q 138 178 130 175 Z"
+            fill="url(#girlHairMain)"/>
+
+      <!-- Side bang swoop (longer piece on left side, with outward flip) -->
+      <path d="M 130 175
+               Q 125 200 130 240
+               Q 140 265 165 260
+               Q 180 250 178 225
+               Q 168 200 165 175
+               Q 145 165 138 165
+               Q 130 168 130 175 Z"
+            fill="url(#girlHairClump)" opacity="0.95"/>
+      <!-- Left side flip outward at jaw -->
+      <path d="M 130 240 Q 125 265 140 275 Q 160 275 168 260 Q 168 245 158 240 Q 145 235 138 240 Z"
+            fill="url(#girlHairClump)" opacity="0.9"/>
+
+      <!-- Right side framing piece (with outward flip) -->
+      <path d="M 370 175
+               Q 375 200 370 240
+               Q 360 265 335 260
+               Q 320 250 322 225
+               Q 332 200 335 175
+               Q 355 165 362 165
+               Q 370 168 370 175 Z"
+            fill="url(#girlHairClump)" opacity="0.95"/>
+      <!-- Right side flip outward at jaw -->
+      <path d="M 370 240 Q 375 265 360 275 Q 340 275 332 260 Q 332 245 342 240 Q 355 235 362 240 Z"
+            fill="url(#girlHairClump)" opacity="0.9"/>
+
+      <!-- Top crown volume (slight bump for hair body) -->
+      <path d="M 175 80
+               Q 220 65 280 65
+               Q 320 70 340 85
+               Q 335 95 320 92
+               Q 280 80 240 80
+               Q 200 80 175 90
+               Q 168 88 175 80 Z"
+            fill="url(#girlHairClump)" opacity="0.9"/>
+
+      <!-- Hair shine highlight (top, broad) -->
+      <ellipse cx="220" cy="95" rx="58" ry="22" fill="url(#girlHairShine)"/>
+      <ellipse cx="310" cy="85" rx="28" ry="14" fill="#B6826A" opacity="0.55"/>
+      <ellipse cx="170" cy="120" rx="18" ry="10" fill="#7A5340" opacity="0.55"/>
+      <ellipse cx="335" cy="115" rx="14" ry="8" fill="#7A5340" opacity="0.55"/>
+
+      <!-- Subtle bang separation lines (very soft) -->
+      <path d="M 175 100 Q 185 130 195 165" stroke="#2A1810" stroke-width="2" fill="none" opacity="0.45" stroke-linecap="round"/>
+      <path d="M 220 80 Q 230 130 240 175" stroke="#2A1810" stroke-width="1.8" fill="none" opacity="0.4" stroke-linecap="round"/>
+      <path d="M 270 80 Q 275 130 282 170" stroke="#2A1810" stroke-width="1.8" fill="none" opacity="0.4" stroke-linecap="round"/>
+      <path d="M 320 90 Q 325 130 332 165" stroke="#2A1810" stroke-width="2" fill="none" opacity="0.45" stroke-linecap="round"/>
+
+      <!-- Bang edge highlights -->
+      <path d="M 180 110 Q 195 140 205 170" stroke="#B6826A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <path d="M 275 90 Q 282 130 288 170" stroke="#B6826A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+
+      <!-- Center part line -->
+      <path d="M 245 75 Q 250 80 255 78" stroke="#1A0F08" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <path d="M 240 75 Q 250 88 260 75" stroke="#2A1810" stroke-width="1" fill="none" opacity="0.5"/>
+    </g>
+
+    <!-- ============ FACE FEATURES ============ -->
+    <g id="girl-face">
+
+      <!-- EYEBROWS (thick, soft arch) -->
+      <g id="girl-eyebrows">
+        <path d="M 178 152
+                 Q 195 142 218 147
+                 Q 222 149 220 155
+                 Q 218 159 215 159
+                 Q 200 155 188 159
+                 Q 180 159 178 155 Z"
+              fill="#3D2E22"/>
+        <path d="M 282 147
+                 Q 305 142 322 152
+                 Q 322 159 314 159
+                 Q 302 155 285 159
+                 Q 280 159 278 155
+                 Q 278 149 282 147 Z"
+              fill="#3D2E22"/>
+        <!-- Eyebrow hair texture -->
+        <path d="M 185 149 L 188 153 M 195 146 L 198 151 M 205 145 L 208 150 M 215 146 L 217 151"
+              stroke="#1A120B" stroke-width="0.8" opacity="0.6"/>
+        <path d="M 290 146 L 293 151 M 300 145 L 303 150 M 310 146 L 313 151 M 318 149 L 320 153"
+              stroke="#1A120B" stroke-width="0.8" opacity="0.6"/>
+      </g>
+
+      <!-- LEFT EYE (viewer's left, behind glasses) - bigger -->
+      <g id="girl-left-eye">
+        <!-- Eye white (rounder, bigger) -->
+        <ellipse cx="210" cy="205" rx="25" ry="25" fill="url(#girlEyeWhite)"/>
+        <!-- Soft upper lid shadow -->
+        <path d="M 185 200 Q 210 188 235 200 Q 235 210 210 211 Q 185 210 185 200 Z" fill="url(#girlUpperLid)" opacity="0.85"/>
+        <!-- Iris (large) -->
+        <ellipse cx="211" cy="208" rx="19" ry="22" fill="url(#girlIris)"/>
+        <ellipse cx="211" cy="208" rx="19" ry="22" fill="none" stroke="#1A120B" stroke-width="1.4" opacity="0.55"/>
+        <!-- Pupil -->
+        <ellipse cx="211" cy="210" rx="10" ry="13" fill="#0A0604"/>
+        <!-- Catchlights -->
+        <ellipse cx="204" cy="199" rx="8" ry="7" fill="#FFFFFF"/>
+        <circle cx="218" cy="217" r="4" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="214" cy="205" r="1.8" fill="#FFFFFF" opacity="0.7"/>
+        <!-- Upper lid shadow above lash line -->
+        <path d="M 183 190 Q 210 178 237 190 Q 237 198 210 196 Q 183 198 183 190 Z" fill="#3D2E22" opacity="0.28"/>
+        <!-- Upper lash line (softer) -->
+        <path d="M 184 194 Q 210 184 236 194" stroke="#1A120B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 236 194 Q 240 190 242 186" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Lower lid -->
+        <path d="M 190 228 Q 210 232 230 228" stroke="#3D2E22" stroke-width="1" fill="none" opacity="0.45"/>
+        <path d="M 190 228 Q 210 232 230 228 L 230 232 Q 210 236 190 232 Z" fill="#3D2E22" opacity="0.15"/>
+        <!-- Eyelash flicks (girl-style) -->
+        <path d="M 236 188 Q 242 184 246 180" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M 184 188 Q 178 184 174 180" stroke="#1A120B" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- RIGHT EYE -->
+      <g id="girl-right-eye">
+        <ellipse cx="290" cy="205" rx="25" ry="25" fill="url(#girlEyeWhite)"/>
+        <path d="M 265 200 Q 290 188 315 200 Q 315 210 290 211 Q 265 210 265 200 Z" fill="url(#girlUpperLid)" opacity="0.85"/>
+        <ellipse cx="289" cy="208" rx="19" ry="22" fill="url(#girlIris)"/>
+        <ellipse cx="289" cy="208" rx="19" ry="22" fill="none" stroke="#1A120B" stroke-width="1.4" opacity="0.55"/>
+        <ellipse cx="289" cy="210" rx="10" ry="13" fill="#0A0604"/>
+        <ellipse cx="282" cy="199" rx="8" ry="7" fill="#FFFFFF"/>
+        <circle cx="296" cy="217" r="4" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="292" cy="205" r="1.8" fill="#FFFFFF" opacity="0.7"/>
+        <path d="M 263 190 Q 290 178 317 190 Q 317 198 290 196 Q 263 198 263 190 Z" fill="#3D2E22" opacity="0.28"/>
+        <path d="M 264 194 Q 290 184 316 194" stroke="#1A120B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 264 194 Q 260 190 258 186" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M 270 228 Q 290 232 310 228" stroke="#3D2E22" stroke-width="1" fill="none" opacity="0.45"/>
+        <path d="M 270 228 Q 290 232 310 228 L 310 232 Q 290 236 270 232 Z" fill="#3D2E22" opacity="0.15"/>
+        <path d="M 264 188 Q 258 184 254 180" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M 316 188 Q 322 184 326 180" stroke="#1A120B" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- NOSE (3D button) -->
+      <g id="girl-nose">
+        <ellipse cx="250" cy="244" rx="10" ry="3" fill="#C2856B" opacity="0.4"/>
+        <path d="M 244 225
+                 Q 244 240 250 244
+                 Q 256 240 256 225
+                 Q 256 222 250 222
+                 Q 244 222 244 225 Z"
+              fill="url(#girlSkinShadow)" opacity="0.7"/>
+        <ellipse cx="248" cy="228" rx="3" ry="2" fill="#FFE5D2" opacity="0.9"/>
+        <ellipse cx="246" cy="240" rx="1.8" ry="1.2" fill="#8B4A40" opacity="0.6"/>
+        <ellipse cx="254" cy="240" rx="1.8" ry="1.2" fill="#8B4A40" opacity="0.6"/>
+        <path d="M 248 215 Q 248 222 250 225" stroke="#FFE5D2" stroke-width="1.5" fill="none" opacity="0.6"/>
+      </g>
+
+      <!-- MOUTH (subtle closed smile) -->
+      <g id="girl-mouth">
+        <ellipse cx="250" cy="272" rx="20" ry="3" fill="#C2856B" opacity="0.35"/>
+        <path d="M 232 265 Q 244 261 250 263 Q 256 261 268 265 Q 268 268 260 268 Q 250 270 240 268 Q 232 268 232 265 Z"
+              fill="#C47B6C" opacity="0.6"/>
+        <path d="M 232 268 Q 250 276 268 268" stroke="#8B4A40" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M 240 271 Q 250 273 260 271" stroke="#E89A8A" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <path d="M 246 257 Q 250 260 254 257" stroke="#C2856B" stroke-width="0.8" fill="none" opacity="0.4"/>
+      </g>
+
+    </g>
+
+    <!-- ============ GLASSES (medium gray thick rounded-rectangle frames, oversized nerd style) ============ -->
+    <g id="girl-glasses">
+      <!-- Lens fill (very subtle transparency) -->
+      <path d="M 178 205
+               Q 178 173 210 173
+               Q 242 173 242 205
+               Q 242 237 210 237
+               Q 178 237 178 205 Z"
+            fill="url(#girlGlassesLens)"/>
+      <path d="M 258 205
+               Q 258 173 290 173
+               Q 322 173 322 205
+               Q 322 237 290 237
+               Q 258 237 258 205 Z"
+            fill="url(#girlGlassesLens)"/>
+
+      <!-- Lens glare highlight (signature gleam, upper-left of each lens) - PROMINENT -->
+      <ellipse cx="192" cy="185" rx="16" ry="10" fill="#FFFFFF" opacity="0.55" transform="rotate(-30 192 185)"/>
+      <ellipse cx="272" cy="185" rx="16" ry="10" fill="#FFFFFF" opacity="0.5" transform="rotate(-30 272 185)"/>
+      <!-- Strong secondary glare (the classic glasses reflection) -->
+      <ellipse cx="198" cy="195" rx="8" ry="4" fill="#FFFFFF" opacity="0.7"/>
+      <ellipse cx="278" cy="195" rx="8" ry="4" fill="#FFFFFF" opacity="0.65"/>
+      <!-- Tiny bright spot -->
+      <circle cx="195" cy="190" r="2" fill="#FFFFFF" opacity="0.9"/>
+      <circle cx="275" cy="190" r="2" fill="#FFFFFF" opacity="0.85"/>
+      <!-- Lens bottom soft reflection -->
+      <ellipse cx="210" cy="228" rx="18" ry="2" fill="#FFFFFF" opacity="0.2"/>
+      <ellipse cx="290" cy="228" rx="18" ry="2" fill="#FFFFFF" opacity="0.2"/>
+
+      <!-- Bridge (keyhole style, thick) - MEDIUM GRAY -->
+      <path d="M 240 189
+               Q 248 183 256 189
+               Q 254 201 248 201
+               Q 242 201 240 189 Z"
+            fill="#5A6878"/>
+      <path d="M 242 191 Q 248 186 254 191" stroke="#8A98A8" stroke-width="0.8" fill="none" opacity="0.8"/>
+      <path d="M 246 197 Q 248 193 250 197" stroke="#2A3848" stroke-width="1" fill="none" opacity="0.7"/>
+
+      <!-- LEFT lens frame (thick rounded-rectangle, MEDIUM GRAY) -->
+      <path d="M 178 205
+               Q 178 173 210 173
+               Q 242 173 242 205
+               Q 242 237 210 237
+               Q 178 237 178 205 Z"
+            fill="none" stroke="#5A6878" stroke-width="8" stroke-linejoin="round"/>
+      <!-- Outer frame edge (darker outline for depth) -->
+      <path d="M 174 205
+               Q 174 169 210 169
+               Q 246 169 246 205
+               Q 246 241 210 241
+               Q 174 241 174 205 Z"
+            fill="none" stroke="#3A4858" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>
+      <!-- Inner frame edge highlight -->
+      <path d="M 182 205
+               Q 182 177 210 177
+               Q 238 177 238 205
+               Q 238 233 210 233
+               Q 182 233 182 205 Z"
+            fill="none" stroke="#8A98A8" stroke-width="1.2" opacity="0.9"/>
+      <!-- Frame outer top shine -->
+      <path d="M 188 177 Q 210 173 232 177" stroke="#C8D4E0" stroke-width="2" fill="none" opacity="0.8"/>
+      <!-- Frame hinge to temple (left) -->
+      <path d="M 174 203 Q 168 203 162 206 L 158 213 Q 168 210 174 209 Z" fill="#5A6878"/>
+
+      <!-- RIGHT lens frame -->
+      <path d="M 258 205
+               Q 258 173 290 173
+               Q 322 173 322 205
+               Q 322 237 290 237
+               Q 258 237 258 205 Z"
+            fill="none" stroke="#5A6878" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M 254 205
+               Q 254 169 290 169
+               Q 326 169 326 205
+               Q 326 241 290 241
+               Q 254 241 254 205 Z"
+            fill="none" stroke="#3A4858" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>
+      <path d="M 262 205
+               Q 262 177 290 177
+               Q 318 177 318 205
+               Q 318 233 290 233
+               Q 262 233 262 205 Z"
+            fill="none" stroke="#8A98A8" stroke-width="1.2" opacity="0.9"/>
+      <path d="M 268 177 Q 290 173 312 177" stroke="#C8D4E0" stroke-width="2" fill="none" opacity="0.8"/>
+      <path d="M 326 203 Q 332 203 338 206 L 342 213 Q 332 210 326 209 Z" fill="#5A6878"/>
+
+      <!-- Temple arms (extending toward ears) -->
+      <path d="M 158 213 Q 148 212 138 217 L 134 223 Q 148 220 158 218 Z" fill="#5A6878"/>
+      <path d="M 342 213 Q 352 212 362 217 L 366 223 Q 352 220 342 218 Z" fill="#5A6878"/>
+    </g>
+
+  </g>
+</svg>

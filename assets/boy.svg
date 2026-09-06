@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 700" width="100%" height="100%">
+  <defs>
+    <!-- ============ SKIN ============ -->
+    <radialGradient id="boySkinGrad" cx="38%" cy="32%" r="80%">
+      <stop offset="0%" stop-color="#FFE5D5"/>
+      <stop offset="50%" stop-color="#F7D5C5"/>
+      <stop offset="100%" stop-color="#DCA692"/>
+    </radialGradient>
+    <radialGradient id="boySkinShadow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#E8B89A"/>
+      <stop offset="100%" stop-color="#C9907A"/>
+    </radialGradient>
+    <radialGradient id="boyBlush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F5A08E" stop-opacity="0.75"/>
+      <stop offset="60%" stop-color="#F5A08E" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#F5A08E" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============ HAIR ============ -->
+    <linearGradient id="boyHairMain" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#6B5747"/>
+      <stop offset="40%" stop-color="#3D2E22"/>
+      <stop offset="100%" stop-color="#1A120B"/>
+    </linearGradient>
+    <linearGradient id="boyHairClump" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5A4636"/>
+      <stop offset="100%" stop-color="#2A1D14"/>
+    </linearGradient>
+    <radialGradient id="boyHairShine" cx="35%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#A88670" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#7A5D48" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#3D2E22" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="boyHairEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3D2E22"/>
+      <stop offset="100%" stop-color="#1A120B"/>
+    </linearGradient>
+
+    <!-- ============ HOODIE ============ -->
+    <linearGradient id="boyHoodieGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#F2E7D3"/>
+      <stop offset="55%" stop-color="#DECDB0"/>
+      <stop offset="100%" stop-color="#B59C7C"/>
+    </linearGradient>
+    <linearGradient id="boyHoodieDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C4B394"/>
+      <stop offset="100%" stop-color="#9D8A6B"/>
+    </linearGradient>
+    <linearGradient id="boyHoodInner" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8F7B5C"/>
+      <stop offset="100%" stop-color="#6B5A40"/>
+    </linearGradient>
+    <radialGradient id="boyHoodieHighlight" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#FBF3E1" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#F2E7D3" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============ PANTS ============ -->
+    <linearGradient id="boyPantsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6A655F"/>
+      <stop offset="50%" stop-color="#4F4B47"/>
+      <stop offset="100%" stop-color="#36322F"/>
+    </linearGradient>
+    <linearGradient id="boyPantsCuff" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7A7570"/>
+      <stop offset="100%" stop-color="#5A5650"/>
+    </linearGradient>
+
+    <!-- ============ SHOES ============ -->
+    <linearGradient id="boyShoeBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9A9794"/>
+      <stop offset="100%" stop-color="#565450"/>
+    </linearGradient>
+    <linearGradient id="boyShoeToe" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FCFAF2"/>
+      <stop offset="100%" stop-color="#DCD4C0"/>
+    </linearGradient>
+    <linearGradient id="boyShoeSole" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E0BE89"/>
+      <stop offset="100%" stop-color="#A88557"/>
+    </linearGradient>
+
+    <!-- ============ EYES ============ -->
+    <radialGradient id="boyIris" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#7A5C44"/>
+      <stop offset="35%" stop-color="#3D2E22"/>
+      <stop offset="80%" stop-color="#1A120B"/>
+      <stop offset="100%" stop-color="#0A0604"/>
+    </radialGradient>
+    <linearGradient id="boyEyeWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="80%" stop-color="#F0E8E8"/>
+      <stop offset="100%" stop-color="#D8CCCC"/>
+    </linearGradient>
+    <linearGradient id="boyUpperLid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3D2E22" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#3D2E22" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- ============ FLOOR SHADOW ============ -->
+    <radialGradient id="boyFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2A1F18" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="#2A1F18" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#2A1F18" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft shadow filter (sparingly used) -->
+    <filter id="boySoftBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5"/>
+    </filter>
+    <filter id="boyLightBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <style>
+    /* Animation transform-origins — adjustable by CSS/JS later */
+    #boy-left-arm  { transform-origin: 165px 340px; }
+    #boy-right-arm { transform-origin: 335px 340px; }
+    #boy-left-hand { transform-origin: 145px 470px; }
+    #boy-right-hand{ transform-origin: 355px 470px; }
+    #boy-left-leg  { transform-origin: 225px 545px; }
+    #boy-right-leg { transform-origin: 275px 545px; }
+    #boy-head      { transform-origin: 250px 320px; }
+    #boy-hair-front{ transform-origin: 250px 110px; }
+    #boy-hair-back { transform-origin: 250px 110px; }
+    #boy-face      { transform-origin: 250px 195px; }
+    #boy-left-eye  { transform-origin: 210px 205px; }
+    #boy-right-eye { transform-origin: 290px 205px; }
+    #boy-mouth     { transform-origin: 250px 260px; }
+    #boy-shadow    { transform-origin: 250px 672px; }
+  </style>
+
+  <g id="boy">
+
+    <!-- ============ FLOOR SHADOW ============ -->
+    <g id="boy-shadow">
+      <ellipse cx="250" cy="672" rx="135" ry="18" fill="url(#boyFloorShadow)"/>
+      <ellipse cx="250" cy="672" rx="80" ry="9" fill="#2A1F18" opacity="0.2"/>
+    </g>
+
+    <!-- ============ LEGS ============ -->
+    <g id="boy-legs">
+
+      <!-- LEFT LEG (viewer's left) -->
+      <g id="boy-left-leg">
+        <!-- Pant leg (chunky) -->
+        <path d="M 198 540
+                 Q 192 555 192 580
+                 L 195 625
+                 Q 198 638 215 640
+                 L 245 640
+                 Q 260 638 260 624
+                 L 256 580
+                 Q 252 555 245 540
+                 Z"
+              fill="url(#boyPantsGrad)"/>
+        <!-- Subtle fold shadow -->
+        <path d="M 215 555 Q 218 590 222 625" stroke="#2A2724" stroke-width="2.5" fill="none" opacity="0.4"/>
+        <!-- Outer edge highlight -->
+        <path d="M 200 555 Q 196 590 198 620" stroke="#7A7570" stroke-width="1.8" fill="none" opacity="0.55"/>
+        <!-- Rolled cuff -->
+        <path d="M 192 615 Q 226 608 260 615 L 260 630 Q 226 638 192 630 Z"
+              fill="url(#boyPantsCuff)"/>
+        <!-- Cuff stitch lines -->
+        <path d="M 195 617 Q 226 611 257 617" stroke="#9A9590" stroke-width="1" fill="none" opacity="0.8"/>
+        <path d="M 195 624 Q 226 619 257 624" stroke="#3A3633" stroke-width="0.8" fill="none" opacity="0.6"/>
+        <!-- Cuff shadow line -->
+        <path d="M 192 630 Q 226 638 260 630" stroke="#2A2724" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <!-- LEFT SHOE -->
+        <g id="boy-left-shoe">
+          <!-- Sole bottom (gum rubber) -->
+          <path d="M 188 650
+                   Q 188 662 198 663
+                   L 256 663
+                   Q 268 662 268 650
+                   L 266 645
+                   L 190 645 Z"
+                fill="url(#boyShoeSole)"/>
+          <!-- Sole stitch line -->
+          <path d="M 192 656 Q 228 660 264 656" stroke="#7A5A38" stroke-width="1" fill="none" opacity="0.7"/>
+          <!-- Heel highlight -->
+          <ellipse cx="262" cy="654" rx="4" ry="2" fill="#F2D6A8" opacity="0.7"/>
+
+          <!-- Shoe body (gray) - main upper -->
+          <path d="M 192 628
+                   Q 188 634 188 648
+                   L 190 652
+                   Q 198 654 218 655
+                   L 252 655
+                   Q 266 654 268 645
+                   L 268 634
+                   Q 266 628 256 626
+                   L 206 626
+                   Q 196 626 192 628 Z"
+                fill="url(#boyShoeBody)"/>
+
+          <!-- Toe cap (white) - covers front half -->
+          <path d="M 188 648
+                   L 190 652
+                   Q 198 654 218 655
+                   L 226 655
+                   L 226 626
+                   L 206 626
+                   Q 196 626 192 628
+                   Q 188 634 188 648 Z"
+                fill="url(#boyShoeToe)"/>
+
+          <!-- Tongue (under laces) -->
+          <path d="M 218 626 Q 226 622 234 626 L 234 642 Q 226 644 218 642 Z" fill="#E8E0D0" opacity="0.9"/>
+
+          <!-- Lace eyelets (4 holes) -->
+          <circle cx="216" cy="634" r="1.4" fill="#2A2724"/>
+          <circle cx="222" cy="632" r="1.4" fill="#2A2724"/>
+          <circle cx="230" cy="632" r="1.4" fill="#2A2724"/>
+          <circle cx="236" cy="634" r="1.4" fill="#2A2724"/>
+
+          <!-- Laces (crisscross X pattern) -->
+          <path d="M 216 634 L 236 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 216 634 Q 226 630 236 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 216 634 Q 226 638 236 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+          <!-- Highlight on toe cap -->
+          <ellipse cx="200" cy="640" rx="6" ry="2.5" fill="#FFFFFF" opacity="0.8"/>
+          <!-- Side panel highlight -->
+          <ellipse cx="252" cy="638" rx="8" ry="3" fill="#B0ADAA" opacity="0.6"/>
+
+          <!-- Ankle shadow (where pants meet shoe) -->
+          <path d="M 192 632 Q 226 628 260 632 L 260 636 Q 226 632 192 636 Z" fill="#2A2724" opacity="0.3"/>
+        </g>
+      </g>
+
+      <!-- RIGHT LEG -->
+      <g id="boy-right-leg">
+        <path d="M 255 540
+                 Q 248 555 244 580
+                 L 240 624
+                 Q 240 638 255 640
+                 L 285 640
+                 Q 302 638 305 625
+                 L 308 580
+                 Q 308 555 302 540
+                 Z"
+              fill="url(#boyPantsGrad)"/>
+        <path d="M 285 555 Q 282 590 278 625" stroke="#2A2724" stroke-width="2.5" fill="none" opacity="0.4"/>
+        <path d="M 300 555 Q 304 590 302 620" stroke="#7A7570" stroke-width="1.8" fill="none" opacity="0.55"/>
+        <!-- Rolled cuff -->
+        <path d="M 240 615 Q 274 608 308 615 L 308 630 Q 274 638 240 630 Z"
+              fill="url(#boyPantsCuff)"/>
+        <path d="M 243 617 Q 274 611 305 617" stroke="#9A9590" stroke-width="1" fill="none" opacity="0.8"/>
+        <path d="M 243 624 Q 274 619 305 624" stroke="#3A3633" stroke-width="0.8" fill="none" opacity="0.6"/>
+        <path d="M 240 630 Q 274 638 308 630" stroke="#2A2724" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <g id="boy-right-shoe">
+          <path d="M 232 650
+                   Q 232 662 244 663
+                   L 302 663
+                   Q 312 662 312 650
+                   L 310 645
+                   L 234 645 Z"
+                fill="url(#boyShoeSole)"/>
+          <path d="M 236 656 Q 274 660 308 656" stroke="#7A5A38" stroke-width="1" fill="none" opacity="0.7"/>
+          <ellipse cx="240" cy="654" rx="4" ry="2" fill="#F2D6A8" opacity="0.7"/>
+
+          <path d="M 234 628
+                   Q 232 634 232 648
+                   L 234 652
+                   Q 244 654 264 655
+                   L 298 655
+                   Q 312 654 312 645
+                   L 312 634
+                   Q 310 628 300 626
+                   L 254 626
+                   Q 240 626 234 628 Z"
+                fill="url(#boyShoeBody)"/>
+
+          <!-- Toe cap (white) - covers outer half -->
+          <path d="M 274 655
+                   L 298 655
+                   Q 312 654 312 645
+                   L 312 634
+                   Q 310 628 300 626
+                   L 274 626 Z"
+                fill="url(#boyShoeToe)"/>
+
+          <!-- Tongue -->
+          <path d="M 266 626 Q 274 622 282 626 L 282 642 Q 274 644 266 642 Z" fill="#E8E0D0" opacity="0.9"/>
+
+          <!-- Lace eyelets -->
+          <circle cx="264" cy="634" r="1.4" fill="#2A2724"/>
+          <circle cx="270" cy="632" r="1.4" fill="#2A2724"/>
+          <circle cx="278" cy="632" r="1.4" fill="#2A2724"/>
+          <circle cx="284" cy="634" r="1.4" fill="#2A2724"/>
+
+          <!-- Laces -->
+          <path d="M 264 634 L 284 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 264 634 Q 274 630 284 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 264 634 Q 274 638 284 634" stroke="#F8F8F0" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+          <ellipse cx="300" cy="640" rx="6" ry="2.5" fill="#FFFFFF" opacity="0.8"/>
+          <ellipse cx="248" cy="638" rx="8" ry="3" fill="#B0ADAA" opacity="0.6"/>
+
+          <path d="M 232 632 Q 274 628 312 632 L 312 636 Q 274 632 232 636 Z" fill="#2A2724" opacity="0.3"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ BODY (hoodie torso) ============ -->
+    <g id="boy-body">
+      <!-- Hood back layer (behind neck) -->
+      <path d="M 168 320
+               Q 155 295 175 275
+               Q 200 255 250 252
+               Q 300 255 325 275
+               Q 345 295 332 320
+               Q 330 340 315 343
+               L 185 343
+               Q 170 340 168 320 Z"
+            fill="url(#boyHoodieGrad)"/>
+      <!-- Hood inner cavity (dark shadow) -->
+      <path d="M 195 305
+               Q 215 285 250 285
+               Q 285 285 305 305
+               Q 312 322 300 330
+               L 200 330
+               Q 188 322 195 305 Z"
+            fill="url(#boyHoodInner)"/>
+      <!-- Inner hood depth shadow -->
+      <path d="M 210 318 Q 250 308 290 318 L 290 326 Q 250 318 210 326 Z" fill="#4A3D28" opacity="0.5"/>
+
+      <!-- Main hoodie torso (chunky) -->
+      <path d="M 138 345
+               Q 138 325 162 320
+               L 338 320
+               Q 362 325 362 345
+               L 370 525
+               Q 370 555 340 560
+               L 160 560
+               Q 130 555 130 525
+               Z"
+            fill="url(#boyHoodieGrad)"/>
+
+      <!-- Side shading (right side darker for 3D) -->
+      <path d="M 320 322
+               Q 362 325 362 345
+               L 370 525
+               Q 370 555 340 560
+               L 305 560
+               Q 320 480 320 410
+               Q 318 365 320 322 Z"
+            fill="url(#boyHoodieDark)" opacity="0.55"/>
+      <!-- Center highlight -->
+      <ellipse cx="240" cy="430" rx="60" ry="80" fill="url(#boyHoodieHighlight)"/>
+
+      <!-- Kangaroo pocket (with opening) -->
+      <path d="M 168 445
+               Q 162 438 168 425
+               L 212 412
+               Q 250 408 288 412
+               L 332 425
+               Q 338 438 332 445
+               L 325 505
+               Q 322 515 308 517
+               L 192 517
+               Q 178 515 175 505
+               Z"
+            fill="#C4B394" opacity="0.7"/>
+      <!-- Pocket opening (visible slit) -->
+      <path d="M 192 432
+               Q 250 422 308 432
+               L 302 448
+               Q 250 440 198 448 Z"
+            fill="#5A4A30" opacity="0.55"/>
+      <!-- Pocket opening inner shadow -->
+      <path d="M 192 432 Q 250 422 308 432" stroke="#3A2D18" stroke-width="2" fill="none" opacity="0.6"/>
+      <!-- Pocket seam stitch lines -->
+      <path d="M 168 445 Q 250 438 332 445" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5" stroke-dasharray="2,2"/>
+      <path d="M 175 505 L 192 517 M 325 505 L 308 517" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+      <!-- Drawstrings (thicker) -->
+      <path d="M 232 335 Q 230 380 228 425 Q 226 455 230 478" stroke="#7A6244" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M 232 335 Q 230 380 228 425 Q 226 455 230 478" stroke="#A88660" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <path d="M 268 335 Q 270 380 272 425 Q 274 455 270 478" stroke="#7A6244" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M 268 335 Q 270 380 272 425 Q 274 455 270 478" stroke="#A88660" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <!-- Drawstring aglets (plastic tips) -->
+      <ellipse cx="230" cy="482" rx="4" ry="6" fill="#5A4830"/>
+      <ellipse cx="230" cy="482" rx="2.5" ry="4" fill="#3A2D18"/>
+      <ellipse cx="229" cy="480" rx="1" ry="1.5" fill="#A88660" opacity="0.7"/>
+      <ellipse cx="270" cy="482" rx="4" ry="6" fill="#5A4830"/>
+      <ellipse cx="270" cy="482" rx="2.5" ry="4" fill="#3A2D18"/>
+      <ellipse cx="269" cy="480" rx="1" ry="1.5" fill="#A88660" opacity="0.7"/>
+
+      <!-- Ribbed hem (thick waistband) -->
+      <path d="M 132 540 Q 250 548 368 540 L 368 562 Q 250 570 132 562 Z" fill="url(#boyHoodieDark)" opacity="0.85"/>
+      <!-- Vertical ribbed lines -->
+      <path d="M 142 542 L 142 562 M 158 543 L 158 563 M 174 544 L 174 564 M 190 545 L 190 565 M 206 546 L 206 566 M 222 546 L 222 566 M 238 547 L 238 567 M 254 547 L 254 567 M 270 546 L 270 566 M 286 546 L 286 566 M 302 545 L 302 565 M 318 544 L 318 564 M 334 543 L 334 563 M 350 542 L 350 562 M 366 541 L 366 561"
+            stroke="#7A6244" stroke-width="0.9" opacity="0.55"/>
+      <!-- Hem top stitch -->
+      <path d="M 135 542 Q 250 549 365 542" stroke="#8A7548" stroke-width="0.8" fill="none" opacity="0.6"/>
+
+      <!-- Shoulder highlights -->
+      <ellipse cx="175" cy="350" rx="28" ry="10" fill="#F8EED8" opacity="0.55"/>
+      <ellipse cx="325" cy="350" rx="28" ry="10" fill="#F8EED8" opacity="0.35"/>
+
+      <!-- White t-shirt hint at neckline -->
+      <path d="M 228 322 Q 250 332 272 322 L 270 340 Q 250 346 230 340 Z" fill="#FFFFFF" opacity="0.95"/>
+      <path d="M 230 325 Q 250 334 270 325" stroke="#E0DCD0" stroke-width="0.8" fill="none" opacity="0.7"/>
+    </g>
+
+    <!-- ============ ARMS ============ -->
+    <g id="boy-arms">
+      <!-- LEFT ARM -->
+      <g id="boy-left-arm">
+        <!-- Upper sleeve (puffy at top) -->
+        <path d="M 145 340
+                 Q 120 350 110 385
+                 Q 105 415 110 445
+                 Q 118 465 145 467
+                 Q 170 465 173 445
+                 L 178 385
+                 Q 175 355 168 340
+                 Z"
+              fill="url(#boyHoodieGrad)"/>
+        <!-- Sleeve shading right side -->
+        <path d="M 145 340
+                 Q 120 350 110 385
+                 Q 105 415 110 445
+                 Q 118 465 145 467
+                 Q 150 466 152 463
+                 Q 138 458 130 440
+                 Q 122 410 128 380
+                 Q 135 355 145 342 Z"
+              fill="url(#boyHoodieDark)" opacity="0.55"/>
+        <!-- Sleeve top highlight -->
+        <ellipse cx="135" cy="360" rx="14" ry="8" fill="#F8EED8" opacity="0.6"/>
+        <!-- Puffy sleeve gather lines -->
+        <path d="M 120 440 Q 145 445 170 440" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <path d="M 120 450 Q 145 455 170 450" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <!-- Ribbed cuff -->
+        <path d="M 110 458 Q 145 464 178 458 L 178 478 Q 145 484 110 478 Z" fill="url(#boyHoodieDark)" opacity="0.95"/>
+        <path d="M 113 460 L 113 478 M 123 461 L 123 479 M 133 462 L 133 480 M 143 463 L 143 481 M 153 462 L 153 480 M 163 461 L 163 479 M 173 460 L 173 478"
+              stroke="#7A6244" stroke-width="0.9" opacity="0.6"/>
+
+        <!-- LEFT HAND (chibi mitten-like) -->
+        <g id="boy-left-hand">
+          <!-- Hand back -->
+          <path d="M 118 478
+                   Q 112 482 112 495
+                   Q 112 508 122 514
+                   Q 138 518 152 514
+                   Q 162 508 162 495
+                   Q 162 482 156 478
+                   Z"
+                fill="url(#boySkinGrad)"/>
+          <!-- Finger separation hints -->
+          <path d="M 128 495 Q 128 505 132 510" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 138 495 Q 138 506 142 511" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 148 495 Q 148 505 152 510" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <!-- Thumb -->
+          <path d="M 158 488 Q 168 488 172 495 Q 172 504 164 506 Q 158 504 156 498 Z"
+                fill="url(#boySkinGrad)"/>
+          <path d="M 162 492 Q 168 492 170 496" stroke="#D8A593" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <!-- Highlight -->
+          <ellipse cx="130" cy="488" rx="8" ry="4" fill="#FFE5D5" opacity="0.7"/>
+          <!-- Knuckle shadow -->
+          <ellipse cx="138" cy="500" rx="14" ry="3" fill="#D8A593" opacity="0.3"/>
+        </g>
+      </g>
+
+      <!-- RIGHT ARM -->
+      <g id="boy-right-arm">
+        <path d="M 355 340
+                 Q 380 350 390 385
+                 Q 395 415 390 445
+                 Q 382 465 355 467
+                 Q 330 465 327 445
+                 L 322 385
+                 Q 325 355 332 340
+                 Z"
+              fill="url(#boyHoodieGrad)"/>
+        <path d="M 355 340
+                 Q 380 350 390 385
+                 Q 395 415 390 445
+                 Q 382 465 355 467
+                 Q 350 466 348 463
+                 Q 362 458 370 440
+                 Q 378 410 372 380
+                 Q 365 355 355 342 Z"
+              fill="url(#boyHoodieDark)" opacity="0.55"/>
+        <ellipse cx="365" cy="360" rx="14" ry="8" fill="#F8EED8" opacity="0.4"/>
+        <path d="M 330 440 Q 355 445 380 440" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <path d="M 330 450 Q 355 455 380 450" stroke="#8A7548" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+        <path d="M 322 458 Q 355 464 390 458 L 390 478 Q 355 484 322 478 Z" fill="url(#boyHoodieDark)" opacity="0.95"/>
+        <path d="M 327 460 L 327 478 M 337 461 L 337 479 M 347 462 L 347 480 M 357 463 L 357 481 M 367 462 L 367 480 M 377 461 L 377 479 M 387 460 L 387 478"
+              stroke="#7A6244" stroke-width="0.9" opacity="0.6"/>
+
+        <g id="boy-right-hand">
+          <path d="M 338 478
+                   Q 332 482 332 495
+                   Q 332 508 342 514
+                   Q 358 518 372 514
+                   Q 382 508 382 495
+                   Q 382 482 376 478
+                   Z"
+                fill="url(#boySkinGrad)"/>
+          <path d="M 348 495 Q 348 505 352 510" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 358 495 Q 358 506 362 511" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 368 495 Q 368 505 372 510" stroke="#D8A593" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <!-- Thumb (mirror) -->
+          <path d="M 342 488 Q 332 488 328 495 Q 328 504 336 506 Q 342 504 344 498 Z"
+                fill="url(#boySkinGrad)"/>
+          <path d="M 338 492 Q 332 492 330 496" stroke="#D8A593" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <ellipse cx="370" cy="488" rx="8" ry="4" fill="#FFE5D5" opacity="0.5"/>
+          <ellipse cx="362" cy="500" rx="14" ry="3" fill="#D8A593" opacity="0.3"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ NECK ============ -->
+    <g id="boy-neck">
+      <path d="M 222 295 Q 222 320 218 340 L 282 340 Q 278 320 278 295 Z" fill="url(#boySkinShadow)"/>
+      <!-- Neck shadow under chin -->
+      <path d="M 218 320 Q 250 328 282 320 L 282 340 L 218 340 Z" fill="#C9907A" opacity="0.6"/>
+      <!-- Neck side shadows -->
+      <path d="M 222 295 Q 222 315 220 335" stroke="#C9907A" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M 278 295 Q 278 315 280 335" stroke="#C9907A" stroke-width="2" fill="none" opacity="0.5"/>
+    </g>
+
+    <!-- ============ HAIR BACK ============ -->
+    <g id="boy-hair-back">
+      <!-- Back hair mass (taller, wider, more volume) -->
+      <path d="M 120 165
+               Q 105 90 145 50
+               Q 185 25 250 22
+               Q 315 25 355 50
+               Q 395 90 380 165
+               L 385 255
+               Q 380 290 350 300
+               L 332 295
+               Q 330 250 327 220
+               L 173 220
+               Q 170 250 168 295
+               L 150 300
+               Q 120 290 115 255
+               Z"
+            fill="url(#boyHairMain)"/>
+      <!-- Hair top shine highlight (broader, taller) -->
+      <ellipse cx="220" cy="75" rx="65" ry="45" fill="url(#boyHairShine)"/>
+      <ellipse cx="300" cy="65" rx="30" ry="20" fill="#A88670" opacity="0.7"/>
+      <!-- Side burns -->
+      <path d="M 138 195 Q 142 230 155 250 L 168 248 Q 158 225 155 195 Z" fill="#1A120B" opacity="0.85"/>
+      <path d="M 362 195 Q 358 230 345 250 L 332 248 Q 342 225 345 195 Z" fill="#1A120B" opacity="0.85"/>
+      <!-- Back hair bottom shadow -->
+      <path d="M 168 290 Q 250 305 332 290 L 332 295 Q 250 308 168 295 Z" fill="#0A0604" opacity="0.6"/>
+    </g>
+
+    <!-- ============ HEAD ============ -->
+    <g id="boy-head">
+      <!-- Face base (rounder, chubbier) -->
+      <path d="M 250 70
+               Q 360 70 365 175
+               Q 365 245 335 280
+               Q 305 305 250 305
+               Q 195 305 165 280
+               Q 135 245 135 175
+               Q 140 70 250 70 Z"
+            fill="url(#boySkinGrad)"/>
+
+      <!-- Cheek blush (prominent) -->
+      <ellipse cx="188" cy="225" rx="32" ry="20" fill="url(#boyBlush)"/>
+      <ellipse cx="312" cy="225" rx="32" ry="20" fill="url(#boyBlush)"/>
+
+      <!-- Forehead highlight -->
+      <ellipse cx="225" cy="130" rx="48" ry="22" fill="#FFE5D5" opacity="0.6"/>
+      <!-- Nose bridge highlight -->
+      <ellipse cx="240" cy="195" rx="6" ry="22" fill="#FFE5D5" opacity="0.4"/>
+      <!-- Chin highlight -->
+      <ellipse cx="245" cy="275" rx="20" ry="8" fill="#FFE5D5" opacity="0.4"/>
+
+      <!-- Soft face shadow on right side -->
+      <path d="M 250 305 Q 320 295 350 250 Q 365 200 358 145 Q 365 220 340 265 Q 305 300 250 302 Z"
+            fill="#D8A593" opacity="0.35"/>
+
+      <!-- Ears (larger, with inner detail) -->
+      <g id="boy-left-ear">
+        <path d="M 138 195 Q 122 200 122 220 Q 122 245 138 250 Q 148 250 148 235 L 148 205 Q 148 195 138 195 Z"
+              fill="url(#boySkinGrad)"/>
+        <!-- Inner ear -->
+        <path d="M 132 210 Q 128 220 130 235 Q 134 240 138 235 Q 140 225 138 215 Q 136 210 132 210 Z"
+              fill="#C9907A" opacity="0.8"/>
+        <!-- Ear highlight -->
+        <ellipse cx="143" cy="208" rx="2.5" ry="5" fill="#FFE5D5" opacity="0.8"/>
+      </g>
+      <g id="boy-right-ear">
+        <path d="M 362 195 Q 378 200 378 220 Q 378 245 362 250 Q 352 250 352 235 L 352 205 Q 352 195 362 195 Z"
+              fill="url(#boySkinGrad)"/>
+        <path d="M 368 210 Q 372 220 370 235 Q 366 240 362 235 Q 360 225 362 215 Q 364 210 368 210 Z"
+              fill="#C9907A" opacity="0.8"/>
+        <ellipse cx="357" cy="208" rx="2.5" ry="5" fill="#FFE5D5" opacity="0.6"/>
+      </g>
+    </g>
+
+    <!-- ============ HAIR FRONT (over forehead, messy spikes + side part, TALL) ============ -->
+    <g id="boy-hair-front">
+      <!-- Base front hair mass (organic, irregular, with side part on left) -->
+      <path d="M 115 175
+               Q 95 80 130 45
+               Q 155 25 200 22
+               Q 230 18 245 28
+               Q 260 18 290 22
+               Q 330 28 360 50
+               Q 400 95 385 175
+               Q 378 198 360 195
+               L 355 200
+               Q 348 175 340 155
+               Q 335 178 312 200
+               L 305 200
+               Q 295 178 285 152
+               Q 280 178 268 200
+               L 260 200
+               Q 250 178 240 145
+               Q 230 180 218 200
+               L 210 200
+               Q 200 178 190 145
+               Q 178 178 165 200
+               L 158 200
+               Q 148 178 140 152
+               Q 132 180 125 200
+               L 122 195
+               Q 110 188 115 175 Z"
+            fill="url(#boyHairMain)"/>
+
+      <!-- Spike 1 (tallest, top-right) -->
+      <path d="M 240 25
+               Q 260 5 285 8
+               Q 305 12 312 30
+               Q 300 42 280 38
+               Q 260 35 245 38
+               Q 232 38 240 25 Z"
+            fill="url(#boyHairClump)"/>
+
+      <!-- Spike 2 (top-left, side parted) -->
+      <path d="M 165 30
+               Q 185 18 215 22
+               Q 225 28 218 40
+               Q 200 38 185 40
+               Q 170 42 162 35
+               Q 158 30 165 30 Z"
+            fill="url(#boyHairClump)" opacity="0.95"/>
+
+      <!-- Spike 3 (smaller, top-center right) -->
+      <path d="M 290 25
+               Q 305 12 325 18
+               Q 335 28 325 38
+               Q 310 35 295 38
+               Q 285 35 290 25 Z"
+            fill="url(#boyHairClump)" opacity="0.9"/>
+
+      <!-- Side volume clumps (extra width on sides) -->
+      <path d="M 110 100
+               Q 100 130 110 165
+               Q 122 180 135 175
+               Q 140 145 138 115
+               Q 130 95 120 95
+               Q 112 95 110 100 Z"
+            fill="url(#boyHairClump)" opacity="0.9"/>
+      <path d="M 390 100
+               Q 400 130 390 165
+               Q 378 180 365 175
+               Q 360 145 362 115
+               Q 370 95 380 95
+               Q 388 95 390 100 Z"
+            fill="url(#boyHairClump)" opacity="0.9"/>
+
+      <!-- Side swept bang (over forehead, asymmetric) -->
+      <path d="M 175 70
+               Q 210 55 250 60
+               Q 270 70 265 88
+               Q 240 95 215 88
+               Q 190 85 175 90
+               Q 162 85 175 70 Z"
+            fill="url(#boyHairClump)" opacity="0.95"/>
+
+      <!-- Hair shine highlight (top, broad, organic shape) -->
+      <ellipse cx="230" cy="55" rx="65" ry="28" fill="url(#boyHairShine)"/>
+      <ellipse cx="305" cy="48" rx="28" ry="14" fill="#A88670" opacity="0.7"/>
+      <ellipse cx="180" cy="70" rx="20" ry="10" fill="#7A5D48" opacity="0.6"/>
+
+      <!-- Soft clump separations (subtle, organic curves, NOT straight stripes) -->
+      <path d="M 195 55 Q 205 90 215 145" stroke="#1A120B" stroke-width="2.5" fill="none" opacity="0.55" stroke-linecap="round"/>
+      <path d="M 240 38 Q 245 85 250 155" stroke="#1A120B" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <path d="M 285 38 Q 290 85 295 152" stroke="#1A120B" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <path d="M 325 55 Q 330 100 332 158" stroke="#1A120B" stroke-width="2.5" fill="none" opacity="0.55" stroke-linecap="round"/>
+
+      <!-- Edge highlights on clumps -->
+      <path d="M 200 65 Q 215 105 222 145" stroke="#A88670" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <path d="M 275 50 Q 282 100 288 145" stroke="#A88670" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
+
+      <!-- Side part indicator (subtle V at top-left) -->
+      <path d="M 215 40 Q 225 55 240 50" stroke="#0A0604" stroke-width="2" fill="none" opacity="0.6"/>
+      <path d="M 210 45 Q 220 60 235 55" stroke="#1A120B" stroke-width="1" fill="none" opacity="0.4"/>
+
+      <!-- Quiff top shine (broad highlight on top sweep) -->
+      <path d="M 230 25 Q 260 15 300 22 Q 295 38 255 32 Q 235 30 230 25 Z" fill="#A88670" opacity="0.65"/>
+      <path d="M 235 30 Q 260 22 290 28" stroke="#C9A685" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+      <!-- Stray strand tufts (messy spikes) -->
+      <path d="M 230 22 Q 235 8 245 5" stroke="#3D2E22" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M 270 15 Q 275 2 285 0" stroke="#3D2E22" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M 310 25 Q 318 12 328 10" stroke="#3D2E22" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M 180 30 Q 188 18 200 18" stroke="#3D2E22" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- ============ FACE FEATURES ============ -->
+    <g id="boy-face">
+
+      <!-- EYEBROWS (thick, soft arch) -->
+      <g id="boy-eyebrows">
+        <path d="M 175 162
+                 Q 195 152 220 158
+                 Q 224 160 222 166
+                 Q 220 170 217 170
+                 Q 200 165 188 170
+                 Q 178 170 175 166 Z"
+              fill="#3D2E22"/>
+        <path d="M 280 158
+                 Q 305 152 325 162
+                 Q 325 170 317 170
+                 Q 302 165 285 170
+         Q 278 170 275 166
+         Q 275 160 280 158 Z"
+              fill="#3D2E22"/>
+        <!-- Eyebrow hair texture -->
+        <path d="M 182 159 L 185 163 M 192 156 L 195 161 M 202 155 L 205 160 M 212 156 L 215 161 M 220 158 L 222 163"
+              stroke="#1A120B" stroke-width="0.8" opacity="0.6"/>
+        <path d="M 287 156 L 290 161 M 297 155 L 300 160 M 307 156 L 310 161 M 317 159 L 320 163"
+              stroke="#1A120B" stroke-width="0.8" opacity="0.6"/>
+      </g>
+
+      <!-- LEFT EYE (viewer's left) - bigger, more expressive -->
+      <g id="boy-left-eye">
+        <!-- Eye white (rounder, bigger) -->
+        <ellipse cx="210" cy="205" rx="25" ry="25" fill="url(#boyEyeWhite)"/>
+        <!-- Soft upper lid shadow -->
+        <path d="M 185 200 Q 210 188 235 200 Q 235 210 210 211 Q 185 210 185 200 Z" fill="url(#boyUpperLid)" opacity="0.85"/>
+        <!-- Iris (large, with gradient) -->
+        <ellipse cx="211" cy="208" rx="19" ry="22" fill="url(#boyIris)"/>
+        <ellipse cx="211" cy="208" rx="19" ry="22" fill="none" stroke="#1A120B" stroke-width="1.4" opacity="0.55"/>
+        <!-- Pupil -->
+        <ellipse cx="211" cy="210" rx="10" ry="13" fill="#0A0604"/>
+        <!-- Primary catchlight (large, upper-left) -->
+        <ellipse cx="204" cy="199" rx="8" ry="7" fill="#FFFFFF"/>
+        <!-- Secondary catchlight (smaller, lower-right) -->
+        <circle cx="218" cy="217" r="4" fill="#FFFFFF" opacity="0.9"/>
+        <!-- Tertiary tiny catchlight -->
+        <circle cx="214" cy="205" r="1.8" fill="#FFFFFF" opacity="0.7"/>
+        <!-- Upper lid soft shadow (above lash line) -->
+        <path d="M 183 190 Q 210 178 237 190 Q 237 198 210 196 Q 183 198 183 190 Z" fill="#3D2E22" opacity="0.28"/>
+        <!-- Upper lash line (softer) -->
+        <path d="M 184 194 Q 210 184 236 194" stroke="#1A120B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Outer lash flick -->
+        <path d="M 236 194 Q 240 190 242 186" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Lower lid line (very subtle) -->
+        <path d="M 190 228 Q 210 232 230 228" stroke="#3D2E22" stroke-width="1" fill="none" opacity="0.45"/>
+        <path d="M 190 228 Q 210 232 230 228 L 230 232 Q 210 236 190 232 Z" fill="#3D2E22" opacity="0.15"/>
+      </g>
+
+      <!-- RIGHT EYE -->
+      <g id="boy-right-eye">
+        <ellipse cx="290" cy="205" rx="25" ry="25" fill="url(#boyEyeWhite)"/>
+        <path d="M 265 200 Q 290 188 315 200 Q 315 210 290 211 Q 265 210 265 200 Z" fill="url(#boyUpperLid)" opacity="0.85"/>
+        <ellipse cx="289" cy="208" rx="19" ry="22" fill="url(#boyIris)"/>
+        <ellipse cx="289" cy="208" rx="19" ry="22" fill="none" stroke="#1A120B" stroke-width="1.4" opacity="0.55"/>
+        <ellipse cx="289" cy="210" rx="10" ry="13" fill="#0A0604"/>
+        <ellipse cx="282" cy="199" rx="8" ry="7" fill="#FFFFFF"/>
+        <circle cx="296" cy="217" r="4" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="292" cy="205" r="1.8" fill="#FFFFFF" opacity="0.7"/>
+        <path d="M 263 190 Q 290 178 317 190 Q 317 198 290 196 Q 263 198 263 190 Z" fill="#3D2E22" opacity="0.28"/>
+        <path d="M 264 194 Q 290 184 316 194" stroke="#1A120B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 264 194 Q 260 190 258 186" stroke="#1A120B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M 270 228 Q 290 232 310 228" stroke="#3D2E22" stroke-width="1" fill="none" opacity="0.45"/>
+        <path d="M 270 228 Q 290 232 310 228 L 310 232 Q 290 236 270 232 Z" fill="#3D2E22" opacity="0.15"/>
+      </g>
+
+      <!-- NOSE (3D button) -->
+      <g id="boy-nose">
+        <!-- Nose shadow underneath -->
+        <ellipse cx="250" cy="244" rx="10" ry="3" fill="#C9907A" opacity="0.4"/>
+        <!-- Nose shape (small soft triangle) -->
+        <path d="M 244 225
+                 Q 244 240 250 244
+                 Q 256 240 256 225
+                 Q 256 222 250 222
+                 Q 244 222 244 225 Z"
+              fill="url(#boySkinShadow)" opacity="0.7"/>
+        <!-- Nose tip highlight -->
+        <ellipse cx="248" cy="228" rx="3" ry="2" fill="#FFE5D5" opacity="0.9"/>
+        <!-- Nostril hints -->
+        <ellipse cx="246" cy="240" rx="1.8" ry="1.2" fill="#8B5246" opacity="0.6"/>
+        <ellipse cx="254" cy="240" rx="1.8" ry="1.2" fill="#8B5246" opacity="0.6"/>
+        <!-- Nose bridge highlight -->
+        <path d="M 248 215 Q 248 222 250 225" stroke="#FFE5D5" stroke-width="1.5" fill="none" opacity="0.6"/>
+      </g>
+
+      <!-- MOUTH (subtle closed smile) -->
+      <g id="boy-mouth">
+        <!-- Mouth shadow under lower lip -->
+        <ellipse cx="250" cy="272" rx="20" ry="3" fill="#C9907A" opacity="0.35"/>
+        <!-- Subtle upper lip tint -->
+        <path d="M 232 265 Q 244 261 250 263 Q 256 261 268 265 Q 268 268 260 268 Q 250 270 240 268 Q 232 268 232 265 Z"
+              fill="#C47B6C" opacity="0.6"/>
+        <!-- Mouth smile curve (closed mouth) -->
+        <path d="M 232 268 Q 250 276 268 268" stroke="#8B4A40" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <!-- Lower lip subtle highlight -->
+        <path d="M 240 271 Q 250 273 260 271" stroke="#E89A8A" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <!-- Philtrum hint above -->
+        <path d="M 246 257 Q 250 260 254 257" stroke="#C9907A" stroke-width="0.8" fill="none" opacity="0.4"/>
+      </g>
+
+    </g>
+
+  </g>
+</svg>

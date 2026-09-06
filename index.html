@@ -469,164 +469,20 @@
     <!-- Cake shadow -->
     <div class="br-cake-shadow" id="brCakeShadow" hidden></div>
 
-    <!-- Boy & girl characters — appear when cake placed -->
-    <!-- Characters — boy (left) and girl (right) near cake -->
+    <!-- Boy & girl characters — animated SVG characters appear when cake placed -->
     <div class="br-characters" id="brCharacters" hidden aria-hidden="true">
-
-      <!-- BOY — simple clean guy -->
-      <div class="br-char br-char-boy">
-        <svg viewBox="0 0 80 180" xmlns="http://www.w3.org/2000/svg">
-          <!-- Shadow -->
-          <ellipse cx="40" cy="177" rx="22" ry="4" fill="rgba(0,0,0,0.18)"/>
-          <!-- Legs -->
-          <rect x="24" y="118" width="12" height="55" rx="6" fill="#3a4a6a"/>
-          <rect x="44" y="118" width="12" height="55" rx="6" fill="#3a4a6a"/>
-          <!-- Shoes -->
-          <ellipse cx="30" cy="174" rx="10" ry="5" fill="#222"/>
-          <ellipse cx="50" cy="174" rx="10" ry="5" fill="#222"/>
-          <!-- Body -->
-          <rect x="18" y="72" width="44" height="50" rx="10" fill="#5a7ac8"/>
-          <!-- Collar -->
-          <path d="M32 72 Q40 78 48 72" fill="white" opacity="0.3"/>
-          <!-- Arms -->
-          <rect x="6" y="74" width="13" height="38" rx="6" fill="#5a7ac8"/>
-          <rect x="61" y="74" width="13" height="38" rx="6" fill="#5a7ac8"/>
-          <!-- Hands -->
-          <ellipse cx="12" cy="114" rx="7" ry="6" fill="#f0d8c0"/>
-          <ellipse cx="68" cy="114" rx="7" ry="6" fill="#f0d8c0"/>
-          <!-- Neck -->
-          <rect x="33" y="58" width="14" height="16" rx="7" fill="#f0d8c0"/>
-          <!-- Head -->
-          <ellipse cx="40" cy="38" rx="22" ry="24" fill="#f0d8c0"/>
-          <!-- Hair — simple short dark -->
-          <path d="M18 32 Q18 10 40 10 Q62 10 62 32 Q58 20 40 20 Q22 20 18 32Z" fill="#1a1008"/>
-          <!-- Eyes -->
-          <ellipse cx="33" cy="38" rx="4" ry="4" fill="white"/>
-          <ellipse cx="47" cy="38" rx="4" ry="4" fill="white"/>
-          <ellipse cx="33" cy="38" rx="2.2" ry="2.5" fill="#1a1008"/>
-          <ellipse cx="47" cy="38" rx="2.2" ry="2.5" fill="#1a1008"/>
-          <circle cx="33.8" cy="37" r="0.9" fill="white"/>
-          <circle cx="47.8" cy="37" r="0.9" fill="white"/>
-          <!-- Eyebrows -->
-          <path d="M29 33 Q33 31 37 33" stroke="#1a1008" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <path d="M43 33 Q47 31 51 33" stroke="#1a1008" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- Nose -->
-          <path d="M38 44 Q40 47 42 44" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Smile -->
-          <path d="M34 51 Q40 57 46 51" stroke="#c09070" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Blush -->
-          <ellipse cx="27" cy="44" rx="5" ry="3" fill="rgba(220,130,110,0.22)"/>
-          <ellipse cx="53" cy="44" rx="5" ry="3" fill="rgba(220,130,110,0.22)"/>
-          <!-- Ears -->
-          <ellipse cx="18" cy="38" rx="4" ry="5" fill="#e8d0b0"/>
-          <ellipse cx="62" cy="38" rx="4" ry="5" fill="#e8d0b0"/>
-        </svg>
+      <div class="br-char-stage" id="brCharStage" data-state="idle">
+        <!-- BOY (left) -->
+        <div class="character character--boy" id="boyCharacter" data-character="boy">
+          <div class="character__inner"><!-- boy.svg injected by character-animation.js --></div>
+        </div>
+        <!-- Floating heart -->
+        <div class="br-char-heart" aria-hidden="true">♡</div>
+        <!-- GIRL (right) -->
+        <div class="character character--girl" id="girlCharacter" data-character="girl">
+          <div class="character__inner"><!-- girl.svg injected by character-animation.js --></div>
+        </div>
       </div>
-
-            <!-- Floating heart -->
-      <div class="br-char-heart" aria-hidden="true">♡</div>
-
-      <!-- GIRL — glasses, long straight hair, slightly shorter -->
-      <div class="br-char br-char-girl">
-        <svg viewBox="0 0 90 188" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="skinG" cx="50%" cy="40%" r="55%">
-              <stop offset="0%" stop-color="#f5e6d3"/>
-              <stop offset="100%" stop-color="#e8d0b8"/>
-            </radialGradient>
-            <linearGradient id="dressG2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#e87890"/>
-              <stop offset="100%" stop-color="#c05870"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Ground shadow -->
-          <ellipse cx="45" cy="185" rx="24" ry="4" fill="rgba(0,0,0,0.2)"/>
-
-          <!-- Skirt -->
-          <path d="M26 102 Q18 135 14 175 L76 175 Q72 135 64 102Z" fill="url(#dressG2)"/>
-          <!-- Skirt folds -->
-          <path d="M36 105 Q30 140 28 172" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none"/>
-          <path d="M54 105 Q60 140 62 172" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none"/>
-          <!-- Skirt highlight -->
-          <path d="M38 107 Q34 142 34 170" stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none"/>
-          <!-- Shoes -->
-          <path d="M10 173 Q10 180 22 181 Q34 181 34 176 Q32 172 28 172Z" fill="#7a4060"/>
-          <path d="M56 173 Q56 180 68 181 Q80 181 80 176 Q78 172 74 172Z" fill="#7a4060"/>
-
-          <!-- Bodice -->
-          <path d="M26 68 Q22 82 22 102 L68 102 Q68 82 64 68 Q54 62 45 62 Q36 62 26 68Z" fill="url(#dressG2)"/>
-          <!-- Bodice highlight -->
-          <path d="M34 70 Q30 82 30 100" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
-          <!-- Neckline -->
-          <path d="M34 68 Q45 64 56 68" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none"/>
-
-          <!-- Left arm -->
-          <path d="M26 70 Q14 82 14 96 Q14 104 20 102 Q24 94 24 82 Q26 74 26 70Z" fill="url(#dressG2)"/>
-          <ellipse cx="15" cy="103" rx="6.5" ry="5" fill="url(#skinG)" transform="rotate(-10,15,103)"/>
-
-          <!-- Right arm — slightly toward boy -->
-          <path d="M64 70 Q76 82 76 96 Q76 104 70 102 Q66 94 66 82 Q64 74 64 70Z" fill="url(#dressG2)"/>
-          <ellipse cx="75" cy="103" rx="6.5" ry="5" fill="url(#skinG)" transform="rotate(10,75,103)"/>
-
-          <!-- Neck -->
-          <rect x="39" y="52" width="12" height="14" rx="6" fill="url(#skinG)"/>
-
-          <!-- Head -->
-          <ellipse cx="45" cy="33" rx="24" ry="26" fill="url(#skinG)"/>
-
-          <!-- LONG STRAIGHT HAIR -->
-          <!-- Back layer — goes down past shoulders -->
-          <path d="M20 28 Q14 55 16 90 Q18 100 24 104" stroke="#1a1010" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M70 28 Q76 55 74 90 Q72 100 66 104" stroke="#1a1010" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <!-- Top hair mass -->
-          <path d="M20 28 Q20 8 45 8 Q70 8 70 28 Q66 16 45 16 Q24 16 20 28Z" fill="#1a1010"/>
-          <!-- Hair shine -->
-          <path d="M32 12 Q40 8 50 11" stroke="#2e1e18" stroke-width="2" fill="none" opacity="0.6"/>
-          <!-- Front strands -->
-          <path d="M22 26 Q20 36 22 46" stroke="#150e0e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <path d="M68 26 Q70 36 68 46" stroke="#150e0e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-
-          <!-- Face — minimal -->
-          <!-- Eyes (behind glasses) -->
-          <ellipse cx="35" cy="33" rx="4" ry="3.5" fill="white"/>
-          <ellipse cx="55" cy="33" rx="4" ry="3.5" fill="white"/>
-          <ellipse cx="35.5" cy="33" rx="2.5" ry="2.8" fill="#1a1010"/>
-          <ellipse cx="55.5" cy="33" rx="2.5" ry="2.8" fill="#1a1010"/>
-          <circle cx="36.3" cy="32" r="1" fill="white"/>
-          <circle cx="56.3" cy="32" r="1" fill="white"/>
-          <!-- Eyebrows -->
-          <path d="M31 28 Q35 26 39 28" stroke="#1a1010" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M51 28 Q55 26 59 28" stroke="#1a1010" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-          <!-- GLASSES — round frames -->
-          <circle cx="35" cy="33" r="7" fill="none" stroke="#2a2a2a" stroke-width="1.8"/>
-          <circle cx="55" cy="33" r="7" fill="none" stroke="#2a2a2a" stroke-width="1.8"/>
-          <!-- Bridge -->
-          <path d="M42 33 L48 33" stroke="#2a2a2a" stroke-width="1.6" fill="none"/>
-          <!-- Temples -->
-          <path d="M28 33 Q22 32 20 36" stroke="#2a2a2a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M62 33 Q68 32 70 36" stroke="#2a2a2a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <!-- Glass lens tint -->
-          <circle cx="35" cy="33" r="6.5" fill="rgba(180,220,255,0.08)"/>
-          <circle cx="55" cy="33" r="6.5" fill="rgba(180,220,255,0.08)"/>
-          <!-- Lens shine -->
-          <path d="M30 29 Q32 28 34 29" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
-          <path d="M50 29 Q52 28 54 29" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
-
-          <!-- Nose -->
-          <path d="M43 40 Q45 44 47 40" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Smile -->
-          <path d="M38 48 Q45 54 52 48" stroke="#c09070" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Blush -->
-          <ellipse cx="29" cy="40" rx="6" ry="3.5" fill="rgba(220,110,120,0.25)"/>
-          <ellipse cx="61" cy="40" rx="6" ry="3.5" fill="rgba(220,110,120,0.25)"/>
-          <!-- Ears -->
-          <ellipse cx="21" cy="34" rx="4" ry="5" fill="#e8d0b8"/>
-          <ellipse cx="69" cy="34" rx="4" ry="5" fill="#e8d0b8"/>
-        </svg>
-      </div>
-
     </div>
 
         <!-- Falling confetti (separate from floating particles) -->
@@ -752,7 +608,9 @@
 </audio>
 
 <link rel="stylesheet" href="birthday-room.css" />
+<link rel="stylesheet" href="assets/character-animation.css" />
 <script src="script.js"></script>
 <script src="birthday-room.js"></script>
+<script src="assets/character-animation.js"></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
 /* Character Animation — scoped for Birthday Room */
-*, *::before, *::after { box-sizing: border-box; }
 
 /* ---------- Stage shell ---------- */
 #brCharStage {
@@ -11,17 +10,19 @@
 /* ---------- Characters ---------- */
 .character {
   position: absolute;
-  bottom: 4%;             /* standing on floor */
-  width: 32%;
-  max-width: 320px;
-  min-width: 180px;
-  height: 80%;
+  bottom: 0;
+  width: 38%;
+  max-width: 160px;
+  min-width: 80px;
+  height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   pointer-events: none;
   will-change: transform;
-  transition: transform 1100ms cubic-bezier(0.34, 1.15, 0.64, 1);
+  transition: transform 1100ms cubic-bezier(0.34, 1.15, 0.64, 1),
+              left 1100ms cubic-bezier(0.34, 1.15, 0.64, 1),
+              right 1100ms cubic-bezier(0.34, 1.15, 0.64, 1);
 }
 
 .character__inner {
@@ -41,32 +42,10 @@
   overflow: visible;
 }
 
-/* Boy on left, Girl on right */
-.character--boy  { left: 8%;  transform: translateX(0); }
-.character--girl { right: 8%; transform: translateX(0); }
-
-/* When the two come together for hug/kiss they move to center */
-#brCharStage[data-state="move-together"] .character--boy,
-#brCharStage[data-state="hug"]           .character--boy,
-#brCharStage[data-state="kiss"]          .character--boy {
-  left: 28%;
-}
-#brCharStage[data-state="move-together"] .character--girl,
-#brCharStage[data-state="hug"]           .character--girl,
-#brCharStage[data-state="kiss"]          .character--girl {
-  right: 28%;
-}
-
 /* ---------- Internal SVG group animation hooks ---------- */
-/* All transforms target groups by ID; transform-origins come from the SVG's own <style>. */
-
-/* IMPORTANT: Girl's glasses (#girl-glasses) are a sibling of #girl-head in the SVG,
-   not a child. To make them follow the head, we apply the SAME rotation to the glasses
-   using the HEAD's transform-origin (250px 320px = neck pivot). This keeps the glasses
-   locked to the face during all head movements. */
 #girl-glasses { transform-origin: 250px 320px !important; transform-box: view-box; }
 
-/* Breathing — subtle vertical scale of the whole inner. */
+/* Breathing */
 @keyframes breathe-boy {
   0%, 100% { transform: translateY(0) scale(1, 1); }
   50%      { transform: translateY(-1px) scale(1.004, 1.006); }
@@ -76,7 +55,7 @@
   50%      { transform: translateY(-1.2px) scale(1.005, 1.008); }
 }
 
-/* Head sway — extremely subtle rotation around the neck pivot. */
+/* Head sway */
 @keyframes head-sway-boy {
   0%, 100% { transform: rotate(0deg); }
   33%      { transform: rotate(-0.8deg); }
@@ -88,36 +67,31 @@
   75%      { transform: rotate(-0.6deg); }
 }
 
-/* Hair sway (girl only) — even subtler. */
+/* Hair sway */
 @keyframes hair-sway-girl {
   0%, 100% { transform: rotate(0deg) translateX(0); }
   50%      { transform: rotate(0.5deg) translateX(0.5px); }
 }
 
-/* Blink — quick scaleY on the eye groups. */
+/* Blink */
 @keyframes blink {
   0%, 92%, 100% { transform: scaleY(1); }
   96%           { transform: scaleY(0.05); }
 }
 
-/* Apply idle animations when stage is in idle / default state */
+/* Idle animations */
 #brCharStage[data-state="idle"] .character--boy  .character__inner { animation: breathe-boy  4.2s ease-in-out infinite; }
 #brCharStage[data-state="idle"] .character--girl .character__inner { animation: breathe-girl 4.8s ease-in-out infinite; }
-
 #brCharStage[data-state="idle"] .character--boy  #boy-head  { animation: head-sway-boy  9s ease-in-out infinite; }
 #brCharStage[data-state="idle"] .character--girl #girl-head { animation: head-sway-girl 11s ease-in-out infinite; }
-
 #brCharStage[data-state="idle"] .character--girl #girl-hair-back,
 #brCharStage[data-state="idle"] .character--girl #girl-hair-front { animation: hair-sway-girl 7s ease-in-out infinite; }
 
-/* Blink — independent of head animation, applied directly to eye groups */
-.blinking-eye {
-  animation: blink 5.5s ease-in-out infinite;
-}
+.blinking-eye { animation: blink 5.5s ease-in-out infinite; }
 .character--boy  .blinking-eye { animation-duration: 5.2s; }
 .character--girl .blinking-eye { animation-duration: 6.4s; }
 
-/* Pause idle animations in non-idle states */
+/* Pause idle in non-idle states */
 #brCharStage:not([data-state="idle"]) .character__inner,
 #brCharStage:not([data-state="idle"]) #boy-head,
 #brCharStage:not([data-state="idle"]) #girl-head,
@@ -126,154 +100,42 @@
   animation: none !important;
 }
 
-/* ---------- Reaction state ---------- */
-/* Boy turns head slightly toward girl (right), girl toward boy (left). */
+/* ---------- Reaction ---------- */
 #brCharStage[data-state="reaction"] .character--boy  #boy-head  { transform: rotate(6deg);  transition: transform 600ms cubic-bezier(0.34, 1.4, 0.64, 1); }
 #brCharStage[data-state="reaction"] .character--girl #girl-head { transform: rotate(-6deg); transition: transform 600ms cubic-bezier(0.34, 1.4, 0.64, 1); }
-/* Glasses follow head */
 #brCharStage[data-state="reaction"] .character--girl #girl-glasses { transform: rotate(-6deg); transition: transform 600ms cubic-bezier(0.34, 1.4, 0.64, 1); }
-
-/* Subtle body lean toward each other */
 #brCharStage[data-state="reaction"] .character--boy  .character__inner { transform: translateX(4px)  rotate(1deg);  transition: transform 600ms ease-out; }
 #brCharStage[data-state="reaction"] .character--girl .character__inner { transform: translateX(-4px) rotate(-1deg); transition: transform 600ms ease-out; }
 
-/* ---------- Move Together (handled by .character transition + state attrs above) ---------- */
-
 /* ---------- Hug ---------- */
-/* During the hug, characters lean toward each other and arms wrap around. */
 #brCharStage[data-state="hug"] .character--boy  .character__inner { transform: translateX(10px)  rotate(3deg);  transition: transform 900ms ease-out; }
 #brCharStage[data-state="hug"] .character--girl .character__inner { transform: translateX(-10px) rotate(-3deg); transition: transform 900ms ease-out; }
-
-/* Heads: tilt toward each other slightly */
 #brCharStage[data-state="hug"] .character--boy  #boy-head  { transform: rotate(10deg);  transition: transform 900ms ease-out; }
 #brCharStage[data-state="hug"] .character--girl #girl-head { transform: rotate(-10deg); transition: transform 900ms ease-out; }
-/* Glasses follow head */
 #brCharStage[data-state="hug"] .character--girl #girl-glasses { transform: rotate(-10deg); transition: transform 900ms ease-out; }
-
-/* Arms wrap:
-   - Boy's right arm (closest to girl, on right side of his SVG) swings UP and toward girl.
-     Arm hangs down → rotate counterclockwise (negative) to raise it.
-   - Boy's left arm (far side) swings ACROSS his body toward girl → rotate clockwise (positive).
-   - Girl mirrors: her left arm (closest to boy) swings UP toward boy → rotate clockwise (positive).
-   - Girl's right arm swings ACROSS toward boy → rotate counterclockwise (negative).
-   Large angles (~95°) needed to bring arms up to hug height. */
 #brCharStage[data-state="hug"] .character--boy  #boy-right-arm { transform: rotate(-95deg); transition: transform 900ms cubic-bezier(0.34, 1.3, 0.64, 1); }
 #brCharStage[data-state="hug"] .character--boy  #boy-left-arm  { transform: rotate(75deg);  transition: transform 900ms cubic-bezier(0.34, 1.3, 0.64, 1); }
 #brCharStage[data-state="hug"] .character--girl #girl-left-arm  { transform: rotate(95deg);  transition: transform 900ms cubic-bezier(0.34, 1.3, 0.64, 1); }
 #brCharStage[data-state="hug"] .character--girl #girl-right-arm { transform: rotate(-75deg); transition: transform 900ms cubic-bezier(0.34, 1.3, 0.64, 1); }
 
 /* ---------- Kiss ---------- */
-/* Slightly more space than hug; heads tilt further toward each other. */
 #brCharStage[data-state="kiss"] .character--boy  .character__inner { transform: translateX(4px)  rotate(2deg);  transition: transform 700ms ease-out; }
 #brCharStage[data-state="kiss"] .character--girl .character__inner { transform: translateX(-4px) rotate(-2deg); transition: transform 700ms ease-out; }
-
 #brCharStage[data-state="kiss"] .character--boy  #boy-head  { transform: rotate(18deg) translateY(-3px); transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1); }
 #brCharStage[data-state="kiss"] .character--girl #girl-head { transform: rotate(-18deg) translateY(-3px); transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1); }
-/* Glasses follow head */
 #brCharStage[data-state="kiss"] .character--girl #girl-glasses { transform: rotate(-18deg) translateY(-3px); transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1); }
-
-/* Arms relax slightly compared to hug but still raised */
 #brCharStage[data-state="kiss"] .character--boy  #boy-right-arm { transform: rotate(-70deg); transition: transform 700ms ease-out; }
 #brCharStage[data-state="kiss"] .character--boy  #boy-left-arm  { transform: rotate(55deg);  transition: transform 700ms ease-out; }
 #brCharStage[data-state="kiss"] .character--girl #girl-left-arm  { transform: rotate(70deg);  transition: transform 700ms ease-out; }
 #brCharStage[data-state="kiss"] .character--girl #girl-right-arm { transform: rotate(-55deg); transition: transform 700ms ease-out; }
 
-/* ---------- Controls ---------- */
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  padding: 18px 8px 8px;
-}
-.ctrl-btn {
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 10px 16px;
-  border: 1px solid #d8cdbd;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #4a4035;
-  cursor: pointer;
-  transition: transform 120ms ease, background 200ms ease, color 200ms ease, box-shadow 200ms ease;
-  box-shadow: 0 2px 6px rgba(80, 60, 40, 0.06);
-}
-.ctrl-btn:hover  { background: #f6efe3; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(80, 60, 40, 0.10); }
-.ctrl-btn:active { transform: translateY(0); }
-.ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.ctrl-btn--primary { background: #2b2b2b; color: #fff; border-color: #2b2b2b; }
-.ctrl-btn--primary:hover { background: #444; }
-.ctrl-btn--reset { background: #f7e7e0; border-color: #e3c5b7; color: #8a4a30; }
-.ctrl-btn--reset:hover { background: #f0d6c8; }
-.ctrl-btn.is-active { background: #2b2b2b; color: #fff; border-color: #2b2b2b; }
-
-/* ---------- Status bar ---------- */
-.status-bar {
-  text-align: center;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #999;
-  padding: 6px 0 16px;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 768px) {
-  .stage-wrapper { padding: 10px; }
-  .character { width: 42%; min-width: 140px; }
-  .character--boy  { left: 4%; }
-  .character--girl { right: 4%; }
-  #brCharStage[data-state="move-together"] .character--boy,
-  #brCharStage[data-state="hug"]           .character--boy,
-  #brCharStage[data-state="kiss"]          .character--boy { left: 18%; }
-  #brCharStage[data-state="move-together"] .character--girl,
-  #brCharStage[data-state="hug"]           .character--girl,
-  #brCharStage[data-state="kiss"]          .character--girl { right: 18%; }
-  .ctrl-btn { padding: 8px 12px; font-size: 11px; }
-}
-
-@media (max-width: 480px) {
-  .character { width: 44%; min-width: 120px; }
-  .stage { min-height: 50vh; }
-  .stage-header h1 { font-size: 18px; }
-}
-
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .character,
-  .character__inner,
-  #boy-head, #girl-head,
-  #girl-hair-back, #girl-hair-front,
-  #boy-left-arm, #boy-right-arm,
-  #girl-left-arm, #girl-right-arm,
+  .character, .character__inner,
+  #boy-head, #girl-head, #girl-hair-back, #girl-hair-front,
+  #boy-left-arm, #boy-right-arm, #girl-left-arm, #girl-right-arm,
   .blinking-eye {
     animation: none !important;
     transition-duration: 50ms !important;
   }
-  /* In reduced-motion mode, simply snap characters into final pose with no breathing. */
 }
-
-/* ---- Birthday Room integration overrides ---- */
-.br-char-stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-/* Override demo positioning — fit inside br-characters container */
-.character {
-  position: relative;
-  bottom: auto;
-  width: 40%;
-  max-width: 120px;
-  min-width: 60px;
-  height: 100%;
-}
-.character--boy  { left: auto; right: auto; }
-.character--girl { right: auto; left: auto; }

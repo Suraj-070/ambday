@@ -232,6 +232,12 @@ function onStateChange(state) {
       startDust();
       // Light flash
       if (brLightFlash) { brLightFlash.classList.add('flash'); setTimeout(() => brLightFlash.classList.remove('flash'), 700); }
+      // Show characters from the very start — they're here to decorate with her
+      later(() => {
+        const c = $('#brCharacters');
+        if (c) { c.hidden = false; c.removeAttribute('aria-hidden'); }
+        if (window.CharacterAnimation) window.CharacterAnimation.playIdle();
+      }, 600);
       // Moonbeam fades out naturally via CSS
       later(() => {
         setCaption("Let's decorate this place for you 🎈");
@@ -256,17 +262,15 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       if (brCakeShadow) brCakeShadow.hidden = false;
       cakeEl.classList.add('placed');
+      // Hug reaction when cake placed
       later(() => {
-        const c = $('#brCharacters');
-        if (c) {
-          c.hidden = false;
-          c.removeAttribute('aria-hidden');
-          later(() => {
-            if (window.CharacterAnimation) window.CharacterAnimation.startCelebration();
-          }, 600);
+        if (window.CharacterAnimation) {
+          window.CharacterAnimation.playReaction()
+            .then(() => window.CharacterAnimation.playMoveTogether())
+            .then(() => window.CharacterAnimation.playHug())
+            .then(() => window.CharacterAnimation.returnToIdle());
         }
-      }, 500);
-
+      }, 400);
       setCaption("Now for the candle 🕯️");
       later(() => revealCandle(), 800);
       later(() => setCaption("Tap the candle maichaa 🕯️"), 2000);
@@ -323,10 +327,17 @@ function onStateChange(state) {
       smoke.className = 'br-candle-smoke rising';
       candleEl.appendChild(smoke);
       setTimeout(() => smoke.remove(), 2200);
-      // Brief wish moment caption
+      // Hug + kiss after candle blown
+      later(() => {
+        if (window.CharacterAnimation) {
+          window.CharacterAnimation.playMoveTogether()
+            .then(() => window.CharacterAnimation.playHug())
+            .then(() => window.CharacterAnimation.playKiss())
+            .then(() => window.CharacterAnimation.returnToIdle());
+        }
+      }, 400);
       later(() => setCaption("I hope it comes true 🌟"), 600);
       later(() => setCaption("Now cut the cake 🎂"), 2200);
-      // Reveal knife AFTER wish — correct order
       later(() => {
         setCaption("Drag the knife across the cake 🎂");
         revealKnife();
@@ -1422,6 +1433,16 @@ function enableKnifeDrag() {
     knifeEl.style.transition = 'opacity 600ms ease';
     knifeEl.style.opacity = '0';
     setCaption("");
+    // Hug + kiss after cake cut
+    later(() => {
+      if (window.CharacterAnimation) {
+        window.CharacterAnimation.playReaction()
+          .then(() => window.CharacterAnimation.playMoveTogether())
+          .then(() => window.CharacterAnimation.playHug())
+          .then(() => window.CharacterAnimation.playKiss())
+          .then(() => window.CharacterAnimation.returnToIdle());
+      }
+    }, 300);
     // Music keeps playing — only fades when lights go off
     later(() => stopParticles(), 600);
     later(() => {

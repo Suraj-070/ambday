@@ -38,10 +38,10 @@
 #boy-head      { transform-origin: 250px 305px; transform-box: view-box; }
 #boy-left-arm  { transform-origin: 145px 340px; transform-box: view-box; }
 #boy-right-arm { transform-origin: 355px 340px; transform-box: view-box; }
-#girl-head      { transform-origin: 250px 305px; transform-box: view-box; }
-#girl-left-arm  { transform-origin: 138px 340px; transform-box: view-box; }
-#girl-right-arm { transform-origin: 362px 340px; transform-box: view-box; }
-#girl-glasses   { transform-origin: 250px 305px; transform-box: view-box; }
+#girl-head      { transform-origin: 950px 305px; transform-box: view-box; }
+#girl-left-arm  { transform-origin: 838px 340px; transform-box: view-box; }
+#girl-right-arm { transform-origin: 1062px 340px; transform-box: view-box; }
+#girl-glasses   { transform-origin: 950px 305px; transform-box: view-box; }
 
 /* ---------- Breathing ---------- */
 @keyframes breathe-boy  { 0%,100%{transform:translateY(0);}  50%{transform:translateY(-3px);} }

@@ -1199,3 +1199,48 @@ $$('.page-custom').forEach(s => customObserver.observe(s));
 window.AMB.AudioManager = AudioManager;
 
 })();
+
+/* ============================================================
+   Secret page 5 reveal — Ctrl+Shift+K (desktop) / shake (mobile)
+   ============================================================ */
+(function secretPage5() {
+  let revealed = false;
+
+  function revealPage5() {
+    if (revealed) return;
+    const cover = document.getElementById('page5BlurCover');
+    if (!cover) return;
+    revealed = true;
+    cover.classList.add('revealed');
+    setTimeout(() => cover.remove(), 750);
+  }
+
+  /* Desktop — Ctrl+Shift+K */
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+      e.preventDefault();
+      revealPage5();
+    }
+  });
+
+  /* Mobile — shake */
+  let lastX = null, lastY = null, lastZ = null;
+  const THRESHOLD = 18;
+  window.addEventListener('devicemotion', (e) => {
+    const a = e.accelerationIncludingGravity;
+    if (!a) return;
+    if (lastX === null) { lastX = a.x; lastY = a.y; lastZ = a.z; return; }
+    const delta = Math.abs(a.x - lastX) + Math.abs(a.y - lastY) + Math.abs(a.z - lastZ);
+    if (delta > THRESHOLD) revealPage5();
+    lastX = a.x; lastY = a.y; lastZ = a.z;
+  }, { passive: true });
+
+  /* iOS 13+ motion permission */
+  window.addEventListener('touchend', function req() {
+    if (typeof DeviceMotionEvent !== 'undefined' &&
+        typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission().catch(() => {});
+    }
+    window.removeEventListener('touchend', req);
+  }, { once: true });
+})();

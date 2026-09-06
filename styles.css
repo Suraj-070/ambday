@@ -1871,3 +1871,30 @@ button {
   from { opacity: 0; transform: translateY(20px) scale(0.95); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ---- Page 5 secret blur ---- */
+.page5-blur-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 700ms ease;
+}
+.page5-blur-cover.revealed {
+  opacity: 0;
+  pointer-events: none;
+}
+.page5-blur-hint {
+  font-size: 48px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  animation: hintPulse 2.5s ease-in-out infinite;
+}
+@keyframes hintPulse {
+  0%,100% { transform: scale(1); opacity: 0.8; }
+  50%     { transform: scale(1.12); opacity: 1; }
+}

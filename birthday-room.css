@@ -2360,10 +2360,10 @@
 }
 
 /* Candles — left side of table */
-/* Two table candles — span across the table */
+/* Two table candles — on the table surface, left and right edges */
 .br-dropzone-candles {
-  left: 28%; top: 50%;
-  width: 44%; height: 20%;
+  left: 30%; top: 54%;
+  width: 40%; height: 14%;
 }
 
 /* Confetti — top left ceiling burst */
@@ -2382,7 +2382,7 @@
   .br-dropzone-balloons  { left: 0%;  top: 24%; width: 20%; height: 58%; }
   .br-dropzone-flowers   { right: 0%; top: 36%; width: 20%; height: 48%; }
   .br-dropzone-gift      { left: 58%; top: 62%; width: 12%; height: 18%; }
-  .br-dropzone-candles   { left: 26%; top: 50%; width: 8%;  height: 20%; }
+  .br-dropzone-candles   { left: 20%; top: 54%; width: 60%; height: 14%; }
   .br-dropzone-confetti  { right: 1%; top: 5%;  width: 18%; height: 28%; }
 }
 

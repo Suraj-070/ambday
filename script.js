@@ -1211,15 +1211,19 @@ window.AMB.AudioManager = AudioManager;
 
   const MASTER_KEY = '$2a$10$yg.uDbnr8TKlXDrvSMEDjuy9ZnZhkgYCT.2YkIw4z/RSkkrbbYKte';
   const BIN_KEY    = 'p5blur_bin_id';
-  const DEFAULT    = { left:'10%', top:'18%', width:'38%', height:'52%' };
+  const DEFAULTS   = {
+    mobile:  { left:'8%',  top:'20%', width:'52%', height:'48%' },
+    desktop: { left:'10%', top:'18%', width:'38%', height:'52%' }
+  };
   const ADMIN_KEY  = 'ambday2025';
   const isAdmin    = new URLSearchParams(location.search).get('admin') === ADMIN_KEY;
+  const screen     = () => window.innerWidth <= 768 ? 'mobile' : 'desktop';
 
-  let binId   = localStorage.getItem(BIN_KEY) || null;
+  let binId    = localStorage.getItem(BIN_KEY) || null;
   let revealed = false;
 
   /* ---- JSONBin helpers ---- */
-  async function fetchPos() {
+  async function fetchAllPos() {
     if (!binId) return null;
     try {
       const r = await fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
@@ -1232,8 +1236,10 @@ window.AMB.AudioManager = AudioManager;
 
   async function savePos(pos) {
     try {
+      const key = screen();
+      let record = (await fetchAllPos()) || {};
+      record[key] = pos;
       if (!binId) {
-        // Create bin
         const r = await fetch('https://api.jsonbin.io/v3/b', {
           method: 'POST',
           headers: {
@@ -1242,7 +1248,7 @@ window.AMB.AudioManager = AudioManager;
             'X-Bin-Name': 'ambday-photo-blur',
             'X-Bin-Private': 'true'
           },
-          body: JSON.stringify(pos)
+          body: JSON.stringify(record)
         });
         const j = await r.json();
         binId = j.metadata.id;
@@ -1254,18 +1260,20 @@ window.AMB.AudioManager = AudioManager;
             'Content-Type': 'application/json',
             'X-Master-Key': MASTER_KEY
           },
-          body: JSON.stringify(pos)
+          body: JSON.stringify(record)
         });
       }
     } catch(e) { console.warn('JSONBin save failed', e); }
   }
 
   /* ---- Apply position ---- */
-  function applyPos(pos) {
-    patch.style.left   = pos.left   || DEFAULT.left;
-    patch.style.top    = pos.top    || DEFAULT.top;
-    patch.style.width  = pos.width  || DEFAULT.width;
-    patch.style.height = pos.height || DEFAULT.height;
+  function applyPos(record) {
+    const key = screen();
+    const pos = (record && record[key]) || DEFAULTS[key];
+    patch.style.left   = pos.left;
+    patch.style.top    = pos.top;
+    patch.style.width  = pos.width;
+    patch.style.height = pos.height;
   }
 
   function getPercent() {
@@ -1291,7 +1299,8 @@ window.AMB.AudioManager = AudioManager;
     const pos = getPercent();
     lockPatch();
     await savePos(pos);
-    alert('Saved! Everyone will see this position now ✓');
+    const key = screen();
+    alert('Saved for ' + key + '! ✓\nNow set it on the other screen size too if needed.');
   });
 
   /* ---- Drag ---- */
@@ -1409,6 +1418,21 @@ window.AMB.AudioManager = AudioManager;
     // Non-admin always sees it locked
     if (!isAdmin) lockPatch();
   }
+
+  let cachedRecord = null;
+
+  async function init() {
+    cachedRecord = await fetchAllPos();
+    applyPos(cachedRecord);
+    if (!isAdmin) lockPatch();
+  }
+
+  // Re-apply correct position on resize (mobile ↔ desktop)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => applyPos(cachedRecord), 200);
+  });
 
   init();
 })();

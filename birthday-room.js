@@ -1588,14 +1588,58 @@ function showWish() {
   if (wishCue) wishCue.style.opacity = '0';
   if (blowBtn) blowBtn.style.opacity = '0';
 
-  // Typewriter the wish body
+  // Typewriter the wish body with moving pen
   const text = birthdayRoomConfig.birthdayWish;
-  wishBody.innerHTML = '<span class="cursor"></span>';
-  wishBody.innerHTML = '<span class="cursor"></span>';
+  wishBody.innerHTML = '';
+
+  // Create pen SVG element
+  const pen = document.createElement('div');
+  pen.id = 'wishPen';
+  pen.innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Pen body -->
+    <rect x="14" y="2" width="8" height="22" rx="2" fill="#2a1a6e"/>
+    <rect x="14" y="2" width="8" height="6" rx="2" fill="#c8a96e"/>
+    <!-- Pen clip -->
+    <rect x="20" y="2" width="2" height="16" rx="1" fill="#e8c87a"/>
+    <!-- Pen tip cone -->
+    <path d="M14 24 L18 34 L22 24Z" fill="#1a0a3e"/>
+    <!-- Ink tip -->
+    <circle cx="18" cy="34" r="1.5" fill="#4a3a9e"/>
+    <!-- Shine -->
+    <rect x="15" y="4" width="2" height="8" rx="1" fill="rgba(255,255,255,0.25)"/>
+  </svg>`;
+  pen.style.cssText = `
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    transform: rotate(40deg);
+    transform-origin: 18px 34px;
+    transition: left 60ms linear, top 60ms linear;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    opacity: 0;
+  `;
+  document.body.appendChild(pen);
+
+  let lastSpan = null;
+
+  function movePenToLastChar() {
+    if (PRM || !lastSpan) return;
+    const rect = lastSpan.getBoundingClientRect();
+    // Position pen tip at end of last char
+    pen.style.left = (rect.right - 18) + 'px';
+    pen.style.top  = (rect.top  - 30) + 'px';
+    pen.style.opacity = '1';
+  }
+
   let i = 0;
-  const typeSpeed = PRM ? 0 : 55; // slower — feels like writing
+  const typeSpeed = PRM ? 0 : 55;
+
   function typeNext() {
     if (i >= text.length) {
+      // Done — hide pen
+      pen.style.transition = 'opacity 800ms ease';
+      pen.style.opacity = '0';
+      setTimeout(() => pen.remove(), 900);
       later(() => {
         if (wishCue) { wishCue.style.opacity = '1'; wishCue.style.transition = 'opacity 800ms ease'; }
         if (blowBtn) { blowBtn.style.opacity = '1'; blowBtn.style.transition = 'opacity 800ms ease'; }
@@ -1604,15 +1648,16 @@ function showWish() {
     }
     const ch = text[i];
     if (ch === '\n') {
-      wishBody.insertBefore(document.createElement('br'), wishBody.lastChild);
+      wishBody.appendChild(document.createElement('br'));
     } else {
       const span = document.createElement('span');
       span.className = 'write-char';
       span.textContent = ch;
-      wishBody.insertBefore(span, wishBody.lastChild);
+      wishBody.appendChild(span);
+      lastSpan = span;
+      movePenToLastChar();
     }
     i++;
-    // Vary speed slightly — feels more natural/human
     const delay = ch === '\n' ? typeSpeed * 6
                 : ch === '.' || ch === ',' || ch === '—' ? typeSpeed * 3
                 : ch === ' ' ? typeSpeed * 0.6

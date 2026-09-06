@@ -2568,3 +2568,12 @@
   0%, 100% { opacity: 1; transform: scaleY(1); }
   50%       { opacity: 0.3; transform: scaleY(0.7); }
 }
+
+/* ---- Pen writing animation ---- */
+#wishPen {
+  animation: penWobble 0.15s ease-in-out infinite alternate;
+}
+@keyframes penWobble {
+  0%   { transform: rotate(38deg); }
+  100% { transform: rotate(42deg); }
+}

@@ -1350,7 +1350,7 @@ window.AMB.AudioManager = AudioManager;
   patch.addEventListener('mousedown', startDrag);
   patch.addEventListener('touchstart', startDrag, { passive: false });
 
-  /* ---- Resize ---- */
+  /* ---- Resize — corner handle (desktop) + pinch (mobile) ---- */
   let resSX, resSY, resOW, resOH;
 
   resizeH && resizeH.addEventListener('mousedown', startResize);
@@ -1383,6 +1383,46 @@ window.AMB.AudioManager = AudioManager;
     document.removeEventListener('touchmove', onResize);
     document.removeEventListener('touchend',  endResize);
   }
+
+  /* ---- Pinch to resize (mobile) ---- */
+  let pinchStartDist = null;
+  let pinchStartW    = null;
+  let pinchStartH    = null;
+
+  function getDist(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  patch.addEventListener('touchstart', (e) => {
+    if (!isAdmin) return;
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      pinchStartDist = getDist(e.touches);
+      pinchStartW    = patch.offsetWidth;
+      pinchStartH    = patch.offsetHeight;
+    }
+  }, { passive: false });
+
+  patch.addEventListener('touchmove', (e) => {
+    if (!isAdmin) return;
+    if (e.touches.length === 2 && pinchStartDist !== null) {
+      e.preventDefault();
+      const dist  = getDist(e.touches);
+      const scale = dist / pinchStartDist;
+      patch.style.width  = Math.max(80,  Math.round(pinchStartW * scale)) + 'px';
+      patch.style.height = Math.max(60, Math.round(pinchStartH * scale)) + 'px';
+    }
+  }, { passive: false });
+
+  patch.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      pinchStartDist = null;
+      pinchStartW    = null;
+      pinchStartH    = null;
+    }
+  });
 
   /* ---- Reveal: Ctrl+Shift+K or shake ---- */
   function revealPhoto() {

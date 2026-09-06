@@ -469,19 +469,13 @@
     <!-- Cake shadow -->
     <div class="br-cake-shadow" id="brCakeShadow" hidden></div>
 
-    <!-- Boy & girl characters — animated SVG characters appear when cake placed -->
+    <!-- Characters — single SVG for proper overlap during hug/kiss -->
     <div class="br-characters" id="brCharacters" hidden aria-hidden="true">
       <div class="br-char-stage" id="brCharStage" data-state="idle">
-        <!-- BOY (left) -->
-        <div class="character character--boy" id="boyCharacter" data-character="boy">
-          <div class="character__inner"><!-- boy.svg injected by character-animation.js --></div>
+        <div class="character-svg-wrap" id="charSvgWrap">
+          <!-- combined characters.svg injected by character-animation.js -->
         </div>
-        <!-- Floating heart -->
         <div class="br-char-heart" aria-hidden="true">♡</div>
-        <!-- GIRL (right) -->
-        <div class="character character--girl" id="girlCharacter" data-character="girl">
-          <div class="character__inner"><!-- girl.svg injected by character-animation.js --></div>
-        </div>
       </div>
     </div>
 

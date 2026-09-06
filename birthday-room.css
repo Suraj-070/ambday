@@ -2476,42 +2476,18 @@
   bottom: 17%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(500px, 60%);
-  height: 32%;
+  width: min(560px, 65%);
+  height: 34%;
   z-index: 8;
   pointer-events: none;
 }
 .br-characters[hidden] { display: none; }
 
-/* The animated character stage fills the container */
 .br-char-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
 }
-
-/* Override character-animation.css positioning for room context */
-.br-char-stage .character {
-  position: absolute;
-  bottom: 0;
-  width: 38%;
-  max-width: 160px;
-  min-width: 80px;
-  height: 100%;
-}
-.br-char-stage .character--boy  { left: 5%; }
-.br-char-stage .character--girl { right: 5%; }
-
-/* Move-together / hug / kiss overrides */
-.br-char-stage[data-state="move-together"] .character--boy,
-.br-char-stage[data-state="hug"]           .character--boy,
-.br-char-stage[data-state="kiss"]          .character--boy { left: 20%; }
-.br-char-stage[data-state="move-together"] .character--girl,
-.br-char-stage[data-state="hug"]           .character--girl,
-.br-char-stage[data-state="kiss"]          .character--girl { right: 20%; }
 
 /* Floating heart */
 .br-char-heart {

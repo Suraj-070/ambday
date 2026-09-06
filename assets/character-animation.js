@@ -48,7 +48,7 @@
 
   function setStateAttr(name) {
     state.current = name;
-    stage.setAttribute('data-state', name);
+    if (stage) stage.setAttribute('data-state', name);
   }
 
   function highlightButton(action) {

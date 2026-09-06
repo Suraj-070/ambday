@@ -1440,7 +1440,7 @@ window.AMB.AudioManager = AudioManager;
       display:flex;align-items:center;justify-content:center;
       background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);
     `;
-    modal.innerHTML = \`
+    modal.innerHTML = `
       <div style="background:#1a1025;border-radius:20px;padding:32px 28px;
                   width:min(340px,88vw);text-align:center;
                   box-shadow:0 24px 60px rgba(0,0,0,0.6);
@@ -1474,7 +1474,7 @@ window.AMB.AudioManager = AudioManager;
           </button>
         </div>
       </div>
-    \`;
+    `;
     document.body.appendChild(modal);
 
     const input  = modal.querySelector('#p5PwInput');

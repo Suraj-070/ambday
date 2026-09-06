@@ -1201,116 +1201,153 @@ window.AMB.AudioManager = AudioManager;
 })();
 
 /* ============================================================
-   Page 5 — draggable/resizable photo blur patch
+   Page 5 — photo blur patch with JSONBin persistence
    ============================================================ */
 (function p5PhotoBlur() {
-  const patch    = document.getElementById('p5PhotoBlur');
-  const doneBtn  = document.getElementById('p5DoneBtn');
-  const resizeH  = document.getElementById('p5ResizeHandle');
+  const patch   = document.getElementById('p5PhotoBlur');
+  const doneBtn = document.getElementById('p5DoneBtn');
+  const resizeH = document.getElementById('p5ResizeHandle');
   if (!patch) return;
 
-  const STORAGE_KEY = 'p5blur_pos';
-  let locked = false;
+  const MASTER_KEY = '$2a$10$yg.uDbnr8TKlXDrvSMEDjuy9ZnZhkgYCT.2YkIw4z/RSkkrbbYKte';
+  const BIN_KEY    = 'p5blur_bin_id';
+  const DEFAULT    = { left:'10%', top:'18%', width:'38%', height:'52%' };
+  const ADMIN_KEY  = 'ambday2025';
+  const isAdmin    = new URLSearchParams(location.search).get('admin') === ADMIN_KEY;
+
+  let binId   = localStorage.getItem(BIN_KEY) || null;
   let revealed = false;
 
-  /* --- Restore saved position --- */
-  function restorePos() {
+  /* ---- JSONBin helpers ---- */
+  async function fetchPos() {
+    if (!binId) return null;
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved) {
-        patch.style.left   = saved.left;
-        patch.style.top    = saved.top;
-        patch.style.width  = saved.width;
-        patch.style.height = saved.height;
-        if (saved.locked) lockPatch();
+      const r = await fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
+        headers: { 'X-Master-Key': MASTER_KEY }
+      });
+      const j = await r.json();
+      return j.record || null;
+    } catch(e) { return null; }
+  }
+
+  async function savePos(pos) {
+    try {
+      if (!binId) {
+        // Create bin
+        const r = await fetch('https://api.jsonbin.io/v3/b', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': MASTER_KEY,
+            'X-Bin-Name': 'ambday-photo-blur',
+            'X-Bin-Private': 'true'
+          },
+          body: JSON.stringify(pos)
+        });
+        const j = await r.json();
+        binId = j.metadata.id;
+        localStorage.setItem(BIN_KEY, binId);
+      } else {
+        await fetch('https://api.jsonbin.io/v3/b/' + binId, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': MASTER_KEY
+          },
+          body: JSON.stringify(pos)
+        });
       }
-    } catch(e) {}
+    } catch(e) { console.warn('JSONBin save failed', e); }
   }
 
-  function savePos(doLock) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        left:   patch.style.left,
-        top:    patch.style.top,
-        width:  patch.style.width,
-        height: patch.style.height,
-        locked: doLock
-      }));
-    } catch(e) {}
+  /* ---- Apply position ---- */
+  function applyPos(pos) {
+    patch.style.left   = pos.left   || DEFAULT.left;
+    patch.style.top    = pos.top    || DEFAULT.top;
+    patch.style.width  = pos.width  || DEFAULT.width;
+    patch.style.height = pos.height || DEFAULT.height;
   }
 
+  function getPercent() {
+    const parent = patch.parentElement;
+    const pw = parent.offsetWidth;
+    const ph = parent.offsetHeight;
+    return {
+      left:   (patch.offsetLeft / pw * 100).toFixed(2) + '%',
+      top:    (patch.offsetTop  / ph * 100).toFixed(2) + '%',
+      width:  (patch.offsetWidth  / pw * 100).toFixed(2) + '%',
+      height: (patch.offsetHeight / ph * 100).toFixed(2) + '%'
+    };
+  }
+
+  /* ---- Lock/unlock ---- */
   function lockPatch() {
-    locked = true;
     patch.classList.add('locked');
+    if (!isAdmin) patch.style.pointerEvents = 'none';
   }
 
-  doneBtn && doneBtn.addEventListener('click', () => {
+  /* ---- Done button ---- */
+  doneBtn && doneBtn.addEventListener('click', async () => {
+    const pos = getPercent();
     lockPatch();
-    savePos(true);
+    await savePos(pos);
+    alert('Saved! Everyone will see this position now ✓');
   });
 
-  /* --- Drag --- */
-  let dragStartX, dragStartY, origLeft, origTop;
+  /* ---- Drag ---- */
+  let dragSX, dragSY, origL, origT;
 
-  function onDragStart(e) {
-    if (locked) return;
+  function startDrag(e) {
+    if (!isAdmin) return;
     if (e.target === resizeH || e.target === doneBtn) return;
     e.preventDefault();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const rect = patch.parentElement.getBoundingClientRect();
-    dragStartX = clientX;
-    dragStartY = clientY;
-    origLeft = patch.offsetLeft;
-    origTop  = patch.offsetTop;
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    dragSX = cx; dragSY = cy;
+    origL  = patch.offsetLeft;
+    origT  = patch.offsetTop;
     patch.style.cursor = 'grabbing';
-    document.addEventListener('mousemove', onDragMove);
-    document.addEventListener('mouseup',   onDragEnd);
-    document.addEventListener('touchmove', onDragMove, { passive: false });
-    document.addEventListener('touchend',  onDragEnd);
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup',   endDrag);
+    document.addEventListener('touchmove', onDrag, { passive: false });
+    document.addEventListener('touchend',  endDrag);
   }
 
-  function onDragMove(e) {
+  function onDrag(e) {
     e.preventDefault();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const dx = clientX - dragStartX;
-    const dy = clientY - dragStartY;
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
     const parent = patch.parentElement;
-    const newLeft = Math.max(0, Math.min(origLeft + dx, parent.offsetWidth  - patch.offsetWidth));
-    const newTop  = Math.max(0, Math.min(origTop  + dy, parent.offsetHeight - patch.offsetHeight));
-    patch.style.left = newLeft + 'px';
-    patch.style.top  = newTop  + 'px';
+    const newL = Math.max(0, Math.min(origL + cx - dragSX, parent.offsetWidth  - patch.offsetWidth));
+    const newT = Math.max(0, Math.min(origT + cy - dragSY, parent.offsetHeight - patch.offsetHeight));
+    patch.style.left = newL + 'px';
+    patch.style.top  = newT + 'px';
   }
 
-  function onDragEnd() {
+  function endDrag() {
     patch.style.cursor = 'grab';
-    savePos(false);
-    document.removeEventListener('mousemove', onDragMove);
-    document.removeEventListener('mouseup',   onDragEnd);
-    document.removeEventListener('touchmove', onDragMove);
-    document.removeEventListener('touchend',  onDragEnd);
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup',   endDrag);
+    document.removeEventListener('touchmove', onDrag);
+    document.removeEventListener('touchend',  endDrag);
   }
 
-  patch.addEventListener('mousedown', onDragStart);
-  patch.addEventListener('touchstart', onDragStart, { passive: false });
+  patch.addEventListener('mousedown', startDrag);
+  patch.addEventListener('touchstart', startDrag, { passive: false });
 
-  /* --- Resize --- */
-  let resStartX, resStartY, resOrigW, resOrigH;
+  /* ---- Resize ---- */
+  let resSX, resSY, resOW, resOH;
 
   resizeH && resizeH.addEventListener('mousedown', startResize);
   resizeH && resizeH.addEventListener('touchstart', startResize, { passive: false });
 
   function startResize(e) {
-    if (locked) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    resStartX = clientX;
-    resStartY = clientY;
-    resOrigW  = patch.offsetWidth;
-    resOrigH  = patch.offsetHeight;
+    if (!isAdmin) return;
+    e.preventDefault(); e.stopPropagation();
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    resSX = cx; resSY = cy;
+    resOW = patch.offsetWidth; resOH = patch.offsetHeight;
     document.addEventListener('mousemove', onResize);
     document.addEventListener('mouseup',   endResize);
     document.addEventListener('touchmove', onResize, { passive: false });
@@ -1319,28 +1356,25 @@ window.AMB.AudioManager = AudioManager;
 
   function onResize(e) {
     e.preventDefault();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const newW = Math.max(80,  resOrigW + (clientX - resStartX));
-    const newH = Math.max(60, resOrigH + (clientY - resStartY));
-    patch.style.width  = newW + 'px';
-    patch.style.height = newH + 'px';
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    patch.style.width  = Math.max(80,  resOW + cx - resSX) + 'px';
+    patch.style.height = Math.max(60, resOH + cy - resSY) + 'px';
   }
 
   function endResize() {
-    savePos(false);
     document.removeEventListener('mousemove', onResize);
     document.removeEventListener('mouseup',   endResize);
     document.removeEventListener('touchmove', onResize);
     document.removeEventListener('touchend',  endResize);
   }
 
-  /* --- Reveal: Ctrl+Shift+K or shake --- */
+  /* ---- Reveal: Ctrl+Shift+K or shake ---- */
   function revealPhoto() {
     if (revealed) return;
     revealed = true;
     patch.classList.add('revealed');
-    setTimeout(() => patch.style.display = 'none', 700);
+    setTimeout(() => { patch.style.display = 'none'; }, 700);
   }
 
   document.addEventListener('keydown', (e) => {
@@ -1364,5 +1398,17 @@ window.AMB.AudioManager = AudioManager;
     window.removeEventListener('touchend', req);
   }, { once: true });
 
-  restorePos();
+  /* ---- Init ---- */
+  async function init() {
+    const pos = await fetchPos();
+    if (pos) {
+      applyPos(pos);
+    } else {
+      applyPos(DEFAULT);
+    }
+    // Non-admin always sees it locked
+    if (!isAdmin) lockPatch();
+  }
+
+  init();
 })();

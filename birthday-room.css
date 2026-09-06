@@ -554,8 +554,9 @@
 }
 .br-candle-flame {
   position: absolute;
-  top: -22px; left: 50%;
-  transform: translateX(-50%);
+  top: -22px;
+  left: 50%;
+  margin-left: -7px;
   width: 14px; height: 22px;
   background: radial-gradient(ellipse at 50% 70%,
     #fff 0%, #ffe080 30%, #ff9020 65%, #c04010 100%);
@@ -570,10 +571,10 @@
   animation: candleFlicker 1.6s ease-in-out infinite;
 }
 @keyframes candleFlicker {
-  0%, 100% { transform: translateX(-50%) scale(1, 1) rotate(-1deg); }
-  25%      { transform: translateX(-50%) scale(0.95, 1.05) rotate(2deg); }
-  50%      { transform: translateX(-50%) scale(1.02, 0.96) rotate(-2deg); }
-  75%      { transform: translateX(-50%) scale(0.96, 1.03) rotate(1deg); }
+  0%, 100% { transform: scale(1, 1) rotate(-1deg); }
+  25%      { transform: scale(0.95, 1.05) rotate(2deg); }
+  50%      { transform: scale(1.02, 0.96) rotate(-2deg); }
+  75%      { transform: scale(0.96, 1.03) rotate(1deg); }
 }
 .br-candle-glow {
   position: absolute;
@@ -683,22 +684,21 @@
 /* ---------- 14. Caption strip ---------- */
 .br-caption {
   position: absolute;
-  left: 50%; bottom: 140px;
+  left: 50%; bottom: 88px;
   transform: translateX(-50%);
   z-index: 200;
   max-width: min(540px, 90%);
-  padding: 12px 22px;
-  background: rgba(10, 8, 20, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 10px 20px;
+  background: rgba(10, 8, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   text-align: center;
   opacity: 0;
   transform: translateX(-50%) translateY(8px);
   transition: opacity 600ms ease, transform 600ms ease;
-  /* Always full brightness — outside .br-room so not affected by dark filter */
-  box-shadow: 0 0 30px rgba(255,200,100,0.15), 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(255,200,100,0.1), 0 4px 16px rgba(0,0,0,0.3);
 }
 .br-caption.show {
   opacity: 1;

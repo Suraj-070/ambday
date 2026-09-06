@@ -2415,14 +2415,14 @@
 /* Candles — sit on the floor left, scaled down */
 .br-dropzone-candles .dec-table-candles {
   align-items: flex-end;
-  transform: scale(0.62);
+  transform: scale(0.4);
   transform-origin: bottom center;
 }
 
 /* Gift — sits on the floor, scaled down */
 .br-dropzone-gift .dec-gift {
   align-items: flex-end;
-  transform: scale(0.62);
+  transform: scale(0.4);
   transform-origin: bottom center;
 }
 

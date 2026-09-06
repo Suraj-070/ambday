@@ -1219,8 +1219,9 @@ window.AMB.AudioManager = AudioManager;
   const isAdmin    = new URLSearchParams(location.search).get('admin') === ADMIN_KEY;
   const screen     = () => window.innerWidth <= 768 ? 'mobile' : 'desktop';
 
-  let binId    = localStorage.getItem(BIN_KEY) || null;
-  let revealed = false;
+  let binId        = localStorage.getItem(BIN_KEY) || null;
+  let cachedRecord = null;
+  let revealed     = false;
 
   /* ---- JSONBin helpers ---- */
   async function fetchAllPos() {
@@ -1237,9 +1238,13 @@ window.AMB.AudioManager = AudioManager;
   async function savePos(pos) {
     try {
       const key = screen();
-      let record = (await fetchAllPos()) || {};
+      // Use the already-cached record so we don't lose the other screen's position
+      const record = Object.assign({}, cachedRecord || {});
       record[key] = pos;
+      cachedRecord = record; // update cache immediately
+
       if (!binId) {
+        // First time — create the bin
         const r = await fetch('https://api.jsonbin.io/v3/b', {
           method: 'POST',
           headers: {
@@ -1254,6 +1259,7 @@ window.AMB.AudioManager = AudioManager;
         binId = j.metadata.id;
         localStorage.setItem(BIN_KEY, binId);
       } else {
+        // Update existing bin with merged record
         await fetch('https://api.jsonbin.io/v3/b/' + binId, {
           method: 'PUT',
           headers: {
@@ -1419,7 +1425,6 @@ window.AMB.AudioManager = AudioManager;
     if (!isAdmin) lockPatch();
   }
 
-  let cachedRecord = null;
 
   async function init() {
     cachedRecord = await fetchAllPos();

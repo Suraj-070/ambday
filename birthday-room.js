@@ -35,7 +35,7 @@ const birthdayRoomConfig = {
 
   /* Decorations the user must place to complete the room.
      Each key matches a data-zone attribute on a .br-dropzone element. */
-  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids', 'candles'],
+  requiredDecorations: ['balloons', 'banner', 'photo', 'flowers', 'gift', 'lights', 'confetti', 'heartwall', 'polaroids'],
 
   /* Decoration tray items (in display order).
      `kind` matches a zone; `emoji` is the visual. */
@@ -98,6 +98,8 @@ const bannerText  = $('.br-banner-text', banner);
 const stringLights= $('#brStringLights');
 const table       = $('#brTable');
 const cakeEl      = $('#brCake');
+const dragCandleL = $('#brDragCandleL');
+const dragCandleR = $('#brDragCandleR');
 const candleEl    = $('#brCandle');
 const candleFlame = $('#brCandleFlame');
 const candleGlow  = $('#brCandleGlow');
@@ -143,6 +145,7 @@ const ST = {
 
 const birthdayRoomState = {
   lightsOn: false,
+  candlesPlaced: { left: false, right: false },
   decorationsCompleted: false,
   cakePlaced: false,
   candleLit: false,
@@ -263,6 +266,8 @@ function onStateChange(state) {
     case ST.CAKE_PLACED:
       if (brCakeShadow) brCakeShadow.hidden = false;
       cakeEl.classList.add('placed');
+      // Reveal draggable table candles
+      later(() => revealDragCandles(), 600);
       // Hug reaction when cake placed
       later(() => {
         if (window.CharacterAnimation) {
@@ -1220,6 +1225,93 @@ enableCakeDrag();
 /* ============================================================
    10. Candle — reveal + light
    ============================================================ */
+function revealDragCandles() {
+  const roomRect = room.getBoundingClientRect();
+  if (dragCandleL) {
+    dragCandleL.hidden = false;
+    dragCandleL.style.left = (roomRect.width * 0.05) + 'px';
+    dragCandleL.style.top  = (roomRect.height * 0.55) + 'px';
+    enableCandleDrag(dragCandleL, 'left');
+  }
+  if (dragCandleR) {
+    dragCandleR.hidden = false;
+    dragCandleR.style.left = (roomRect.width * 0.88) + 'px';
+    dragCandleR.style.top  = (roomRect.height * 0.55) + 'px';
+    enableCandleDrag(dragCandleR, 'right');
+  }
+  setCaption('Place the candles on the table 🕯️');
+}
+
+function enableCandleDrag(el, side) {
+  let startX, startY, origLeft, origTop;
+
+  const onDown = (clientX, clientY) => {
+    if (el.classList.contains('placed')) return;
+    startX = clientX; startY = clientY;
+    origLeft = parseInt(el.style.left || '0', 10);
+    origTop  = parseInt(el.style.top  || '0', 10);
+    el.style.transition = 'none';
+    el.classList.remove('snapping');
+  };
+
+  const onMove = (clientX, clientY) => {
+    if (el.classList.contains('placed')) return;
+    el.style.left = (origLeft + clientX - startX) + 'px';
+    el.style.top  = (origTop  + clientY - startY) + 'px';
+    const tableRect = table.getBoundingClientRect();
+    const onTable = clientX >= tableRect.left && clientX <= tableRect.right &&
+                    clientY >= tableRect.top - 30 && clientY <= tableRect.bottom;
+    table.classList.toggle('drop-target', onTable);
+  };
+
+  const onUp = (clientX, clientY) => {
+    if (el.classList.contains('placed')) return;
+    el.style.transition = '';
+    const tableRect = table.getBoundingClientRect();
+    const roomRect  = room.getBoundingClientRect();
+    const onTable = clientX >= tableRect.left && clientX <= tableRect.right &&
+                    clientY >= tableRect.top - 30 && clientY <= tableRect.bottom;
+    if (onTable) {
+      // Snap to left or right edge of table
+      const isLeft = side === 'left';
+      const targetLeft = isLeft
+        ? (tableRect.left - roomRect.left) + 10
+        : (tableRect.right - roomRect.left) - el.offsetWidth - 10;
+      const targetTop  = (tableRect.top - roomRect.top) - el.offsetHeight + 8;
+      el.classList.add('snapping');
+      el.style.left = targetLeft + 'px';
+      el.style.top  = targetTop  + 'px';
+      el.classList.add('placed');
+      birthdayRoomState.candlesPlaced[side] = true;
+      table.classList.remove('drop-target');
+      // Check if both placed
+      if (birthdayRoomState.candlesPlaced.left && birthdayRoomState.candlesPlaced.right) {
+        later(() => setCaption('Now for the candle 🕯️'), 400);
+      } else {
+        setCaption('Place the other candle too 🕯️');
+      }
+    } else {
+      el.classList.add('snapping');
+      el.style.left = origLeft + 'px';
+      el.style.top  = origTop  + 'px';
+    }
+  };
+
+  el.addEventListener('pointerdown', (e) => {
+    if (el.classList.contains('placed')) return;
+    e.preventDefault();
+    onDown(e.clientX, e.clientY);
+    const onM = (ev) => onMove(ev.clientX, ev.clientY);
+    const onU = (ev) => {
+      document.removeEventListener('pointermove', onM);
+      document.removeEventListener('pointerup', onU);
+      onUp(ev.clientX, ev.clientY);
+    };
+    document.addEventListener('pointermove', onM);
+    document.addEventListener('pointerup', onU);
+  });
+}
+
 function revealCandle() {
   setState(ST.CANDLE_AVAILABLE);
   setCaption("Light the candle now ✨");

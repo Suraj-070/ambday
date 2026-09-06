@@ -480,6 +480,30 @@
     <!-- Cake shadow -->
     <div class="br-cake-shadow" id="brCakeShadow" hidden></div>
 
+    <!-- Draggable table candles — appear after decoration, drag to table sides -->
+    <div class="br-drag-candle" id="brDragCandleL" hidden aria-label="Pink candle">
+      <svg viewBox="0 0 28 70" xmlns="http://www.w3.org/2000/svg" width="28" height="70">
+        <ellipse cx="14" cy="67" rx="10" ry="3.5" fill="#d4af5a"/>
+        <rect x="10" y="64" width="8" height="4" rx="1.5" fill="#c8a96e"/>
+        <rect x="10" y="28" width="8" height="36" rx="2" fill="#F4C8D0"/>
+        <ellipse cx="14" cy="28" rx="4" ry="2" fill="#f8d8e0"/>
+        <line x1="14" y1="26" x2="14" y2="21" stroke="#333" stroke-width="1"/>
+        <ellipse cx="14" cy="17" rx="3" ry="5" fill="#FFD700" opacity="0.95"/>
+        <ellipse cx="14" cy="14" rx="1.5" ry="3" fill="#fff" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="br-drag-candle" id="brDragCandleR" hidden aria-label="Purple candle">
+      <svg viewBox="0 0 28 70" xmlns="http://www.w3.org/2000/svg" width="28" height="70">
+        <ellipse cx="14" cy="67" rx="10" ry="3.5" fill="#d4af5a"/>
+        <rect x="10" y="64" width="8" height="4" rx="1.5" fill="#c8a96e"/>
+        <rect x="10" y="32" width="8" height="32" rx="2" fill="#D4C8F4"/>
+        <ellipse cx="14" cy="32" rx="4" ry="2" fill="#e4d8ff"/>
+        <line x1="14" y1="30" x2="14" y2="25" stroke="#333" stroke-width="1"/>
+        <ellipse cx="14" cy="21" rx="3" ry="5" fill="#FF9EE5" opacity="0.95"/>
+        <ellipse cx="14" cy="18" rx="1.5" ry="3" fill="#fff" opacity="0.55"/>
+      </svg>
+    </div>
+
     <!-- Characters — two separate divs, no overlap -->
     <div class="br-characters" id="brCharacters" hidden aria-hidden="true">
       <div class="br-char-stage" id="brCharStage" data-state="idle">

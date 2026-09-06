@@ -2527,3 +2527,16 @@
 .br-char-boy svg  { width: clamp(62px, 10vw, 90px); height: auto; }
 .br-char-girl svg { width: clamp(56px, 9vw, 80px);  height: auto; }
 
+
+/* ---- Draggable table candles ---- */
+.br-drag-candle {
+  position: absolute;
+  z-index: 12;
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  transition: transform 220ms cubic-bezier(.22,1,.36,1);
+}
+.br-drag-candle:active { cursor: grabbing; }
+.br-drag-candle.placed { cursor: default; pointer-events: none; }
+.br-drag-candle.snapping { transition: left 500ms cubic-bezier(.22,1,.36,1), top 500ms cubic-bezier(.22,1,.36,1); }

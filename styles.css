@@ -1885,7 +1885,7 @@ button {
   cursor: grab;
   touch-action: none;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
 }
 .p5-photo-blur.locked { cursor: default; }
 .p5-photo-blur-inner {
@@ -1895,6 +1895,7 @@ button {
   -webkit-backdrop-filter: blur(22px);
   background: rgba(255,255,255,0.12);
   border-radius: 12px;
+  overflow: hidden;
   transition: opacity 600ms ease;
 }
 .p5-photo-blur.revealed .p5-photo-blur-inner { opacity: 0; pointer-events: none; }
@@ -1930,16 +1931,17 @@ button {
 /* Edit bar */
 .p5-edit-bar {
   position: absolute;
-  bottom: 8px; left: 8px; right: 8px;
+  top: -48px; left: 0; right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  background: rgba(20,10,30,0.88);
+  background: rgba(20,10,30,0.92);
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   white-space: nowrap;
   z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
 .p5-edit-label {
   font-size: 11px;

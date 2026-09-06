@@ -66,18 +66,8 @@
     if (el) el.textContent = stats.kisses;
   }
 
-  /* ---- Visitor tracking ---- */
-  async function trackVisit() {
-    const now = new Date().toISOString();
-    const visited = sessionStorage.getItem('ambday_visited');
-    if (!visited) {
-      sessionStorage.setItem('ambday_visited', '1');
-      stats.visits = (stats.visits || 0) + 1;
-      if (!stats.firstVisit) stats.firstVisit = now;
-      stats.lastVisit = now;
-      await saveStats();
-    }
-  }
+  /* ---- Visitor tracking removed ---- */
+  async function trackVisit() {}
 
   /* ---- Admin dashboard ---- */
   function showAdminDashboard() {
@@ -100,11 +90,7 @@
           <span style="font-size:13px;color:rgba(255,255,255,0.7);">💋 Kisses sent</span>
           <span id="adminKisses" style="font-size:18px;font-weight:700;color:#e8837a;">—</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:13px;color:rgba(255,255,255,0.7);">👀 Total visits</span>
-          <span id="adminVisits" style="font-size:18px;font-weight:700;color:#7ab8e8;">—</span>
-        </div>
-        <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;" id="adminDates"></div>
+
       </div>
       <button id="adminClose" style="position:absolute;top:8px;right:10px;
               background:none;border:none;color:rgba(255,255,255,0.4);
@@ -116,15 +102,7 @@
 
     function updatePanel() {
       const k = document.getElementById('adminKisses');
-      const v = document.getElementById('adminVisits');
-      const d = document.getElementById('adminDates');
       if (k) k.textContent = stats.kisses || 0;
-      if (v) v.textContent = stats.visits || 0;
-      if (d) {
-        const first = stats.firstVisit ? new Date(stats.firstVisit).toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-        const last  = stats.lastVisit  ? new Date(stats.lastVisit).toLocaleDateString('en-AU',  { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-        d.innerHTML = `First visit: ${first}<br>Last visit: ${last}`;
-      }
     }
     updatePanel();
   }

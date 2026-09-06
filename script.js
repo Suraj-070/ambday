@@ -1424,24 +1424,108 @@ window.AMB.AudioManager = AudioManager;
     }
   });
 
-  /* ---- Reveal: Ctrl+Shift+K or shake ---- */
-  function revealPhoto() {
-    if (revealed) return;
-    revealed = true;
-    patch.classList.add('revealed');
-    setTimeout(() => { patch.style.display = 'none'; }, 700);
+  /* ---- Reveal: password prompt (triggered by Ctrl+Shift+K or shake) ---- */
+  const REVEAL_PASSWORD = 'maichaa';
+  let promptOpen = false;
+
+  function askAndReveal() {
+    if (revealed || promptOpen) return;
+    promptOpen = true;
+
+    // Create modal
+    const modal = document.createElement('div');
+    modal.id = 'p5RevealModal';
+    modal.style.cssText = `
+      position:fixed;inset:0;z-index:99999;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);
+    `;
+    modal.innerHTML = \`
+      <div style="background:#1a1025;border-radius:20px;padding:32px 28px;
+                  width:min(340px,88vw);text-align:center;
+                  box-shadow:0 24px 60px rgba(0,0,0,0.6);
+                  border:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:32px;margin-bottom:12px;">🔒</div>
+        <p style="font-family:-apple-system,sans-serif;font-size:15px;
+                  color:rgba(255,255,255,0.85);margin:0 0 20px;line-height:1.5;">
+          what do I always call you?
+        </p>
+        <input id="p5PwInput" type="text" placeholder="type here..."
+               style="width:100%;box-sizing:border-box;
+                      padding:12px 16px;border-radius:10px;border:none;
+                      background:rgba(255,255,255,0.1);color:#fff;
+                      font-size:16px;text-align:center;outline:none;
+                      border:1px solid rgba(255,255,255,0.2);"
+               autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <div id="p5PwError" style="color:#e8837a;font-size:12px;
+                                    margin-top:8px;min-height:16px;
+                                    font-family:-apple-system,sans-serif;"></div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button id="p5PwCancel" style="flex:1;padding:12px;border-radius:10px;
+                  background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);
+                  font-size:14px;cursor:pointer;border:none;font-family:-apple-system,sans-serif;">
+            Cancel
+          </button>
+          <button id="p5PwSubmit" style="flex:1;padding:12px;border-radius:10px;
+                  background:linear-gradient(135deg,#e8837a,#c05870);color:#fff;
+                  font-size:14px;font-weight:700;cursor:pointer;border:none;
+                  font-family:-apple-system,sans-serif;">
+            Show ♡
+          </button>
+        </div>
+      </div>
+    \`;
+    document.body.appendChild(modal);
+
+    const input  = modal.querySelector('#p5PwInput');
+    const error  = modal.querySelector('#p5PwError');
+    const submit = modal.querySelector('#p5PwSubmit');
+    const cancel = modal.querySelector('#p5PwCancel');
+
+    setTimeout(() => input.focus(), 100);
+
+    function closeModal() {
+      modal.remove();
+      promptOpen = false;
+    }
+
+    function tryReveal() {
+      if (input.value.trim().toLowerCase() === REVEAL_PASSWORD) {
+        closeModal();
+        revealed = true;
+        patch.classList.add('revealed');
+        setTimeout(() => { patch.style.display = 'none'; }, 700);
+      } else {
+        error.textContent = 'nope, try again 🙈';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    submit.addEventListener('click', tryReveal);
+    cancel.addEventListener('click', closeModal);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') tryReveal();
+      if (e.key === 'Escape') closeModal();
+    });
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); revealPhoto(); }
+    if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); askAndReveal(); }
   });
 
   let lX = null, lY = null, lZ = null;
+  let lastShake = 0;
   window.addEventListener('devicemotion', (e) => {
     const a = e.accelerationIncludingGravity;
     if (!a) return;
     if (lX === null) { lX = a.x; lY = a.y; lZ = a.z; return; }
-    if (Math.abs(a.x-lX)+Math.abs(a.y-lY)+Math.abs(a.z-lZ) > 18) revealPhoto();
+    const now = Date.now();
+    if (Math.abs(a.x-lX)+Math.abs(a.y-lY)+Math.abs(a.z-lZ) > 18 && now - lastShake > 2000) {
+      lastShake = now;
+      askAndReveal();
+    }
     lX = a.x; lY = a.y; lZ = a.z;
   }, { passive: true });
 

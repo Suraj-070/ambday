@@ -2519,26 +2519,3 @@
 .br-char-boy svg  { width: clamp(62px, 10vw, 90px); height: auto; }
 .br-char-girl svg { width: clamp(56px, 9vw, 80px);  height: auto; }
 
-/* ---- Secret photo blur cover ---- */
-.dec-photo-secret {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.dec-photo-blur-cover {
-  position: absolute;
-  inset: 0;
-  background: rgba(20, 10, 30, 0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-  z-index: 2;
-}
-.dec-photo-blur-icon {
-  font-size: 28px;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-  opacity: 0.8;
-}

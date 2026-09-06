@@ -437,57 +437,7 @@ function setCaption(text) {
     b.style.animationDelay = (i * 0.2) + 's';
     stringLights.appendChild(b);
   }
-/* ============================================================
-   18. Secret photo reveal — Ctrl+Shift+K (desktop) / shake (mobile)
-   ============================================================ */
-(function secretPhotoReveal() {
-  let revealed = false;
 
-  function revealPhoto() {
-    if (revealed) return;
-    const cover = document.getElementById('decPhotoSecret');
-    if (!cover) return;
-    revealed = true;
-    const blur = cover.querySelector('.dec-photo-blur-cover');
-    if (blur) {
-      blur.style.transition = 'opacity 600ms ease';
-      blur.style.opacity = '0';
-      setTimeout(() => blur.remove(), 650);
-    }
-    cover.classList.add('revealed');
-  }
-
-  /* Desktop — Ctrl+Shift+K */
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'K') {
-      e.preventDefault();
-      revealPhoto();
-    }
-  });
-
-  /* Mobile — shake detection */
-  let lastX = null, lastY = null, lastZ = null;
-  const SHAKE_THRESHOLD = 18;
-
-  window.addEventListener('devicemotion', (e) => {
-    const acc = e.accelerationIncludingGravity;
-    if (!acc) return;
-    const { x, y, z } = acc;
-    if (lastX === null) { lastX = x; lastY = y; lastZ = z; return; }
-    const delta = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
-    if (delta > SHAKE_THRESHOLD) revealPhoto();
-    lastX = x; lastY = y; lastZ = z;
-  }, { passive: true });
-
-  /* iOS 13+ requires permission for devicemotion */
-  window.addEventListener('touchend', function requestMotion() {
-    if (typeof DeviceMotionEvent !== 'undefined' &&
-        typeof DeviceMotionEvent.requestPermission === 'function') {
-      DeviceMotionEvent.requestPermission().catch(() => {});
-    }
-    window.removeEventListener('touchend', requestMotion);
-  }, { once: true });
-})();
 
 
 })();
@@ -702,7 +652,7 @@ function getDecorationHTML(kind) {
           <div class="dec-photo-outer">
             <div class="dec-photo-mat">
               ${hasPhoto
-                ? '<div class="dec-photo-secret" id="decPhotoSecret"><img src="' + url + '" class="dec-photo-img" alt="our photo" /><div class="dec-photo-blur-cover"><span class="dec-photo-blur-icon">🔒</span></div></div>'
+                ? '<img src="' + url + '" class="dec-photo-img" alt="our photo" />'
                 : '<div class="dec-photo-placeholder"><svg viewBox="0 0 80 80" width="56" height="56" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="28" r="14" fill="#C87890" opacity="0.5"/><path d="M10 70 Q40 42 70 70" fill="#C87890" opacity="0.3"/></svg></div>'
               }
             </div>

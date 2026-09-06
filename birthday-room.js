@@ -1594,7 +1594,7 @@ function showWish() {
   const textHolder = document.createElement('span');
   wishBody.insertBefore(textHolder, wishBody.firstChild);
   let i = 0;
-  const typeSpeed = PRM ? 0 : 32;
+  const typeSpeed = PRM ? 0 : 18;
   function typeNext() {
     if (i >= text.length) {
       // Typing done — show cue and blow button with a gentle entrance

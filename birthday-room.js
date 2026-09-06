@@ -249,6 +249,7 @@ function onStateChange(state) {
     case ST.DECORATION_COMPLETE:
       setCaption("Wait. You actually did all of that 🥹✨");
       startFallingConfetti();
+      hideTray();
       later(() => {
         setCaption("Almost there. Something's still missing");
       }, 1800);

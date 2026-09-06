@@ -683,7 +683,7 @@
 /* ---------- 14. Caption strip ---------- */
 .br-caption {
   position: absolute;
-  left: 50%; bottom: 100px;
+  left: 50%; bottom: 140px;
   transform: translateX(-50%);
   z-index: 200;
   max-width: min(540px, 90%);
@@ -2422,7 +2422,7 @@
 /* Gift — sits on the floor, scaled down */
 .br-dropzone-gift .dec-gift {
   align-items: flex-end;
-  transform: scale(0.4);
+  transform: scale(0.22);
   transform-origin: bottom center;
 }
 

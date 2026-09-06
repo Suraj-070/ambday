@@ -2412,14 +2412,18 @@
   align-items: flex-end;
 }
 
-/* Candles — sit on the floor left */
+/* Candles — sit on the floor left, scaled down */
 .br-dropzone-candles .dec-table-candles {
   align-items: flex-end;
+  transform: scale(0.62);
+  transform-origin: bottom center;
 }
 
-/* Gift — sits on the floor */
+/* Gift — sits on the floor, scaled down */
 .br-dropzone-gift .dec-gift {
   align-items: flex-end;
+  transform: scale(0.62);
+  transform-origin: bottom center;
 }
 
 /* Confetti — spreads from top corner */

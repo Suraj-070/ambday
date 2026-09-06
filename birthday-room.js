@@ -902,44 +902,27 @@ function getDecorationHTML(kind) {
 
     case 'candles': return `
       <div class="dec-table-candles">
-        <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-          <!-- Left tall candle -->
-          <rect x="28" y="40" width="18" height="80" rx="3" fill="#F4C8D0"/>
-          <rect x="28" y="40" width="18" height="80" rx="3" fill="url(#cwL)"/>
-          <ellipse cx="37" cy="40" rx="9" ry="4" fill="#f8d8e0"/>
-          <line x1="37" y1="36" x2="37" y2="28" stroke="#333" stroke-width="1.5"/>
-          <ellipse cx="37" cy="24" rx="5" ry="8" fill="#FFD700" opacity="0.9"/>
-          <ellipse cx="37" cy="20" rx="3" ry="5" fill="#FFF" opacity="0.6"/>
-          <ellipse cx="34" cy="42" rx="3" ry="6" fill="rgba(255,255,255,0.2)"/>
-          <!-- Middle short candle -->
-          <rect x="71" y="70" width="16" height="50" rx="3" fill="#C8E0F4"/>
-          <ellipse cx="79" cy="70" rx="8" ry="3.5" fill="#d8eef8"/>
-          <line x1="79" y1="66" x2="79" y2="59" stroke="#333" stroke-width="1.5"/>
-          <ellipse cx="79" cy="55" rx="5" ry="8" fill="#FFB347" opacity="0.9"/>
-          <ellipse cx="79" cy="51" rx="3" ry="5" fill="#FFF" opacity="0.5"/>
-          <!-- Right tall candle -->
-          <rect x="114" y="45" width="18" height="75" rx="3" fill="#D4C8F4"/>
-          <ellipse cx="123" cy="45" rx="9" ry="4" fill="#e4d8ff"/>
-          <line x1="123" y1="41" x2="123" y2="33" stroke="#333" stroke-width="1.5"/>
-          <ellipse cx="123" cy="29" rx="5" ry="8" fill="#FF9EE5" opacity="0.9"/>
-          <ellipse cx="123" cy="25" rx="3" ry="5" fill="#FFF" opacity="0.55"/>
-          <!-- Candleholders -->
-          <ellipse cx="37" cy="122" rx="14" ry="5" fill="#d4af5a"/>
-          <rect x="30" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
-          <ellipse cx="79" cy="122" rx="12" ry="4.5" fill="#d4af5a"/>
-          <rect x="72" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
-          <ellipse cx="123" cy="122" rx="14" ry="5" fill="#d4af5a"/>
-          <rect x="116" y="118" width="14" height="6" rx="2" fill="#c8a96e"/>
-          <!-- Wax drips -->
-          <path d="M30 80 Q28 90 29 95" stroke="#f8d8e0" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M118 85 Q120 95 119 100" stroke="#e4d8ff" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <defs>
-            <linearGradient id="cwL" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="rgba(0,0,0,0.08)"/>
-              <stop offset="40%" stop-color="rgba(255,255,255,0.15)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.06)"/>
-            </linearGradient>
-          </defs>
+        <!-- Left candle -->
+        <svg viewBox="0 0 40 100" xmlns="http://www.w3.org/2000/svg" style="height:100%;width:auto">
+          <ellipse cx="20" cy="96" rx="14" ry="5" fill="#d4af5a"/>
+          <rect x="14" y="92" width="12" height="5" rx="2" fill="#c8a96e"/>
+          <rect x="15" y="30" width="10" height="62" rx="3" fill="#F4C8D0"/>
+          <ellipse cx="20" cy="30" rx="5" ry="2.5" fill="#f8d8e0"/>
+          <path d="M22 28 Q20 18 20 12" stroke="#e4c0c8" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          <line x1="20" y1="26" x2="20" y2="20" stroke="#333" stroke-width="1.2"/>
+          <ellipse cx="20" cy="14" rx="4" ry="7" fill="#FFD700" opacity="0.95"/>
+          <ellipse cx="20" cy="11" rx="2" ry="4" fill="#fff" opacity="0.6"/>
+        </svg>
+        <!-- Right candle -->
+        <svg viewBox="0 0 40 100" xmlns="http://www.w3.org/2000/svg" style="height:100%;width:auto">
+          <ellipse cx="20" cy="96" rx="14" ry="5" fill="#d4af5a"/>
+          <rect x="14" y="92" width="12" height="5" rx="2" fill="#c8a96e"/>
+          <rect x="15" y="38" width="10" height="54" rx="3" fill="#D4C8F4"/>
+          <ellipse cx="20" cy="38" rx="5" ry="2.5" fill="#e4d8ff"/>
+          <path d="M22 36 Q20 26 20 20" stroke="#c8b8f0" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          <line x1="20" y1="34" x2="20" y2="28" stroke="#333" stroke-width="1.2"/>
+          <ellipse cx="20" cy="22" rx="4" ry="7" fill="#FF9EE5" opacity="0.95"/>
+          <ellipse cx="20" cy="19" rx="2" ry="4" fill="#fff" opacity="0.55"/>
         </svg>
       </div>`;
 

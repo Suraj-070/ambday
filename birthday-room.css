@@ -2540,3 +2540,31 @@
 .br-drag-candle:active { cursor: grabbing; }
 .br-drag-candle.placed { cursor: default; pointer-events: none; }
 .br-drag-candle.snapping { transition: left 500ms cubic-bezier(.22,1,.36,1), top 500ms cubic-bezier(.22,1,.36,1); }
+
+/* ---- Handwriting character animation ---- */
+.write-char {
+  display: inline;
+  opacity: 0;
+  animation: writeIn 180ms ease-out forwards;
+  filter: blur(0.4px);
+}
+@keyframes writeIn {
+  0%   { opacity: 0; transform: translateY(3px) rotate(-1deg) scaleX(0.6); filter: blur(1px); }
+  60%  { opacity: 0.9; transform: translateY(-0.5px) rotate(0.3deg) scaleX(1.04); filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) rotate(0deg) scaleX(1); filter: blur(0); }
+}
+/* Pen cursor — small ink dot that moves with writing */
+.br-wish-body .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--coral);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: penCursor 0.6s ease-in-out infinite;
+}
+@keyframes penCursor {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50%       { opacity: 0.3; transform: scaleY(0.7); }
+}

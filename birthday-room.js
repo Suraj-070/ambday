@@ -1591,13 +1591,11 @@ function showWish() {
   // Typewriter the wish body
   const text = birthdayRoomConfig.birthdayWish;
   wishBody.innerHTML = '<span class="cursor"></span>';
-  const textHolder = document.createElement('span');
-  wishBody.insertBefore(textHolder, wishBody.firstChild);
+  wishBody.innerHTML = '<span class="cursor"></span>';
   let i = 0;
-  const typeSpeed = PRM ? 0 : 18;
+  const typeSpeed = PRM ? 0 : 55; // slower — feels like writing
   function typeNext() {
     if (i >= text.length) {
-      // Typing done — show cue and blow button with a gentle entrance
       later(() => {
         if (wishCue) { wishCue.style.opacity = '1'; wishCue.style.transition = 'opacity 800ms ease'; }
         if (blowBtn) { blowBtn.style.opacity = '1'; blowBtn.style.transition = 'opacity 800ms ease'; }
@@ -1605,9 +1603,21 @@ function showWish() {
       return;
     }
     const ch = text[i];
-    textHolder.textContent += ch;
+    if (ch === '\n') {
+      wishBody.insertBefore(document.createElement('br'), wishBody.lastChild);
+    } else {
+      const span = document.createElement('span');
+      span.className = 'write-char';
+      span.textContent = ch;
+      wishBody.insertBefore(span, wishBody.lastChild);
+    }
     i++;
-    later(typeNext, ch === '\n' ? typeSpeed * 8 : typeSpeed);
+    // Vary speed slightly — feels more natural/human
+    const delay = ch === '\n' ? typeSpeed * 6
+                : ch === '.' || ch === ',' || ch === '—' ? typeSpeed * 3
+                : ch === ' ' ? typeSpeed * 0.6
+                : typeSpeed + (Math.random() * 20 - 10);
+    later(typeNext, delay);
   }
   later(typeNext, 600);
 
